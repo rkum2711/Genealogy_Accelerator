@@ -210,39 +210,41 @@ def app():
         st.subheader(option)
         tab1, tab2= st.tabs(["Selected Batch Network", "Whole Network",])
         with tab2:
-            st.header("Whole Network")
-            with st.spinner("Executing query..."):
-                try:
-                    with st.spinner("Data Loading ...."):
-                        query = """
-                        MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                        MATCH (po)<-[ppo:productPo]-(p:product)
-                        MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                        MATCH (r)<-[mr:materialRecipe]-(m:material)
-                        MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                        MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                        MATCH (f)-[fs:facilitySite]->(s:site)
-                        MATCH (s)-[sr:siteRegion]->(re:region)
-                        MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                        MATCH (wo)<-[awo:assetWo]->(a:asset)
-                        MATCH (a)-[al:assetline]->(l:line)
-                        MATCH (l)-[lf:lineFacility]->(af:facility)
-                        MATCH (af)-[afs:facilitySite]->(as:site)
-                        MATCH (as)-[asr:siteRegion]->(ar:region) 
-                        RETURN *
-                        """
-                        # with driver.session() as session:
-                        #     graphData = get_neo4j_data(query,session)
-                        #     with st.spinner("Converting into Graph ..."):
-                        #         graph, node_properties = generate_nodes_edges(graphData)
-                        #         save_graph_file(graph, network_html_file_path)
-                        with st.spinner("Converting into Graph ..."):
-                            HtmlFile = open(network_html_file_path, 'r', encoding='utf-8')
-                            network_source_code = HtmlFile.read() 
-                            components.html(network_source_code,height=1200, width=1200)
-                except Exception as e:
-                    st.error(f"Error executing query: {e}")
-                st.write("Query execution complete")
+            if st.button("Search"):
+                st.header("Whole Network")
+                with st.spinner("Executing query..."):
+                    try:
+                        with st.spinner("Data Loading ...."):
+                            query = """
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region) 
+                            RETURN *
+                            """
+                            # with driver.session() as session:
+                            #     graphData = get_neo4j_data(query,session)
+                            #     with st.spinner("Converting into Graph ..."):
+                            #         graph, node_properties = generate_nodes_edges(graphData)
+                            #         save_graph_file(graph, network_html_file_path)
+                            with st.spinner("Converting into Graph ..."):
+                                st.status("pass")
+                                # HtmlFile = open(network_html_file_path, 'r', encoding='utf-8')
+                                # network_source_code = HtmlFile.read() 
+                                # components.html(network_source_code,height=1200, width=1200)
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
+                    st.write("Query execution complete")
         with tab1:
             st.header("Selected Batch Network")
             selected_batch = st.selectbox("Select batch? ", batch_ids)
