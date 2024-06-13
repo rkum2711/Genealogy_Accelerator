@@ -7,6 +7,7 @@ from layout import footer
 import streamlit.components.v1 as components
 import json
 import re
+import pandas as pd
 
 uri = st.secrets["NEO4J_URI"]
 auth = (st.secrets["NEO4J_USERNAME"], st.secrets["NEO4J_PASSWORD"])
@@ -24,15 +25,16 @@ options_list = [
     # "Ask More Questions-(GEN AI)"
   ]
 asset_questions = [
-    "View Lineage of all Asset", 
-    # "List down assets that has AMC and insurance < 2 year",
+    "Asset Monitoring", 
+    "List down assets that has AMC and insurance < 2 year",
     # "List down assets that has high downtime Percentage (MTBF)",
     # "List down assets that has high Efficiency(OEE)",
     # "List down assets that has low Efficiency(OEE)",
     # "Show asset maintenance summary", 
     # "show asset spare part inventory consumption summary"
     ]
-batch_questions = ["View Lineage of all Batches"]
+batch_questions = ["Batch Monitoring",
+                   "Materials that are highly in demand"]
 html_file_path = config["html_file_path"]
 network_html_file_path = config["network_html_file_path"]
 chatgpt_icon = config["chatgpt_icon"]
@@ -208,55 +210,21 @@ def app():
         with col7:
             st.info(f"Total Work Orders : {len(wo_ids)}")
         st.subheader(option)
-        tab1, tab2= st.tabs(["Selected Batch Network", "Whole Network",])
-        with tab2:
-            if st.button("execute"):
-                st.header("Whole Network")
-                with st.spinner("Executing query..."):
-                    try:
-                        with st.spinner("Data Loading ...."):
-                            query = """
-                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                            MATCH (po)<-[ppo:productPo]-(p:product)
-                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                            MATCH (r)<-[mr:materialRecipe]-(m:material)
-                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                            MATCH (f)-[fs:facilitySite]->(s:site)
-                            MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWo]->(a:asset)
-                            MATCH (a)-[al:assetline]->(l:line)
-                            MATCH (l)-[lf:lineFacility]->(af:facility)
-                            MATCH (af)-[afs:facilitySite]->(as:site)
-                            MATCH (as)-[asr:siteRegion]->(ar:region) 
-                            RETURN *
-                            """
-                            # with driver.session() as session:
-                            #     graphData = get_neo4j_data(query,session)
-                            #     with st.spinner("Converting into Graph ..."):
-                            #         graph, node_properties = generate_nodes_edges(graphData)
-                            #         save_graph_file(graph, network_html_file_path)
-                            with st.spinner("Converting into Graph ..."):
-                                st.status("pass")
-                                # HtmlFile = open(network_html_file_path, 'r', encoding='utf-8')
-                                # network_source_code = HtmlFile.read() 
-                                # components.html(network_source_code,height=1200, width=1200)
-                    except Exception as e:
-                        st.error(f"Error executing query: {e}")
-                    st.write("Query execution complete")
+        tab1, tab2, tab3, tab4 = st.tabs(["Batch Network", "Asset Network", 
+                                          "Purchase Order Network","Product Network"])
         with tab1:
-            st.header("Selected Batch Network")
-            selected_batch = st.selectbox("Select batch? ", batch_ids)
-            if st.button("Selected"):
+            st.header("Visualize and trace the operations performed on the batch")
+            selected_batch = st.selectbox("Select batch ", batch_ids)
+            if st.button("Batch Visualize"):
                 with st.spinner("Executing query..."):
                     try:
                         with st.spinner("Data Loading ...."):
                             query = f"""
-                            MATCH (b:batch {{id: '{selected_batch}'}})<-[pb:pBatch]-(po:po)
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
                             MATCH (po)<-[ppo:productPo]-(p:product)
                             MATCH (p)<-[rp:recipeProduct]-(r:recipe)
                             MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
                             MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
                             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
                             MATCH (f)-[fs:facilitySite]->(s:site)
@@ -266,7 +234,8 @@ def app():
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
-                            MATCH (as)-[asr:siteRegion]->(ar:region) 
+                            MATCH (as)-[asr:siteRegion]->(ar:region)
+                            WHERE b.id = "{selected_batch}"
                             RETURN *
                             """
                             with driver.session() as session:
@@ -274,9 +243,167 @@ def app():
                                 with st.spinner("Converting into Graph ..."):
                                     graph, node_properties = generate_nodes_edges(graphData)
                                     save_graph_file(graph, html_file_path)
+                            driver.close()
                     except Exception as e:
                         st.error(f"Error executing query: {e}")
-                    st.write("Query execution complete")
+        with tab2:
+            st.header("Visualize and trace the operations performed by the asset")
+            selected_asset = st.selectbox("Select asset ", asset_ids)
+            if st.button("Asset Visualize"):
+                with st.spinner("Executing query..."):
+                    try:
+                        with st.spinner("Data Loading ...."):
+                            query = f"""
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region)
+                            WHERE a.id = "{selected_asset}"
+                            RETURN *
+                            """
+                            with driver.session() as session:
+                                graphData = get_neo4j_data(query,session)
+                                with st.spinner("Converting into Graph ..."):
+                                    graph, node_properties = generate_nodes_edges(graphData)
+                                    save_graph_file(graph, html_file_path)
+                            driver.close()
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
+        with tab3:
+            st.header("View the entire operations executed for a PO")
+            selected_PO = st.selectbox("Select PO ", po_ids)
+            if st.button("PO Visualize"):
+                with st.spinner("Executing query..."):
+                    try:
+                        with st.spinner("Data Loading ...."):
+                            query = f"""
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region)
+                            WHERE po.id = "{selected_PO}"
+                            RETURN *
+                            """
+                            with driver.session() as session:
+                                graphData = get_neo4j_data(query,session)
+                                with st.spinner("Converting into Graph ..."):
+                                    graph, node_properties = generate_nodes_edges(graphData)
+                                    save_graph_file(graph, html_file_path)
+                            driver.close()
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
+        with tab4:
+            st.header("View the entire operations executed for a Product")
+            selected_product = st.selectbox("Select Product", product_ids)
+            if st.button("Product Visualize"):
+                with st.spinner("Executing query..."):
+                    try:
+                        with st.spinner("Data Loading ...."):
+                            query = f"""
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region)
+                            WHERE p.id = "{selected_product}"
+                            RETURN *
+                            """
+                            with driver.session() as session:
+                                graphData = get_neo4j_data(query,session)
+                                with st.spinner("Converting into Graph ..."):
+                                    graph, node_properties = generate_nodes_edges(graphData)
+                                    save_graph_file(graph, html_file_path)
+                            driver.close()
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
+    elif option == options_list[2]:
+        with col1:
+            st.success(f"Total Assets: {len(asset_ids)}")
+        with col2:
+            st.info(f"Total Work Orders : {len(wo_ids)}")
+        st.subheader(option)
+        query_type = st.selectbox("Select Questions? ", asset_questions)
+        if query_type == asset_questions[0]:
+            selected_asset = st.selectbox("Select Asset", asset_ids)
+            query = f"""
+            MATCH (a:asset)-[al:assetline]->(l:line)
+            MATCH (l)-[lf:lineFacility]->(f:facility)
+            MATCH (f)-[fs:facilitySite]->(s:site)
+            MATCH (s)-[sr:siteRegion]->(r:region)
+            //OPTIONAL MATCH (a)-[awo:assetWo]->(wo:wo)
+            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+            MATCH (a)<-[aoee:assetOee]-(oee:oee)
+            MATCH (a)-[aoem:assetOem]->(oem:oem)
+            MATCH (a)<-[acom:assetCompliance]-(com:compliance)
+            MATCH (a)<-[amain:assetMain]-(main:maintenance)
+            MATCH (a)<-[acal:assetCal]-(cal:calibration)
+            WHERE a.id = '{selected_asset}'
+            RETURN *
+            """
+        elif query_type == asset_questions[1]:
+            query = f"""
+            MATCH (a:asset)-[al:assetline]->(l:line)
+            MATCH (l)-[lf:lineFacility]->(f:facility)
+            MATCH (f)-[fs:facilitySite]->(s:site)
+            MATCH (s)-[sr:siteRegion]->(r:region)
+            //OPTIONAL MATCH (a)-[awo:assetWo]->(wo:wo)
+            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+            MATCH (a)<-[aoee:assetOee]-(oee:oee)
+            MATCH (a)-[aoem:assetOem]->(oem:oem)
+            MATCH (a)<-[acom:assetCompliance]-(com:compliance)
+            MATCH (a)<-[amain:assetMain]-(main:maintenance)
+            MATCH (a)<-[acal:assetCal]-(cal:calibration)
+            WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
+            RETURN *
+            """
+        try:
+            if st.button("Visualize"):
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                    with st.spinner("Converting into Graph ..."):
+                        graph, node_properties = generate_nodes_edges(graphData)
+                        save_graph_file(graph, html_file_path)
+                driver.close()
+        except Exception as e:
+            st.error(f"Error executing query: {e}")
     elif option == options_list[1]:
         with col1:
             st.success(f"Total Batches: {len(batch_ids)}")
@@ -289,63 +416,65 @@ def app():
         with col5:
             st.info(f"Total Suppliers : {len(supplier_ids)}")
         st.subheader(option)
-        query_type = st.selectbox("Select Questions? ", asset_questions)
-        if st.button("Search"):
-            for q in asset_questions:
-                if query_type == q:
-                    st.subheader(query_type)
-                    with st.spinner("Executing query..."):
-                        try:
-                            with st.spinner("Data Loading ...."):
-                                if q == asset_questions[0]:
-                                    query = """
-                                    MATCH (a:asset)-[al:assetline]->(l:line)
-                                    MATCH (l)-[lf:lineFacility]->(f:facility)
-                                    MATCH (f)-[fs:facilitySite]->(s:site)
-                                    MATCH (s)-[sr:siteRegion]->(r:region) 
-                                    RETURN *
-                                    """
-                                with driver.session() as session:
-                                    graphData = get_neo4j_data(query,session)
-                                    with st.spinner("Converting into Graph ..."):
-                                        graph, node_properties = generate_nodes_edges(graphData)
-                                        save_graph_file(graph, html_file_path)
-                        except Exception as e:
-                            st.error(f"Error executing query: {e}")
-                        st.write("Query execution complete")
-    elif option == options_list[2]:
-        with col1:
-            st.success(f"Total Assets: {len(asset_ids)}")
-        with col2:
-            st.info(f"Total Work Orders : {len(wo_ids)}")
-        st.subheader(option)
         query_type = st.selectbox("Select Questions? ", batch_questions)
-        if st.button("Search"):
-            for q in batch_questions:
-                if query_type == q:
-                    st.subheader(query_type)
+        if query_type == batch_questions[0]:
+            selected_batch = st.selectbox("Select Batch", batch_ids)
+            query = f"""
+            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+            MATCH (po)<-[ppo:productPo]-(p:product)
+            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+            MATCH (r)<-[mr:materialRecipe]-(m:material)
+            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+            MATCH (f)-[fs:facilitySite]->(s:site)
+            MATCH (s)-[sr:siteRegion]->(re:region)
+            WHERE b.id = "{selected_batch}"
+            RETURN *
+            """
+        elif query_type == batch_questions[1]:
+            limit = st.number_input("Set a Limit", value=10, placeholder="Type a number...")
+            query = f"""
+            MATCH (m:material)-[rm:materialRecipe]->(r:recipe)
+            MATCH (r)-[pr:recipeProduct]->(p:product)
+            MATCH (p)-[ppo:productPo]->(po:po)
+            MATCH (po)-[bpo:pBatch]->(b:batch)
+            WITH m, count(b) as totalbatch
+            ORDER BY totalbatch DESC
+            limit {int(limit)}
+            RETURN m
+            """
+            if st.button("TABLE"):
+                query = f"""
+                MATCH (m:material)-[rm:materialRecipe]->(r:recipe)
+                MATCH (r)-[pr:recipeProduct]->(p:product)
+                MATCH (p)-[ppo:productPo]->(po:po)
+                MATCH (po)-[bpo:pBatch]->(b:batch)
+                WITH m, count(b) as totalbatch
+                ORDER BY totalbatch DESC
+                limit {int(limit)}
+                RETURN m.id, totalbatch
+                """
+                with driver.session() as session:
                     with st.spinner("Executing query..."):
-                        try:
-                            with st.spinner("Data Loading ...."):
-                                if q == batch_questions[0]:
-                                    query = """
-                                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                                    MATCH (po)<-[ppo:productPo]-(p:product)
-                                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                                    MATCH (r)<-[mr:materialRecipe]-(m:material)
-                                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                                    MATCH (f)-[fs:facilitySite]->(s:site)
-                                    MATCH (s)-[sr:siteRegion]->(re:region)
-                                    RETURN *
-                                    """
-                                with driver.session() as session:
-                                    graphData = get_neo4j_data(query,session)
-                                    with st.spinner("Converting into Graph ..."):
-                                        graph, node_properties = generate_nodes_edges(graphData)
-                                        save_graph_file(graph,html_file_path)
-                        except Exception as e:
-                            st.error(f"Error executing query: {e}")
-                        st.write("Query execution complete")
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                    with st.spinner("Converting into RESULT ..."):
+                        df = pd.DataFrame(graphData)
+                        df.columns = ["Material ID", "Total Batch"]
+                        st.table(df)
+                driver.close()
+        try:
+            if st.button("Visualize"):
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                    with st.spinner("Converting into Graph ..."):
+                        graph, node_properties = generate_nodes_edges(graphData)
+                        save_graph_file(graph, html_file_path)
+                driver.close()
+        except Exception as e:
+            st.error(f"Error executing query: {e}")
 if __name__ == "__main__":
     app()
