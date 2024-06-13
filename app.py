@@ -15,11 +15,26 @@ driver = GraphDatabase.driver(uri, auth=auth)
 with open('./config.json', 'r') as file:
     config = json.load(file)
 
-question_dict = config["question_dict"]
-options_list = config["options_list"]
-question_list = [key for key in question_dict.keys()]
-question_list2 = question_list
+
+options_list = [
+    "Manufacturing Knowledge Graph",
+    "Batch Genealogy",
+    "Assets Traceability",
+    # "Show Selective Assets",
+    # "Ask More Questions-(GEN AI)"
+  ]
+asset_questions = [
+    "View Lineage of all Asset", 
+    # "List down assets that has AMC and insurance < 2 year",
+    # "List down assets that has high downtime Percentage (MTBF)",
+    # "List down assets that has high Efficiency(OEE)",
+    # "List down assets that has low Efficiency(OEE)",
+    # "Show asset maintenance summary", 
+    # "show asset spare part inventory consumption summary"
+    ]
+batch_questions = ["View Lineage of all Batches"]
 html_file_path = config["html_file_path"]
+network_html_file_path = config["network_html_file_path"]
 chatgpt_icon = config["chatgpt_icon"]
 legend_mapping = config["legend_mapping"]
 
@@ -41,8 +56,13 @@ def get_asset_data():
         facility_ids = get_id_list("facility") 
         site_ids = get_id_list("site") 
         region_ids = get_id_list("region") 
-        return batch_ids, asset_ids, facility_ids, site_ids, region_ids
-    
+        po_ids = get_id_list("po")
+        product_ids = get_id_list("product")  
+        supplier_ids = get_id_list("supplier")  
+        material_ids = get_id_list("material")
+        wo_ids = get_id_list("wo")  
+        return batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids
+
 def generate_nodes_edges(data):
     net = Network(
         notebook=False,
@@ -52,9 +72,12 @@ def generate_nodes_edges(data):
         height="750px",
         width="100%",
         select_menu=True,
-        filter_menu=False
+        # filter_menu=False
     )
     # net.show_buttons(filter_=True)
+    # Adjust physics settings
+    net.barnes_hut(gravity=-50000, central_gravity=0.3, spring_length=75, spring_strength=0.05, damping=0.09)
+    # net.repulsion()
     added_nodes = set()
     node_properties = {}
     for record in data:
@@ -74,7 +97,8 @@ def generate_nodes_edges(data):
                     net.add_edge(value.start_node["id"], value.end_node["id"], title=value.type)
     return net, node_properties
 
-def save_graph_file(graph,top_position=150):
+def save_graph_file(graph,html_file_path):
+    top_position=150
     # Add legend to the HTML file
     legend_html = f"""
     <style>
@@ -158,40 +182,132 @@ def app():
     footer()
     st.title("Batch genealogy - Graph DB")
     # st.image(gdm_image, caption='', width=1000)
-    batch_ids, asset_ids, facility_ids, site_ids, region_ids = get_asset_data()
-    col1, col2, col3, col4 = st.columns(4)
+    batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids = get_asset_data()
+    facility, site, region = st.columns(3)
+    with facility:
+        st.info(f"Total Facilities : {len(facility_ids)}")
+    with site:
+        st.info(f"Total Sites : {len(site_ids)}")
+    with region:
+        st.info(f"Total Region : {len(region_ids)}")
+    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
     option = st.sidebar.radio('Select Options', options_list)
     if option == options_list[0]:
         with col1:
-            st.success(f"Total Assets: {len(asset_ids)}")
+            st.success(f"Total Batches: {len(batch_ids)}")
         with col2:
-            st.info(f"Total Facilities : {len(facility_ids)}")
+            st.info(f"Total PO : {len(po_ids)}")
         with col3:
-            st.info(f"Total Sites : {len(site_ids)}")
+            st.info(f"Total Products : {len(product_ids)}")
         with col4:
-            st.info(f"Total Region : {len(region_ids)}")
-        st.subheader(options_list[0])
-        query_type = st.selectbox("Select Questions? ", question_list)
+            st.info(f"Total material : {len(material_ids)}")
+        with col5:
+            st.info(f"Total Suppliers : {len(supplier_ids)}")
+        with col6:
+            st.success(f"Total Assets: {len(asset_ids)}")
+        with col7:
+            st.info(f"Total Work Orders : {len(wo_ids)}")
+        st.subheader(option)
+        tab1, tab2= st.tabs(["Selected Batch Network", "Whole Network",])
+        with tab2:
+            st.header("Whole Network")
+            with st.spinner("Executing query..."):
+                try:
+                    with st.spinner("Data Loading ...."):
+                        query = """
+                        MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                        MATCH (po)<-[ppo:productPo]-(p:product)
+                        MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                        MATCH (r)<-[mr:materialRecipe]-(m:material)
+                        MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                        MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                        MATCH (f)-[fs:facilitySite]->(s:site)
+                        MATCH (s)-[sr:siteRegion]->(re:region)
+                        MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                        MATCH (wo)<-[awo:assetWo]->(a:asset)
+                        MATCH (a)-[al:assetline]->(l:line)
+                        MATCH (l)-[lf:lineFacility]->(af:facility)
+                        MATCH (af)-[afs:facilitySite]->(as:site)
+                        MATCH (as)-[asr:siteRegion]->(ar:region) 
+                        RETURN *
+                        """
+                        # with driver.session() as session:
+                        #     graphData = get_neo4j_data(query,session)
+                        #     with st.spinner("Converting into Graph ..."):
+                        #         graph, node_properties = generate_nodes_edges(graphData)
+                        #         save_graph_file(graph, network_html_file_path)
+                        with st.spinner("Converting into Graph ..."):
+                            HtmlFile = open(network_html_file_path, 'r', encoding='utf-8')
+                            network_source_code = HtmlFile.read() 
+                            components.html(network_source_code,height=1200, width=1200)
+                except Exception as e:
+                    st.error(f"Error executing query: {e}")
+                st.write("Query execution complete")
+        with tab1:
+            st.header("Selected Batch Network")
+            selected_batch = st.selectbox("Select batch? ", batch_ids)
+            if st.button("Search"):
+                with st.spinner("Executing query..."):
+                    try:
+                        with st.spinner("Data Loading ...."):
+                            query = f"""
+                            MATCH (b:batch {{id: '{selected_batch}'}})<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region) 
+                            RETURN *
+                            """
+                            with driver.session() as session:
+                                graphData = get_neo4j_data(query,session)
+                                with st.spinner("Converting into Graph ..."):
+                                    graph, node_properties = generate_nodes_edges(graphData)
+                                    save_graph_file(graph, html_file_path)
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
+                    st.write("Query execution complete")
+    elif option == options_list[1]:
+        with col1:
+            st.success(f"Total Batches: {len(batch_ids)}")
+        with col2:
+            st.info(f"Total PO : {len(po_ids)}")
+        with col3:
+            st.info(f"Total Products : {len(product_ids)}")
+        with col4:
+            st.info(f"Total material : {len(material_ids)}")
+        with col5:
+            st.info(f"Total Suppliers : {len(supplier_ids)}")
+        st.subheader(option)
+        query_type = st.selectbox("Select Questions? ", asset_questions)
         if st.button("Search"):
-            for q in question_list:
+            for q in asset_questions:
                 if query_type == q:
                     st.subheader(query_type)
                     with st.spinner("Executing query..."):
                         try:
                             with st.spinner("Data Loading ...."):
-                                if q == question_list[0]:
+                                if q == asset_questions[0]:
                                     query = """
-                                    MATCH (a:asset)-[al:aline]->(l:line)
-                                    MATCH (l)-[lf:lfacility]->(f:facility)
-                                    MATCH (f)-[fs:fsite]->(s:site)
-                                    MATCH (s)-[sr:sregion]->(r:region)
+                                    MATCH (a:asset)-[al:assetline]->(l:line)
+                                    MATCH (l)-[lf:lineFacility]->(f:facility)
+                                    MATCH (f)-[fs:facilitySite]->(s:site)
+                                    MATCH (s)-[sr:siteRegion]->(r:region) 
                                     RETURN *
                                     """
                                 with driver.session() as session:
                                     graphData = get_neo4j_data(query,session)
                                     with st.spinner("Converting into Graph ..."):
                                         graph, node_properties = generate_nodes_edges(graphData)
-                                        save_graph_file(graph)
+                                        save_graph_file(graph, html_file_path)
                         except Exception as e:
                             st.error(f"Error executing query: {e}")
                         st.write("Query execution complete")
@@ -199,21 +315,17 @@ def app():
         with col1:
             st.success(f"Total Assets: {len(asset_ids)}")
         with col2:
-            st.info(f"Total Facilities : {len(facility_ids)}")
-        with col3:
-            st.info(f"Total Sites : {len(site_ids)}")
-        with col4:
-            st.info(f"Total Region : {len(region_ids)}")
-        st.subheader(options_list[2])
-        query_type = st.selectbox("Select Questions? ", ["Batch Genealogy"])
+            st.info(f"Total Work Orders : {len(wo_ids)}")
+        st.subheader(option)
+        query_type = st.selectbox("Select Questions? ", batch_questions)
         if st.button("Search"):
-            for q in question_list:
+            for q in batch_questions:
                 if query_type == q:
                     st.subheader(query_type)
                     with st.spinner("Executing query..."):
                         try:
                             with st.spinner("Data Loading ...."):
-                                if q == question_list[0]:
+                                if q == batch_questions[0]:
                                     query = """
                                     MATCH (b:batch)<-[pb:pBatch]-(po:po)
                                     MATCH (po)<-[ppo:productPo]-(p:product)
@@ -229,7 +341,7 @@ def app():
                                     graphData = get_neo4j_data(query,session)
                                     with st.spinner("Converting into Graph ..."):
                                         graph, node_properties = generate_nodes_edges(graphData)
-                                        save_graph_file(graph)
+                                        save_graph_file(graph,html_file_path)
                         except Exception as e:
                             st.error(f"Error executing query: {e}")
                         st.write("Query execution complete")

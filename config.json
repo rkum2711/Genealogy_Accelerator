@@ -1,5 +1,6 @@
 {
   "html_file_path": "pages/knowledge_graph.html",
+  "network_html_file_path": "pages/network_graph.html",
   "gdm_image": "images/UnileverManufacturing1.png",
   "chatgpt_icon": "images/chat.png",
   "wip": "images/wip.png",
