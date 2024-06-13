@@ -238,12 +238,13 @@ def app():
                             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
                             MATCH (as)-[asr:siteRegion]->(ar:region)
+                            MATCH (b)-[blims:batchLims]->(lims:lims)
                             RETURN *
                             """
                             with driver.session() as session:
@@ -271,8 +272,8 @@ def app():
                             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
@@ -305,8 +306,8 @@ def app():
                             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
@@ -339,8 +340,8 @@ def app():
                             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWo]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWo]->(a:asset)
+                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
@@ -375,6 +376,7 @@ def app():
             MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
             MATCH (a)<-[aoee:assetOee]-(oee:oee)
             MATCH (a)-[aoem:assetOem]->(oem:oem)
+            OPTIONAL MATCH (a)-[awo:assetWO]-(wo:wo)
             OPTIONAL MATCH (a)<-[acom:assetCompliance]-(com:compliance)
             OPTIONAL MATCH (a)<-[amain:assetMain]-(main:maintenance)
             OPTIONAL MATCH (a)<-[acal:assetCal]-(cal:calibration)
@@ -434,6 +436,7 @@ def app():
             MATCH (pm)<-[fpm:facilityPm]-(f:facility)
             MATCH (f)-[fs:facilitySite]->(s:site)
             MATCH (s)-[sr:siteRegion]->(re:region)
+            MATCH (b)-[blims:batchLims]->(lims:lims)
             WHERE b.id = "{selected_batch}"
             RETURN *
             """
@@ -480,8 +483,8 @@ def app():
             MATCH (po)<-[ppo:productPo]-(p:product)
             MATCH (p)<-[rp:recipeProduct]-(r:recipe)
             MATCH (r)<-[mr:materialRecipe]-(m:material)
-            MATCH (b)<-[bwo:batchWo]-(wo:wo)
-            MATCH (wo)<-[limswo:LimsWo]-(lims:lims)
+            MATCH (b)-[blims:batchLims]->(lims:lims)
+            MATCH (lims)-[limswo:limsWO]-(wo:wo)
             WHERE lims.Status = 'Failed'
             RETURN *
             """
