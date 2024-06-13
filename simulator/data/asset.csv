@@ -1,199 +1,209 @@
 id,Name,AType,FacilityID,LineID,LineFloor,ManufacturerID,unitProcedureID
 A1,A1:Mixers,Mixers,F-1-S1,L1,1,MFR11,PR-1-MII
-A2,A2:Granulators,Granulators,F-1-S1,L1,1,MFR12,PR-2-GRG
-A3,A3:Mills,Mills,F-1-S1,L1,1,MFR8,PR-3-MIM
-A4,A4:Blenders,Blenders,F-1-S1,L1,1,MFR1,PR-4-BLB
-A5,A5:Reactors,Reactors,F-1-S1,L1,1,MFR3,PR-6-RER
-A6,A6:Distillation equipment,Distillation equipment,F-1-S1,L1,1,MFR6,PR-7-DIE
-A7,A7:Extraction equipment,Extraction equipment,F-1-S1,L1,1,MFR2,PR-8-EXE
-A8,A8:Packaging Machinery,Packaging Machinery,F-1-S1,L3,1,MFR4,PA-1-PAM
-A9,A9:Label Printers,Label Printers,F-1-S1,L3,1,MFR2,PA-2-LAM
-A10,A10:Vision Inspection Systems,Vision Inspection Systems,F-1-S1,L3,1,MFR11,PA-3-INM
-A11,A11:Automated Conveyors,Automated Conveyors,F-1-S1,L3,1,MFR7,PA-4-COC
-A12,A12:Incubators,Incubators,F-1-S1,L4,1,MFR11,LI-1-MIT
-A13,A13:HPLC,HPLC,F-1-S1,L4,1,MFR6,LI-2-CHA
-A14,A14:Particle Size Analyzers,Particle Size Analyzers,F-1-S1,L4,1,MFR6,LI-3-PHT
-A15,A15:Air Particle Counters,Air Particle Counters,F-1-S1,L4,1,MFR5,LI-4-ENM
-A16,A16:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S1,L4,1,MFR11,LI-5-STT
-A17,A17:HTS,HTS,F-2-S1,L5,1,MFR3,NA
-A18,A18:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S1,L5,1,MFR5,NA
-A19,A19:Bioinformatics,Bioinformatics,F-2-S1,L5,1,MFR4,NA
-A20,A20:Clinical trial,Clinical trial,F-2-S1,L5,1,MFR10,NA
-A21,A21:warehouse storage,warehouse storage,F-3-S1,L6,1,MFR7,NA
-A22,A22:Transportation fleet,Transportation fleet,F-3-S1,L6,1,MFR7,NA
-A23,A23:Mixers,Mixers,F-1-S2,L7,1,MFR4,PR-1-MII
-A24,A24:Granulators,Granulators,F-1-S2,L7,1,MFR10,PR-2-GRG
-A25,A25:Mills,Mills,F-1-S2,L7,1,MFR5,PR-3-MIM
-A26,A26:Blenders,Blenders,F-1-S2,L7,1,MFR6,PR-4-BLB
-A27,A27:Reactors,Reactors,F-1-S2,L7,1,MFR12,PR-6-RER
-A28,A28:Distillation equipment,Distillation equipment,F-1-S2,L7,1,MFR5,PR-7-DIE
-A29,A29:Extraction equipment,Extraction equipment,F-1-S2,L7,1,MFR9,PR-8-EXE
-A30,A30:Packaging Machinery,Packaging Machinery,F-1-S2,L9,1,MFR10,PA-1-PAM
-A31,A31:Label Printers,Label Printers,F-1-S2,L9,1,MFR11,PA-2-LAM
-A32,A32:Vision Inspection Systems,Vision Inspection Systems,F-1-S2,L9,1,MFR3,PA-3-INM
-A33,A33:Automated Conveyors,Automated Conveyors,F-1-S2,L9,1,MFR7,PA-4-COC
-A34,A34:Incubators,Incubators,F-1-S2,L10,1,MFR9,LI-1-MIT
-A35,A35:HPLC,HPLC,F-1-S2,L10,1,MFR6,LI-2-CHA
-A36,A36:Particle Size Analyzers,Particle Size Analyzers,F-1-S2,L10,1,MFR4,LI-3-PHT
-A37,A37:Air Particle Counters,Air Particle Counters,F-1-S2,L10,1,MFR12,LI-4-ENM
-A38,A38:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S2,L10,1,MFR7,LI-5-STT
-A39,A39:HTS,HTS,F-2-S2,L11,1,MFR6,NA
-A40,A40:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S2,L11,1,MFR8,NA
-A41,A41:Bioinformatics,Bioinformatics,F-2-S2,L11,1,MFR6,NA
-A42,A42:Clinical trial,Clinical trial,F-2-S2,L11,1,MFR8,NA
-A43,A43:Mixers,Mixers,F-1-S3,L12,1,MFR9,PR-1-MII
-A44,A44:Granulators,Granulators,F-1-S3,L12,1,MFR8,PR-2-GRG
-A45,A45:Mills,Mills,F-1-S3,L12,1,MFR7,PR-3-MIM
-A46,A46:Blenders,Blenders,F-1-S3,L12,1,MFR11,PR-4-BLB
-A47,A47:Reactors,Reactors,F-1-S3,L12,1,MFR7,PR-6-RER
-A48,A48:Distillation equipment,Distillation equipment,F-1-S3,L12,1,MFR12,PR-7-DIE
-A49,A49:Extraction equipment,Extraction equipment,F-1-S3,L12,1,MFR4,PR-8-EXE
-A50,A50:Packaging Machinery,Packaging Machinery,F-1-S3,L14,1,MFR11,PA-1-PAM
-A51,A51:Label Printers,Label Printers,F-1-S3,L14,1,MFR7,PA-2-LAM
-A52,A52:Vision Inspection Systems,Vision Inspection Systems,F-1-S3,L14,1,MFR11,PA-3-INM
-A53,A53:Automated Conveyors,Automated Conveyors,F-1-S3,L14,1,MFR2,PA-4-COC
-A54,A54:Incubators,Incubators,F-1-S3,L15,1,MFR2,LI-1-MIT
-A55,A55:HPLC,HPLC,F-1-S3,L15,1,MFR10,LI-2-CHA
-A56,A56:Particle Size Analyzers,Particle Size Analyzers,F-1-S3,L15,1,MFR6,LI-3-PHT
-A57,A57:Air Particle Counters,Air Particle Counters,F-1-S3,L15,1,MFR5,LI-4-ENM
-A58,A58:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S3,L15,1,MFR3,LI-5-STT
-A59,A59:warehouse storage,warehouse storage,F-2-S3,L16,1,MFR9,NA
-A60,A60:Transportation fleet,Transportation fleet,F-2-S3,L16,1,MFR3,NA
-A61,A61:HTS,HTS,F-3-S3,L17,1,MFR7,NA
-A62,A62:Combinatorial chemistry labs,Combinatorial chemistry labs,F-3-S3,L17,1,MFR12,NA
-A63,A63:Bioinformatics,Bioinformatics,F-3-S3,L17,1,MFR6,NA
-A64,A64:Clinical trial,Clinical trial,F-3-S3,L17,1,MFR9,NA
-A65,A65:Mixers,Mixers,F-1-S4,L18,1,MFR10,PR-1-MII
-A66,A66:Granulators,Granulators,F-1-S4,L18,1,MFR7,PR-2-GRG
-A67,A67:Mills,Mills,F-1-S4,L18,1,MFR1,PR-3-MIM
-A68,A68:Blenders,Blenders,F-1-S4,L18,1,MFR6,PR-4-BLB
-A69,A69:Reactors,Reactors,F-1-S4,L18,1,MFR11,PR-6-RER
-A70,A70:Distillation equipment,Distillation equipment,F-1-S4,L18,1,MFR6,PR-7-DIE
-A71,A71:Extraction equipment,Extraction equipment,F-1-S4,L18,1,MFR7,PR-8-EXE
-A72,A72:Packaging Machinery,Packaging Machinery,F-1-S4,L19,1,MFR5,PA-1-PAM
-A73,A73:Label Printers,Label Printers,F-1-S4,L19,1,MFR9,PA-2-LAM
-A74,A74:Vision Inspection Systems,Vision Inspection Systems,F-1-S4,L19,1,MFR4,PA-3-INM
-A75,A75:Automated Conveyors,Automated Conveyors,F-1-S4,L19,1,MFR11,PA-4-COC
-A76,A76:Incubators,Incubators,F-1-S4,L20,1,MFR9,LI-1-MIT
-A77,A77:HPLC,HPLC,F-1-S4,L20,1,MFR6,LI-2-CHA
-A78,A78:Particle Size Analyzers,Particle Size Analyzers,F-1-S4,L20,1,MFR6,LI-3-PHT
-A79,A79:Air Particle Counters,Air Particle Counters,F-1-S4,L20,1,MFR12,LI-4-ENM
-A80,A80:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S4,L20,1,MFR6,LI-5-STT
-A81,A81:HTS,HTS,F-2-S4,L21,1,MFR8,NA
-A82,A82:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S4,L21,1,MFR10,NA
-A83,A83:Bioinformatics,Bioinformatics,F-2-S4,L21,1,MFR5,NA
-A84,A84:Clinical trial,Clinical trial,F-2-S4,L21,1,MFR2,NA
-A85,A85:warehouse storage,warehouse storage,F-3-S4,L22,1,MFR11,NA
-A86,A86:Transportation fleet,Transportation fleet,F-3-S4,L22,1,MFR3,NA
-A87,A87:Mixers,Mixers,F-1-S5,L23,1,MFR7,PR-1-MII
-A88,A88:Granulators,Granulators,F-1-S5,L23,1,MFR5,PR-2-GRG
-A89,A89:Mills,Mills,F-1-S5,L23,1,MFR3,PR-3-MIM
-A90,A90:Blenders,Blenders,F-1-S5,L23,1,MFR9,PR-4-BLB
-A91,A91:Reactors,Reactors,F-1-S5,L23,1,MFR6,PR-6-RER
-A92,A92:Distillation equipment,Distillation equipment,F-1-S5,L23,1,MFR2,PR-7-DIE
-A93,A93:Extraction equipment,Extraction equipment,F-1-S5,L23,1,MFR2,PR-8-EXE
-A94,A94:Packaging Machinery,Packaging Machinery,F-1-S5,L24,1,MFR11,PA-1-PAM
-A95,A95:Label Printers,Label Printers,F-1-S5,L24,1,MFR11,PA-2-LAM
-A96,A96:Vision Inspection Systems,Vision Inspection Systems,F-1-S5,L24,1,MFR4,PA-3-INM
-A97,A97:Automated Conveyors,Automated Conveyors,F-1-S5,L24,1,MFR7,PA-4-COC
-A98,A98:Incubators,Incubators,F-1-S5,L25,1,MFR5,LI-1-MIT
-A99,A99:HPLC,HPLC,F-1-S5,L25,1,MFR1,LI-2-CHA
-A100,A100:Particle Size Analyzers,Particle Size Analyzers,F-1-S5,L25,1,MFR2,LI-3-PHT
-A101,A101:Air Particle Counters,Air Particle Counters,F-1-S5,L25,1,MFR5,LI-4-ENM
-A102,A102:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S5,L25,1,MFR5,LI-5-STT
-A103,A103:warehouse storage,warehouse storage,F-2-S5,L26,1,MFR6,NA
-A104,A104:Transportation fleet,Transportation fleet,F-2-S5,L26,1,MFR8,NA
-A105,A105:Mixers,Mixers,F-1-S6,L27,1,MFR11,PR-1-MII
-A106,A106:Granulators,Granulators,F-1-S6,L27,1,MFR9,PR-2-GRG
-A107,A107:Mills,Mills,F-1-S6,L27,1,MFR1,PR-3-MIM
-A108,A108:Blenders,Blenders,F-1-S6,L27,1,MFR4,PR-4-BLB
-A109,A109:Reactors,Reactors,F-1-S6,L27,1,MFR10,PR-6-RER
-A110,A110:Distillation equipment,Distillation equipment,F-1-S6,L27,1,MFR6,PR-7-DIE
-A111,A111:Extraction equipment,Extraction equipment,F-1-S6,L27,1,MFR3,PR-8-EXE
-A112,A112:Packaging Machinery,Packaging Machinery,F-1-S6,L29,1,MFR10,PA-1-PAM
-A113,A113:Label Printers,Label Printers,F-1-S6,L29,1,MFR4,PA-2-LAM
-A114,A114:Vision Inspection Systems,Vision Inspection Systems,F-1-S6,L29,1,MFR11,PA-3-INM
-A115,A115:Automated Conveyors,Automated Conveyors,F-1-S6,L29,1,MFR10,PA-4-COC
-A116,A116:Incubators,Incubators,F-1-S6,L30,1,MFR6,LI-1-MIT
-A117,A117:HPLC,HPLC,F-1-S6,L30,1,MFR10,LI-2-CHA
-A118,A118:Particle Size Analyzers,Particle Size Analyzers,F-1-S6,L30,1,MFR11,LI-3-PHT
-A119,A119:Air Particle Counters,Air Particle Counters,F-1-S6,L30,1,MFR1,LI-4-ENM
-A120,A120:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S6,L30,1,MFR8,LI-5-STT
-A121,A121:warehouse storage,warehouse storage,F-2-S6,L31,1,MFR6,NA
-A122,A122:Transportation fleet,Transportation fleet,F-2-S6,L31,1,MFR1,NA
-A123,A123:Mixers,Mixers,F-1-S7,L32,1,MFR10,PR-1-MII
-A124,A124:Granulators,Granulators,F-1-S7,L32,1,MFR3,PR-2-GRG
-A125,A125:Mills,Mills,F-1-S7,L32,1,MFR7,PR-3-MIM
-A126,A126:Blenders,Blenders,F-1-S7,L32,1,MFR9,PR-4-BLB
-A127,A127:Reactors,Reactors,F-1-S7,L32,1,MFR1,PR-6-RER
-A128,A128:Distillation equipment,Distillation equipment,F-1-S7,L32,1,MFR11,PR-7-DIE
-A129,A129:Extraction equipment,Extraction equipment,F-1-S7,L32,1,MFR8,PR-8-EXE
-A130,A130:Packaging Machinery,Packaging Machinery,F-1-S7,L34,1,MFR7,PA-1-PAM
-A131,A131:Label Printers,Label Printers,F-1-S7,L34,1,MFR7,PA-2-LAM
-A132,A132:Vision Inspection Systems,Vision Inspection Systems,F-1-S7,L34,1,MFR6,PA-3-INM
-A133,A133:Automated Conveyors,Automated Conveyors,F-1-S7,L34,1,MFR5,PA-4-COC
-A134,A134:Incubators,Incubators,F-1-S7,L35,1,MFR6,LI-1-MIT
-A135,A135:HPLC,HPLC,F-1-S7,L35,1,MFR11,LI-2-CHA
-A136,A136:Particle Size Analyzers,Particle Size Analyzers,F-1-S7,L35,1,MFR3,LI-3-PHT
-A137,A137:Air Particle Counters,Air Particle Counters,F-1-S7,L35,1,MFR9,LI-4-ENM
-A138,A138:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S7,L35,1,MFR9,LI-5-STT
-A139,A139:warehouse storage,warehouse storage,F-2-S7,L36,1,MFR10,NA
-A140,A140:Transportation fleet,Transportation fleet,F-2-S7,L36,1,MFR5,NA
-A141,A141:Mixers,Mixers,F-1-S8,L37,1,MFR3,PR-1-MII
-A142,A142:Granulators,Granulators,F-1-S8,L37,1,MFR6,PR-2-GRG
-A143,A143:Mills,Mills,F-1-S8,L37,1,MFR10,PR-3-MIM
-A144,A144:Blenders,Blenders,F-1-S8,L37,1,MFR3,PR-4-BLB
-A145,A145:Reactors,Reactors,F-1-S8,L37,1,MFR8,PR-6-RER
-A146,A146:Distillation equipment,Distillation equipment,F-1-S8,L37,1,MFR11,PR-7-DIE
-A147,A147:Extraction equipment,Extraction equipment,F-1-S8,L37,1,MFR3,PR-8-EXE
-A148,A148:Packaging Machinery,Packaging Machinery,F-1-S8,L39,1,MFR9,PA-1-PAM
-A149,A149:Label Printers,Label Printers,F-1-S8,L39,1,MFR1,PA-2-LAM
-A150,A150:Vision Inspection Systems,Vision Inspection Systems,F-1-S8,L39,1,MFR2,PA-3-INM
-A151,A151:Automated Conveyors,Automated Conveyors,F-1-S8,L39,1,MFR12,PA-4-COC
-A152,A152:Incubators,Incubators,F-1-S8,L40,1,MFR12,LI-1-MIT
-A153,A153:HPLC,HPLC,F-1-S8,L40,1,MFR5,LI-2-CHA
-A154,A154:Particle Size Analyzers,Particle Size Analyzers,F-1-S8,L40,1,MFR12,LI-3-PHT
-A155,A155:Air Particle Counters,Air Particle Counters,F-1-S8,L40,1,MFR2,LI-4-ENM
-A156,A156:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S8,L40,1,MFR12,LI-5-STT
-A157,A157:HTS,HTS,F-2-S8,L41,1,MFR8,NA
-A158,A158:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S8,L41,1,MFR9,NA
-A159,A159:Bioinformatics,Bioinformatics,F-2-S8,L41,1,MFR1,NA
-A160,A160:Clinical trial,Clinical trial,F-2-S8,L41,1,MFR12,NA
-A161,A161:Mixers,Mixers,F-1-S9,L42,1,MFR7,PR-1-MII
-A162,A162:Granulators,Granulators,F-1-S9,L42,1,MFR2,PR-2-GRG
-A163,A163:Mills,Mills,F-1-S9,L42,1,MFR7,PR-3-MIM
-A164,A164:Blenders,Blenders,F-1-S9,L42,1,MFR2,PR-4-BLB
-A165,A165:Reactors,Reactors,F-1-S9,L42,1,MFR11,PR-6-RER
-A166,A166:Distillation equipment,Distillation equipment,F-1-S9,L42,1,MFR3,PR-7-DIE
-A167,A167:Extraction equipment,Extraction equipment,F-1-S9,L42,1,MFR7,PR-8-EXE
-A168,A168:Packaging Machinery,Packaging Machinery,F-1-S9,L43,1,MFR1,PA-1-PAM
-A169,A169:Label Printers,Label Printers,F-1-S9,L43,1,MFR2,PA-2-LAM
-A170,A170:Vision Inspection Systems,Vision Inspection Systems,F-1-S9,L43,1,MFR5,PA-3-INM
-A171,A171:Automated Conveyors,Automated Conveyors,F-1-S9,L43,1,MFR3,PA-4-COC
-A172,A172:Incubators,Incubators,F-1-S9,L44,1,MFR6,LI-1-MIT
-A173,A173:HPLC,HPLC,F-1-S9,L44,1,MFR8,LI-2-CHA
-A174,A174:Particle Size Analyzers,Particle Size Analyzers,F-1-S9,L44,1,MFR11,LI-3-PHT
-A175,A175:Air Particle Counters,Air Particle Counters,F-1-S9,L44,1,MFR6,LI-4-ENM
-A176,A176:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S9,L44,1,MFR12,LI-5-STT
-A177,A177:warehouse storage,warehouse storage,F-2-S9,L45,1,MFR5,NA
-A178,A178:Transportation fleet,Transportation fleet,F-2-S9,L45,1,MFR12,NA
-A179,A179:Mixers,Mixers,F-1-S10,L46,1,MFR12,PR-1-MII
-A180,A180:Granulators,Granulators,F-1-S10,L46,1,MFR3,PR-2-GRG
-A181,A181:Mills,Mills,F-1-S10,L46,1,MFR11,PR-3-MIM
-A182,A182:Blenders,Blenders,F-1-S10,L46,1,MFR7,PR-4-BLB
-A183,A183:Reactors,Reactors,F-1-S10,L46,1,MFR8,PR-6-RER
-A184,A184:Distillation equipment,Distillation equipment,F-1-S10,L46,1,MFR2,PR-7-DIE
-A185,A185:Extraction equipment,Extraction equipment,F-1-S10,L46,1,MFR1,PR-8-EXE
-A186,A186:Packaging Machinery,Packaging Machinery,F-1-S10,L47,1,MFR12,PA-1-PAM
-A187,A187:Label Printers,Label Printers,F-1-S10,L47,1,MFR10,PA-2-LAM
-A188,A188:Vision Inspection Systems,Vision Inspection Systems,F-1-S10,L47,1,MFR9,PA-3-INM
-A189,A189:Automated Conveyors,Automated Conveyors,F-1-S10,L47,1,MFR4,PA-4-COC
-A190,A190:Incubators,Incubators,F-1-S10,L48,1,MFR11,LI-1-MIT
-A191,A191:HPLC,HPLC,F-1-S10,L48,1,MFR11,LI-2-CHA
-A192,A192:Particle Size Analyzers,Particle Size Analyzers,F-1-S10,L48,1,MFR1,LI-3-PHT
-A193,A193:Air Particle Counters,Air Particle Counters,F-1-S10,L48,1,MFR12,LI-4-ENM
-A194,A194:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S10,L48,1,MFR8,LI-5-STT
-A195,A195:HTS,HTS,F-2-S10,L49,1,MFR11,NA
-A196,A196:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S10,L49,1,MFR7,NA
-A197,A197:Bioinformatics,Bioinformatics,F-2-S10,L49,1,MFR1,NA
-A198,A198:Clinical trial,Clinical trial,F-2-S10,L49,1,MFR5,NA
+A2,A2:Granulators,Granulators,F-1-S1,L1,1,MFR11,PR-2-GRG
+A3,A3:Mills,Mills,F-1-S1,L1,1,MFR7,PR-3-MIM
+A4,A4:Blenders,Blenders,F-1-S1,L1,1,MFR3,PR-4-BLB
+A5,A5:Reactors,Reactors,F-1-S1,L1,1,MFR5,PR-6-RER
+A6,A6:Distillation equipment,Distillation equipment,F-1-S1,L1,1,MFR12,PR-7-DIE
+A7,A7:Extraction equipment,Extraction equipment,F-1-S1,L1,1,MFR5,PR-8-EXE
+A8,A8:Packaging Machinery,Packaging Machinery,F-1-S1,L2,1,MFR10,PA-1-PAM
+A9,A9:Label Printers,Label Printers,F-1-S1,L2,1,MFR6,PA-2-LAM
+A10,A10:Vision Inspection Systems,Vision Inspection Systems,F-1-S1,L2,1,MFR3,PA-3-INM
+A11,A11:Automated Conveyors,Automated Conveyors,F-1-S1,L2,1,MFR8,PA-4-COC
+A12,A12:Incubators,Incubators,F-1-S1,L3,1,MFR10,LI-1-MIT
+A13,A13:HPLC,HPLC,F-1-S1,L3,1,MFR8,LI-2-CHA
+A14,A14:Particle Size Analyzers,Particle Size Analyzers,F-1-S1,L3,1,MFR11,LI-3-PHT
+A15,A15:Air Particle Counters,Air Particle Counters,F-1-S1,L3,1,MFR8,LI-4-ENM
+A16,A16:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S1,L3,1,MFR1,LI-5-STT
+A17,A17:HTS,HTS,F-2-S1,L4,1,MFR12,NA
+A18,A18:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S1,L4,1,MFR5,NA
+A19,A19:Bioinformatics,Bioinformatics,F-2-S1,L4,1,MFR11,NA
+A20,A20:Clinical trial,Clinical trial,F-2-S1,L4,1,MFR2,NA
+A21,A21:Temperature-Controlled Room,Temperature-Controlled Room,F-3-S1,L5,1,MFR6,WA-1-WAS
+A22,A22:Truck,Truck,F-3-S1,L5,1,MFR1,WA-2-TRF
+A23,A23:Mixers,Mixers,F-1-S2,L6,1,MFR8,PR-1-MII
+A24,A24:Granulators,Granulators,F-1-S2,L6,1,MFR10,PR-2-GRG
+A25,A25:Mills,Mills,F-1-S2,L6,1,MFR12,PR-3-MIM
+A26,A26:Blenders,Blenders,F-1-S2,L6,1,MFR10,PR-4-BLB
+A27,A27:Reactors,Reactors,F-1-S2,L6,1,MFR12,PR-6-RER
+A28,A28:Distillation equipment,Distillation equipment,F-1-S2,L6,1,MFR4,PR-7-DIE
+A29,A29:Extraction equipment,Extraction equipment,F-1-S2,L6,1,MFR9,PR-8-EXE
+A30,A30:Packaging Machinery,Packaging Machinery,F-1-S2,L7,1,MFR3,PA-1-PAM
+A31,A31:Label Printers,Label Printers,F-1-S2,L7,1,MFR9,PA-2-LAM
+A32,A32:Vision Inspection Systems,Vision Inspection Systems,F-1-S2,L7,1,MFR1,PA-3-INM
+A33,A33:Automated Conveyors,Automated Conveyors,F-1-S2,L7,1,MFR2,PA-4-COC
+A34,A34:Incubators,Incubators,F-1-S2,L8,1,MFR7,LI-1-MIT
+A35,A35:HPLC,HPLC,F-1-S2,L8,1,MFR1,LI-2-CHA
+A36,A36:Particle Size Analyzers,Particle Size Analyzers,F-1-S2,L8,1,MFR9,LI-3-PHT
+A37,A37:Air Particle Counters,Air Particle Counters,F-1-S2,L8,1,MFR3,LI-4-ENM
+A38,A38:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S2,L8,1,MFR6,LI-5-STT
+A39,A39:HTS,HTS,F-2-S2,L9,1,MFR8,NA
+A40,A40:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S2,L9,1,MFR5,NA
+A41,A41:Bioinformatics,Bioinformatics,F-2-S2,L9,1,MFR9,NA
+A42,A42:Clinical trial,Clinical trial,F-2-S2,L9,1,MFR11,NA
+A43,A43:Mixers,Mixers,F-1-S3,L10,1,MFR5,PR-1-MII
+A44,A44:Granulators,Granulators,F-1-S3,L10,1,MFR10,PR-2-GRG
+A45,A45:Mills,Mills,F-1-S3,L10,1,MFR8,PR-3-MIM
+A46,A46:Blenders,Blenders,F-1-S3,L10,1,MFR3,PR-4-BLB
+A47,A47:Reactors,Reactors,F-1-S3,L10,1,MFR8,PR-6-RER
+A48,A48:Distillation equipment,Distillation equipment,F-1-S3,L10,1,MFR10,PR-7-DIE
+A49,A49:Extraction equipment,Extraction equipment,F-1-S3,L10,1,MFR8,PR-8-EXE
+A50,A50:Packaging Machinery,Packaging Machinery,F-1-S3,L12,1,MFR9,PA-1-PAM
+A51,A51:Label Printers,Label Printers,F-1-S3,L12,1,MFR9,PA-2-LAM
+A52,A52:Vision Inspection Systems,Vision Inspection Systems,F-1-S3,L12,1,MFR4,PA-3-INM
+A53,A53:Automated Conveyors,Automated Conveyors,F-1-S3,L12,1,MFR7,PA-4-COC
+A54,A54:Incubators,Incubators,F-1-S3,L13,1,MFR5,LI-1-MIT
+A55,A55:HPLC,HPLC,F-1-S3,L13,1,MFR3,LI-2-CHA
+A56,A56:Particle Size Analyzers,Particle Size Analyzers,F-1-S3,L13,1,MFR11,LI-3-PHT
+A57,A57:Air Particle Counters,Air Particle Counters,F-1-S3,L13,1,MFR7,LI-4-ENM
+A58,A58:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S3,L13,1,MFR10,LI-5-STT
+A59,A59:HTS,HTS,F-2-S3,L14,1,MFR8,NA
+A60,A60:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S3,L14,1,MFR3,NA
+A61,A61:Bioinformatics,Bioinformatics,F-2-S3,L14,1,MFR3,NA
+A62,A62:Clinical trial,Clinical trial,F-2-S3,L14,1,MFR1,NA
+A63,A63:Temperature-Controlled Room,Temperature-Controlled Room,F-3-S3,L15,1,MFR8,WA-1-WAS
+A64,A64:Truck,Truck,F-3-S3,L15,1,MFR8,WA-2-TRF
+A65,A65:Mixers,Mixers,F-1-S4,L16,1,MFR12,PR-1-MII
+A66,A66:Granulators,Granulators,F-1-S4,L16,1,MFR11,PR-2-GRG
+A67,A67:Mills,Mills,F-1-S4,L16,1,MFR11,PR-3-MIM
+A68,A68:Blenders,Blenders,F-1-S4,L16,1,MFR4,PR-4-BLB
+A69,A69:Reactors,Reactors,F-1-S4,L16,1,MFR3,PR-6-RER
+A70,A70:Distillation equipment,Distillation equipment,F-1-S4,L16,1,MFR3,PR-7-DIE
+A71,A71:Extraction equipment,Extraction equipment,F-1-S4,L16,1,MFR3,PR-8-EXE
+A72,A72:Packaging Machinery,Packaging Machinery,F-1-S4,L17,1,MFR11,PA-1-PAM
+A73,A73:Label Printers,Label Printers,F-1-S4,L17,1,MFR4,PA-2-LAM
+A74,A74:Vision Inspection Systems,Vision Inspection Systems,F-1-S4,L17,1,MFR9,PA-3-INM
+A75,A75:Automated Conveyors,Automated Conveyors,F-1-S4,L17,1,MFR4,PA-4-COC
+A76,A76:Incubators,Incubators,F-1-S4,L18,1,MFR3,LI-1-MIT
+A77,A77:HPLC,HPLC,F-1-S4,L18,1,MFR1,LI-2-CHA
+A78,A78:Particle Size Analyzers,Particle Size Analyzers,F-1-S4,L18,1,MFR11,LI-3-PHT
+A79,A79:Air Particle Counters,Air Particle Counters,F-1-S4,L18,1,MFR7,LI-4-ENM
+A80,A80:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S4,L18,1,MFR7,LI-5-STT
+A81,A81:Temperature-Controlled Room,Temperature-Controlled Room,F-2-S4,L19,1,MFR4,WA-1-WAS
+A82,A82:Truck,Truck,F-2-S4,L19,1,MFR6,WA-2-TRF
+A83,A83:HTS,HTS,F-3-S4,L20,1,MFR10,NA
+A84,A84:Combinatorial chemistry labs,Combinatorial chemistry labs,F-3-S4,L20,1,MFR11,NA
+A85,A85:Bioinformatics,Bioinformatics,F-3-S4,L20,1,MFR6,NA
+A86,A86:Clinical trial,Clinical trial,F-3-S4,L20,1,MFR8,NA
+A87,A87:Mixers,Mixers,F-1-S5,L21,1,MFR10,PR-1-MII
+A88,A88:Granulators,Granulators,F-1-S5,L21,1,MFR2,PR-2-GRG
+A89,A89:Mills,Mills,F-1-S5,L21,1,MFR3,PR-3-MIM
+A90,A90:Blenders,Blenders,F-1-S5,L21,1,MFR4,PR-4-BLB
+A91,A91:Reactors,Reactors,F-1-S5,L21,1,MFR9,PR-6-RER
+A92,A92:Distillation equipment,Distillation equipment,F-1-S5,L21,1,MFR4,PR-7-DIE
+A93,A93:Extraction equipment,Extraction equipment,F-1-S5,L21,1,MFR5,PR-8-EXE
+A94,A94:Packaging Machinery,Packaging Machinery,F-1-S5,L23,1,MFR9,PA-1-PAM
+A95,A95:Label Printers,Label Printers,F-1-S5,L23,1,MFR7,PA-2-LAM
+A96,A96:Vision Inspection Systems,Vision Inspection Systems,F-1-S5,L23,1,MFR11,PA-3-INM
+A97,A97:Automated Conveyors,Automated Conveyors,F-1-S5,L23,1,MFR6,PA-4-COC
+A98,A98:Incubators,Incubators,F-1-S5,L24,1,MFR3,LI-1-MIT
+A99,A99:HPLC,HPLC,F-1-S5,L24,1,MFR8,LI-2-CHA
+A100,A100:Particle Size Analyzers,Particle Size Analyzers,F-1-S5,L24,1,MFR5,LI-3-PHT
+A101,A101:Air Particle Counters,Air Particle Counters,F-1-S5,L24,1,MFR1,LI-4-ENM
+A102,A102:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S5,L24,1,MFR9,LI-5-STT
+A103,A103:Temperature-Controlled Room,Temperature-Controlled Room,F-2-S5,L25,1,MFR5,WA-1-WAS
+A104,A104:Truck,Truck,F-2-S5,L25,1,MFR3,WA-2-TRF
+A105,A105:Mixers,Mixers,F-1-S6,L26,1,MFR5,PR-1-MII
+A106,A106:Granulators,Granulators,F-1-S6,L26,1,MFR12,PR-2-GRG
+A107,A107:Mills,Mills,F-1-S6,L26,1,MFR9,PR-3-MIM
+A108,A108:Blenders,Blenders,F-1-S6,L26,1,MFR5,PR-4-BLB
+A109,A109:Reactors,Reactors,F-1-S6,L26,1,MFR9,PR-6-RER
+A110,A110:Distillation equipment,Distillation equipment,F-1-S6,L26,1,MFR12,PR-7-DIE
+A111,A111:Extraction equipment,Extraction equipment,F-1-S6,L26,1,MFR12,PR-8-EXE
+A112,A112:Packaging Machinery,Packaging Machinery,F-1-S6,L28,1,MFR1,PA-1-PAM
+A113,A113:Label Printers,Label Printers,F-1-S6,L28,1,MFR9,PA-2-LAM
+A114,A114:Vision Inspection Systems,Vision Inspection Systems,F-1-S6,L28,1,MFR5,PA-3-INM
+A115,A115:Automated Conveyors,Automated Conveyors,F-1-S6,L28,1,MFR8,PA-4-COC
+A116,A116:Incubators,Incubators,F-1-S6,L29,1,MFR1,LI-1-MIT
+A117,A117:HPLC,HPLC,F-1-S6,L29,1,MFR6,LI-2-CHA
+A118,A118:Particle Size Analyzers,Particle Size Analyzers,F-1-S6,L29,1,MFR6,LI-3-PHT
+A119,A119:Air Particle Counters,Air Particle Counters,F-1-S6,L29,1,MFR5,LI-4-ENM
+A120,A120:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S6,L29,1,MFR12,LI-5-STT
+A121,A121:HTS,HTS,F-2-S6,L30,1,MFR7,NA
+A122,A122:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S6,L30,1,MFR1,NA
+A123,A123:Bioinformatics,Bioinformatics,F-2-S6,L30,1,MFR8,NA
+A124,A124:Clinical trial,Clinical trial,F-2-S6,L30,1,MFR1,NA
+A125,A125:Temperature-Controlled Room,Temperature-Controlled Room,F-3-S6,L31,1,MFR6,WA-1-WAS
+A126,A126:Truck,Truck,F-3-S6,L31,1,MFR5,WA-2-TRF
+A127,A127:Mixers,Mixers,F-1-S7,L32,1,MFR10,PR-1-MII
+A128,A128:Granulators,Granulators,F-1-S7,L32,1,MFR4,PR-2-GRG
+A129,A129:Mills,Mills,F-1-S7,L32,1,MFR6,PR-3-MIM
+A130,A130:Blenders,Blenders,F-1-S7,L32,1,MFR3,PR-4-BLB
+A131,A131:Reactors,Reactors,F-1-S7,L32,1,MFR11,PR-6-RER
+A132,A132:Distillation equipment,Distillation equipment,F-1-S7,L32,1,MFR11,PR-7-DIE
+A133,A133:Extraction equipment,Extraction equipment,F-1-S7,L32,1,MFR7,PR-8-EXE
+A134,A134:Packaging Machinery,Packaging Machinery,F-1-S7,L33,1,MFR12,PA-1-PAM
+A135,A135:Label Printers,Label Printers,F-1-S7,L33,1,MFR3,PA-2-LAM
+A136,A136:Vision Inspection Systems,Vision Inspection Systems,F-1-S7,L33,1,MFR10,PA-3-INM
+A137,A137:Automated Conveyors,Automated Conveyors,F-1-S7,L33,1,MFR4,PA-4-COC
+A138,A138:Incubators,Incubators,F-1-S7,L34,1,MFR6,LI-1-MIT
+A139,A139:HPLC,HPLC,F-1-S7,L34,1,MFR8,LI-2-CHA
+A140,A140:Particle Size Analyzers,Particle Size Analyzers,F-1-S7,L34,1,MFR11,LI-3-PHT
+A141,A141:Air Particle Counters,Air Particle Counters,F-1-S7,L34,1,MFR6,LI-4-ENM
+A142,A142:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S7,L34,1,MFR4,LI-5-STT
+A143,A143:HTS,HTS,F-2-S7,L35,1,MFR10,NA
+A144,A144:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S7,L35,1,MFR10,NA
+A145,A145:Bioinformatics,Bioinformatics,F-2-S7,L35,1,MFR9,NA
+A146,A146:Clinical trial,Clinical trial,F-2-S7,L35,1,MFR2,NA
+A147,A147:Mixers,Mixers,F-1-S8,L36,1,MFR11,PR-1-MII
+A148,A148:Granulators,Granulators,F-1-S8,L36,1,MFR1,PR-2-GRG
+A149,A149:Mills,Mills,F-1-S8,L36,1,MFR2,PR-3-MIM
+A150,A150:Blenders,Blenders,F-1-S8,L36,1,MFR11,PR-4-BLB
+A151,A151:Reactors,Reactors,F-1-S8,L36,1,MFR10,PR-6-RER
+A152,A152:Distillation equipment,Distillation equipment,F-1-S8,L36,1,MFR11,PR-7-DIE
+A153,A153:Extraction equipment,Extraction equipment,F-1-S8,L36,1,MFR2,PR-8-EXE
+A154,A154:Packaging Machinery,Packaging Machinery,F-1-S8,L38,1,MFR1,PA-1-PAM
+A155,A155:Label Printers,Label Printers,F-1-S8,L38,1,MFR3,PA-2-LAM
+A156,A156:Vision Inspection Systems,Vision Inspection Systems,F-1-S8,L38,1,MFR8,PA-3-INM
+A157,A157:Automated Conveyors,Automated Conveyors,F-1-S8,L38,1,MFR11,PA-4-COC
+A158,A158:Incubators,Incubators,F-1-S8,L39,1,MFR2,LI-1-MIT
+A159,A159:HPLC,HPLC,F-1-S8,L39,1,MFR1,LI-2-CHA
+A160,A160:Particle Size Analyzers,Particle Size Analyzers,F-1-S8,L39,1,MFR6,LI-3-PHT
+A161,A161:Air Particle Counters,Air Particle Counters,F-1-S8,L39,1,MFR5,LI-4-ENM
+A162,A162:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S8,L39,1,MFR1,LI-5-STT
+A163,A163:Temperature-Controlled Room,Temperature-Controlled Room,F-2-S8,L40,1,MFR4,WA-1-WAS
+A164,A164:Truck,Truck,F-2-S8,L40,1,MFR5,WA-2-TRF
+A165,A165:HTS,HTS,F-3-S8,L41,1,MFR8,NA
+A166,A166:Combinatorial chemistry labs,Combinatorial chemistry labs,F-3-S8,L41,1,MFR12,NA
+A167,A167:Bioinformatics,Bioinformatics,F-3-S8,L41,1,MFR6,NA
+A168,A168:Clinical trial,Clinical trial,F-3-S8,L41,1,MFR7,NA
+A169,A169:Mixers,Mixers,F-1-S9,L42,1,MFR3,PR-1-MII
+A170,A170:Granulators,Granulators,F-1-S9,L42,1,MFR9,PR-2-GRG
+A171,A171:Mills,Mills,F-1-S9,L42,1,MFR7,PR-3-MIM
+A172,A172:Blenders,Blenders,F-1-S9,L42,1,MFR2,PR-4-BLB
+A173,A173:Reactors,Reactors,F-1-S9,L42,1,MFR6,PR-6-RER
+A174,A174:Distillation equipment,Distillation equipment,F-1-S9,L42,1,MFR3,PR-7-DIE
+A175,A175:Extraction equipment,Extraction equipment,F-1-S9,L42,1,MFR6,PR-8-EXE
+A176,A176:Packaging Machinery,Packaging Machinery,F-1-S9,L43,1,MFR1,PA-1-PAM
+A177,A177:Label Printers,Label Printers,F-1-S9,L43,1,MFR11,PA-2-LAM
+A178,A178:Vision Inspection Systems,Vision Inspection Systems,F-1-S9,L43,1,MFR11,PA-3-INM
+A179,A179:Automated Conveyors,Automated Conveyors,F-1-S9,L43,1,MFR3,PA-4-COC
+A180,A180:Incubators,Incubators,F-1-S9,L44,1,MFR7,LI-1-MIT
+A181,A181:HPLC,HPLC,F-1-S9,L44,1,MFR5,LI-2-CHA
+A182,A182:Particle Size Analyzers,Particle Size Analyzers,F-1-S9,L44,1,MFR8,LI-3-PHT
+A183,A183:Air Particle Counters,Air Particle Counters,F-1-S9,L44,1,MFR9,LI-4-ENM
+A184,A184:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S9,L44,1,MFR9,LI-5-STT
+A185,A185:HTS,HTS,F-2-S9,L45,1,MFR3,NA
+A186,A186:Combinatorial chemistry labs,Combinatorial chemistry labs,F-2-S9,L45,1,MFR11,NA
+A187,A187:Bioinformatics,Bioinformatics,F-2-S9,L45,1,MFR4,NA
+A188,A188:Clinical trial,Clinical trial,F-2-S9,L45,1,MFR7,NA
+A189,A189:Temperature-Controlled Room,Temperature-Controlled Room,F-3-S9,L46,1,MFR9,WA-1-WAS
+A190,A190:Truck,Truck,F-3-S9,L46,1,MFR7,WA-2-TRF
+A191,A191:Mixers,Mixers,F-1-S10,L47,1,MFR5,PR-1-MII
+A192,A192:Granulators,Granulators,F-1-S10,L47,1,MFR7,PR-2-GRG
+A193,A193:Mills,Mills,F-1-S10,L47,1,MFR8,PR-3-MIM
+A194,A194:Blenders,Blenders,F-1-S10,L47,1,MFR4,PR-4-BLB
+A195,A195:Reactors,Reactors,F-1-S10,L47,1,MFR7,PR-6-RER
+A196,A196:Distillation equipment,Distillation equipment,F-1-S10,L47,1,MFR2,PR-7-DIE
+A197,A197:Extraction equipment,Extraction equipment,F-1-S10,L47,1,MFR9,PR-8-EXE
+A198,A198:Packaging Machinery,Packaging Machinery,F-1-S10,L48,1,MFR3,PA-1-PAM
+A199,A199:Label Printers,Label Printers,F-1-S10,L48,1,MFR12,PA-2-LAM
+A200,A200:Vision Inspection Systems,Vision Inspection Systems,F-1-S10,L48,1,MFR11,PA-3-INM
+A201,A201:Automated Conveyors,Automated Conveyors,F-1-S10,L48,1,MFR8,PA-4-COC
+A202,A202:Incubators,Incubators,F-1-S10,L49,1,MFR12,LI-1-MIT
+A203,A203:HPLC,HPLC,F-1-S10,L49,1,MFR10,LI-2-CHA
+A204,A204:Particle Size Analyzers,Particle Size Analyzers,F-1-S10,L49,1,MFR4,LI-3-PHT
+A205,A205:Air Particle Counters,Air Particle Counters,F-1-S10,L49,1,MFR2,LI-4-ENM
+A206,A206:Temperature and Humidity Controllers,Temperature and Humidity Controllers,F-1-S10,L49,1,MFR10,LI-5-STT
+A207,A207:Temperature-Controlled Room,Temperature-Controlled Room,F-2-S10,L50,1,MFR7,WA-1-WAS
+A208,A208:Truck,Truck,F-2-S10,L50,1,MFR10,WA-2-TRF

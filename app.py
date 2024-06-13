@@ -195,5 +195,43 @@ def app():
                         except Exception as e:
                             st.error(f"Error executing query: {e}")
                         st.write("Query execution complete")
+    elif option == options_list[2]:
+        with col1:
+            st.success(f"Total Assets: {len(asset_ids)}")
+        with col2:
+            st.info(f"Total Facilities : {len(facility_ids)}")
+        with col3:
+            st.info(f"Total Sites : {len(site_ids)}")
+        with col4:
+            st.info(f"Total Region : {len(region_ids)}")
+        st.subheader(options_list[2])
+        query_type = st.selectbox("Select Questions? ", ["Batch Genealogy"])
+        if st.button("Search"):
+            for q in question_list:
+                if query_type == q:
+                    st.subheader(query_type)
+                    with st.spinner("Executing query..."):
+                        try:
+                            with st.spinner("Data Loading ...."):
+                                if q == question_list[0]:
+                                    query = """
+                                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                                    MATCH (po)<-[ppo:productPo]-(p:product)
+                                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                                    MATCH (r)<-[mr:materialRecipe]-(m:material)
+                                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                                    MATCH (f)-[fs:facilitySite]->(s:site)
+                                    MATCH (s)-[sr:siteRegion]->(re:region)
+                                    RETURN *
+                                    """
+                                with driver.session() as session:
+                                    graphData = get_neo4j_data(query,session)
+                                    with st.spinner("Converting into Graph ..."):
+                                        graph, node_properties = generate_nodes_edges(graphData)
+                                        save_graph_file(graph)
+                        except Exception as e:
+                            st.error(f"Error executing query: {e}")
+                        st.write("Query execution complete")
 if __name__ == "__main__":
     app()

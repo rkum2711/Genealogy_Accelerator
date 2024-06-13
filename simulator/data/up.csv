@@ -27,5 +27,5 @@ PA-1-PAM,Packaging-1-Packaging_machines,Packaging,Packaging machines,Packaging M
 PA-2-LAM,Packaging-2-Labeling_machines,Packaging,Labeling machines,Label Printers
 PA-3-INM,Packaging-3-Inspecting_machines,Packaging,Inspecting machines,Vision Inspection Systems
 PA-4-COC,Packaging-4-Conveyors,Packaging,Conveyors,Automated Conveyors
-WA-1-WAS,warehouse-1-warehouse_storage,warehouse,warehouse storage,Temperature-Controlled Room
-WA-2-TRF,warehouse-2-Transportation_fleet,warehouse,Transportation fleet,Truck
+WA-1-WAS,Warehouse-1-warehouse_storage,Warehouse,warehouse storage,Temperature-Controlled Room
+WA-2-TRF,Warehouse-2-Transportation_fleet,Warehouse,Transportation fleet,Truck

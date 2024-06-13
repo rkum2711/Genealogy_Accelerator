@@ -63,7 +63,7 @@ def generate_facility(sites, region):
     for index, site in sites.iterrows():
         site_facilities = []
         manufacturing_type = random.choice(["Continuous Manufacturing", "Batch Manufacturing"])
-        additional_types = ["R&D", "Warehousing and Distribution"]
+        additional_types = ["R&D", "Warehouse"]
         selected_additional_types = random.sample(additional_types, random.choice([1, 2]))
         selected_types = [manufacturing_type] + selected_additional_types
         for count, facility_type in enumerate(selected_types, start=1):
@@ -97,8 +97,8 @@ def generate_line(facilities_df):
             line_types = ["Tier1-Production-Line", "Tier2-Production-Line", "Packaging Line", "LIMS Line"]
         elif facility_type == "Batch Manufacturing":
             line_types = ["Tier1-Production-Line", "Packaging Line", "LIMS Line"]
-        elif facility_type == "Warehousing and Distribution":
-            line_types = ["Warehousing and Distribution"]
+        elif facility_type == "Warehouse":
+            line_types = ["Warehouse"]
         else:
             line_types = ["General Line"]
         for line_type in line_types:
@@ -366,10 +366,10 @@ def generate_batch(po_df, product_df, facility_df):
             facility_id = 'Unknown_Facility'
         warehouse_facility = facility_df[
             (facility_df['SiteID'] == site_id) & 
-            (facility_df['FType'] == "Warehousing and Distribution")
+            (facility_df['FType'] == "Warehouse")
         ]
         if warehouse_facility.empty:
-            all_warehouses = facility_df[facility_df['FType'] == "Warehousing and Distribution"]
+            all_warehouses = facility_df[facility_df['FType'] == "Warehouse"]
             if not all_warehouses.empty:
                 warehouse_facility_id = random.choice(all_warehouses['id'].tolist())
             else:
@@ -524,13 +524,16 @@ def generate_wo(batch_df, up_df, asset_df):
         unit_procedure_ids_cleaning = get_random_unit_procedures(up_df, 'Cleaning', 1)
         unit_procedure_ids_Qms = get_random_unit_procedures(up_df, 'QMS', 1)
         unit_procedure_ids_lims = get_random_unit_procedures(up_df, 'LIMS', 3)
-        unit_procedure_ids_wh = get_random_unit_procedures(up_df, 'warehouse', 3)
+        unit_procedure_ids_wh = get_random_unit_procedures(up_df, 'Warehouse', 2)
         unit_procedure_ids_combined = unit_procedure_ids_stage1 + unit_procedure_ids_stage2 + unit_procedure_ids_cleaning + unit_procedure_ids_Qms + unit_procedure_ids_lims + unit_procedure_ids_wh
         for unit_procedure in unit_procedure_ids_combined:
             asset_type = up_df.loc[up_df['id'] == unit_procedure, 'AssetType'].values[0]
             wo_type = up_df.loc[up_df['id'] == unit_procedure, 'UPType'].values[0]
             wo_task = up_df.loc[up_df['id'] == unit_procedure, 'Task'].values[0]
-            filtered_assets = asset_df[(asset_df['AType'] == asset_type) & (asset_df['FacilityID'] == facility_id)]
+            if wo_type == "Warehouse":
+                filtered_assets = asset_df[(asset_df['AType'] == asset_type)]
+            else:
+                filtered_assets = asset_df[(asset_df['AType'] == asset_type) & (asset_df['FacilityID'] == facility_id)]
             if not filtered_assets.empty:
                 # selected_asset = filtered_assets.sample(n=1)
                 asset_id = filtered_assets['id'].values[0]

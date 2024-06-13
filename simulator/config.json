@@ -133,7 +133,7 @@
       "Inspecting machines",
       "Conveyors"
     ],
-    "warehouse": [
+    "Warehouse": [
       "warehouse storage",
       "Transportation fleet"
     ]
@@ -226,10 +226,10 @@
       ]
     },
     {
-      "name": "Warehousing and Distribution",
+      "name": "Warehouse",
       "assets": [
-        "warehouse storage",
-        "Transportation fleet"
+        "Temperature-Controlled Room",
+        "Truck"
       ]
     }
 
@@ -319,7 +319,7 @@
   "Continous Manufacturing",
   "Batch Manucaturing",
   "R&D", 
-  "Warehousing and Distribution"
+  "Warehouse"
 ],
 "pharma_asset_suppliers" :[
   "GE Healthcare Life Sciences",
