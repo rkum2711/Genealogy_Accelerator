@@ -3,6 +3,7 @@
   "network_html_file_path": "pages/network_graph.html",
   "gdm_image": "images/UnileverManufacturing1.png",
   "chatgpt_icon": "images/chat.png",
+  "tredence_logo": "images/Tredence_logo.png",
   "wip": "images/wip.png",
   "question_dict" : {
     "View Lineage of all Asset": "all_asset_lineage_limit",

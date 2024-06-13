@@ -39,6 +39,7 @@ batch_questions = ["Batch Monitoring",
 html_file_path = config["html_file_path"]
 network_html_file_path = config["network_html_file_path"]
 chatgpt_icon = config["chatgpt_icon"]
+tredence_logo = config["tredence_logo"]
 legend_mapping = config["legend_mapping"]
 
 def get_neo4j_data(query,session):
@@ -191,32 +192,32 @@ def save_graph_file(graph,html_file_path):
 def app():
     footer()
     st.title("Batch genealogy - Graph DB")
-    # st.image(gdm_image, caption='', width=1000)
+    st.sidebar.image(tredence_logo, caption='', width=300)
     batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids, awo_distinct_id = get_asset_data()
-    facility, site, region = st.columns(3)
+    facility, site, region = st.columns([1,1,1])
     with facility:
         st.info(f"Total Facilities : {len(facility_ids)}")
     with site:
         st.info(f"Total Sites : {len(site_ids)}")
     with region:
         st.info(f"Total Region : {len(region_ids)}")
-    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+    col1, col2, col3, col4, col5, col6, col7 = st.columns([1,1,1,1,1,1,1])
     option = st.sidebar.radio('Select Options', options_list)
     if option == options_list[0]:
         with col1:
-            st.success(f"Total Batches: {len(batch_ids)}")
+            st.success(f"Total Batch: {len(batch_ids)}")
         with col2:
             st.info(f"Total PO : {len(po_ids)}")
         with col3:
-            st.info(f"Total Products : {len(product_ids)}")
+            st.info(f"Total Product : {len(product_ids)}")
         with col4:
             st.info(f"Total material : {len(material_ids)}")
         with col5:
-            st.info(f"Total Suppliers : {len(supplier_ids)}")
+            st.info(f"Total Supplier : {len(supplier_ids)}")
         with col6:
-            st.success(f"Total Assets: {len(asset_ids)}")
+            st.success(f"Total Asset: {len(asset_ids)}")
         with col7:
-            st.info(f"Total Work Orders : {len(wo_ids)}")
+            st.info(f"Total WO : {len(wo_ids)}")
         st.subheader(option)
         tab1, tab2, tab3, tab4 = st.tabs(["Batch Network", "Asset Network", 
                                           "Purchase Order Network","Product Network"])
@@ -359,7 +360,7 @@ def app():
         with col1:
             st.success(f"Total Assets: {len(asset_ids)}")
         with col2:
-            st.info(f"Total Work Orders : {len(wo_ids)}")
+            st.info(f"Total WO : {len(wo_ids)}")
         st.subheader(option)
         query_type = st.selectbox("Select Questions? ", asset_questions)
         if query_type == asset_questions[0]:
@@ -410,15 +411,15 @@ def app():
                     st.error(f"Error executing query: {e}")
     elif option == options_list[1]:
         with col1:
-            st.success(f"Total Batches: {len(batch_ids)}")
+            st.success(f"Total Batch: {len(batch_ids)}")
         with col2:
             st.info(f"Total PO : {len(po_ids)}")
         with col3:
-            st.info(f"Total Products : {len(product_ids)}")
+            st.info(f"Total Product : {len(product_ids)}")
         with col4:
-            st.info(f"Total material : {len(material_ids)}")
+            st.info(f"Total Material : {len(material_ids)}")
         with col5:
-            st.info(f"Total Suppliers : {len(supplier_ids)}")
+            st.info(f"Total Supplier : {len(supplier_ids)}")
         st.subheader(option)
         query_type = st.selectbox("Select Questions? ", batch_questions)
         if query_type == batch_questions[0]:

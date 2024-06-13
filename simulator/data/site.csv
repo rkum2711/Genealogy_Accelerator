@@ -1,11 +1,11 @@
 id,Name,Region
-S1,Clinton Laboratories,NA
-S2,Indianapolis Parenteral Manufacturing,NA
-S3,Lilly Italia S.p.A.,Europe
+S1,Fort Dodge Animal Health,NA
+S2,Lilly Italia S.p.A.,Europe
+S3,Lilly Del Caribe Inc.,NA
 S4,Lilly Spain S.A.,Europe
-S5,Fort Dodge Animal Health,NA
-S6,Lilly Del Caribe Inc.,NA
-S7,Eli Lilly and Company,NA
-S8,Eli Lilly S.A.,Europe
-S9,Fegersheim Pharmaceutical Operations,Europe
-S10,Lilly Biotechnology Center,NA
+S5,Lilly Biotechnology Center,NA
+S6,Eli Lilly and Company,NA
+S7,Eli Lilly S.A.,Europe
+S8,Indianapolis Parenteral Manufacturing,NA
+S9,Clinton Laboratories,NA
+S10,Fegersheim Pharmaceutical Operations,Europe

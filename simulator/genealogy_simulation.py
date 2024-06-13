@@ -689,7 +689,7 @@ def generate_lims(wo_df):
         'name': [f"LIMS-{row['AssetID']}-{row['id']}" for index, row in lims_wo.iterrows()],
         'Test': lims_wo['Task'].tolist(),
         'Result': results,
-        'AssetID': lims_wo['AssetID'].tolist(),
+        'BatchID': lims_wo['BatchID'].tolist(),
         'WOID': lims_wo['id'].tolist(),
         'Status': statuses,
         'FacilityID': lims_wo['FacilityID'].tolist(),

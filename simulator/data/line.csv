@@ -1,51 +1,53 @@
 id,Name,FacilityID,LType,Capacity,Floor
-L1,F-1-S1-Tier1-Production-Line-L1,F-1-S1,Tier1-Production-Line,80,1
-L2,F-1-S1-Packaging Line-L2,F-1-S1,Packaging Line,50,1
-L3,F-1-S1-LIMS Line-L3,F-1-S1,LIMS Line,60,1
-L4,F-2-S1-R&D-L4,F-2-S1,R&D,80,1
-L5,F-3-S1-Warehouse-L5,F-3-S1,Warehouse,100,1
+L1,F-1-S1-Tier1-Production-Line-L1,F-1-S1,Tier1-Production-Line,50,1
+L2,F-1-S1-Tier2-Production-Line-L2,F-1-S1,Tier2-Production-Line,100,1
+L3,F-1-S1-Packaging Line-L3,F-1-S1,Packaging Line,90,1
+L4,F-1-S1-LIMS Line-L4,F-1-S1,LIMS Line,70,1
+L5,F-2-S1-R&D-L5,F-2-S1,R&D,80,1
 L6,F-1-S2-Tier1-Production-Line-L6,F-1-S2,Tier1-Production-Line,80,1
-L7,F-1-S2-Packaging Line-L7,F-1-S2,Packaging Line,50,1
-L8,F-1-S2-LIMS Line-L8,F-1-S2,LIMS Line,90,1
-L9,F-2-S2-R&D-L9,F-2-S2,R&D,50,1
-L10,F-1-S3-Tier1-Production-Line-L10,F-1-S3,Tier1-Production-Line,60,1
-L11,F-1-S3-Tier2-Production-Line-L11,F-1-S3,Tier2-Production-Line,80,1
-L12,F-1-S3-Packaging Line-L12,F-1-S3,Packaging Line,80,1
-L13,F-1-S3-LIMS Line-L13,F-1-S3,LIMS Line,60,1
-L14,F-2-S3-R&D-L14,F-2-S3,R&D,90,1
-L15,F-3-S3-Warehouse-L15,F-3-S3,Warehouse,80,1
+L7,F-1-S2-Packaging Line-L7,F-1-S2,Packaging Line,100,1
+L8,F-1-S2-LIMS Line-L8,F-1-S2,LIMS Line,50,1
+L9,F-2-S2-Warehouse-L9,F-2-S2,Warehouse,80,1
+L10,F-1-S3-Tier1-Production-Line-L10,F-1-S3,Tier1-Production-Line,50,1
+L11,F-1-S3-Tier2-Production-Line-L11,F-1-S3,Tier2-Production-Line,60,1
+L12,F-1-S3-Packaging Line-L12,F-1-S3,Packaging Line,70,1
+L13,F-1-S3-LIMS Line-L13,F-1-S3,LIMS Line,70,1
+L14,F-2-S3-Warehouse-L14,F-2-S3,Warehouse,70,1
+L15,F-3-S3-R&D-L15,F-3-S3,R&D,70,1
 L16,F-1-S4-Tier1-Production-Line-L16,F-1-S4,Tier1-Production-Line,80,1
-L17,F-1-S4-Packaging Line-L17,F-1-S4,Packaging Line,50,1
-L18,F-1-S4-LIMS Line-L18,F-1-S4,LIMS Line,100,1
-L19,F-2-S4-Warehouse-L19,F-2-S4,Warehouse,70,1
-L20,F-3-S4-R&D-L20,F-3-S4,R&D,70,1
-L21,F-1-S5-Tier1-Production-Line-L21,F-1-S5,Tier1-Production-Line,90,1
-L22,F-1-S5-Tier2-Production-Line-L22,F-1-S5,Tier2-Production-Line,60,1
-L23,F-1-S5-Packaging Line-L23,F-1-S5,Packaging Line,80,1
-L24,F-1-S5-LIMS Line-L24,F-1-S5,LIMS Line,60,1
-L25,F-2-S5-Warehouse-L25,F-2-S5,Warehouse,80,1
-L26,F-1-S6-Tier1-Production-Line-L26,F-1-S6,Tier1-Production-Line,50,1
-L27,F-1-S6-Tier2-Production-Line-L27,F-1-S6,Tier2-Production-Line,70,1
-L28,F-1-S6-Packaging Line-L28,F-1-S6,Packaging Line,60,1
-L29,F-1-S6-LIMS Line-L29,F-1-S6,LIMS Line,60,1
-L30,F-2-S6-R&D-L30,F-2-S6,R&D,80,1
-L31,F-3-S6-Warehouse-L31,F-3-S6,Warehouse,100,1
-L32,F-1-S7-Tier1-Production-Line-L32,F-1-S7,Tier1-Production-Line,100,1
-L33,F-1-S7-Packaging Line-L33,F-1-S7,Packaging Line,70,1
-L34,F-1-S7-LIMS Line-L34,F-1-S7,LIMS Line,70,1
-L35,F-2-S7-R&D-L35,F-2-S7,R&D,100,1
-L36,F-1-S8-Tier1-Production-Line-L36,F-1-S8,Tier1-Production-Line,90,1
-L37,F-1-S8-Tier2-Production-Line-L37,F-1-S8,Tier2-Production-Line,80,1
-L38,F-1-S8-Packaging Line-L38,F-1-S8,Packaging Line,50,1
-L39,F-1-S8-LIMS Line-L39,F-1-S8,LIMS Line,60,1
-L40,F-2-S8-Warehouse-L40,F-2-S8,Warehouse,70,1
-L41,F-3-S8-R&D-L41,F-3-S8,R&D,100,1
-L42,F-1-S9-Tier1-Production-Line-L42,F-1-S9,Tier1-Production-Line,50,1
-L43,F-1-S9-Packaging Line-L43,F-1-S9,Packaging Line,100,1
-L44,F-1-S9-LIMS Line-L44,F-1-S9,LIMS Line,80,1
-L45,F-2-S9-R&D-L45,F-2-S9,R&D,100,1
-L46,F-3-S9-Warehouse-L46,F-3-S9,Warehouse,100,1
-L47,F-1-S10-Tier1-Production-Line-L47,F-1-S10,Tier1-Production-Line,50,1
-L48,F-1-S10-Packaging Line-L48,F-1-S10,Packaging Line,100,1
-L49,F-1-S10-LIMS Line-L49,F-1-S10,LIMS Line,90,1
-L50,F-2-S10-Warehouse-L50,F-2-S10,Warehouse,80,1
+L17,F-1-S4-Tier2-Production-Line-L17,F-1-S4,Tier2-Production-Line,100,1
+L18,F-1-S4-Packaging Line-L18,F-1-S4,Packaging Line,80,1
+L19,F-1-S4-LIMS Line-L19,F-1-S4,LIMS Line,60,1
+L20,F-2-S4-R&D-L20,F-2-S4,R&D,100,1
+L21,F-3-S4-Warehouse-L21,F-3-S4,Warehouse,80,1
+L22,F-1-S5-Tier1-Production-Line-L22,F-1-S5,Tier1-Production-Line,50,1
+L23,F-1-S5-Packaging Line-L23,F-1-S5,Packaging Line,90,1
+L24,F-1-S5-LIMS Line-L24,F-1-S5,LIMS Line,100,1
+L25,F-2-S5-R&D-L25,F-2-S5,R&D,100,1
+L26,F-3-S5-Warehouse-L26,F-3-S5,Warehouse,50,1
+L27,F-1-S6-Tier1-Production-Line-L27,F-1-S6,Tier1-Production-Line,70,1
+L28,F-1-S6-Tier2-Production-Line-L28,F-1-S6,Tier2-Production-Line,80,1
+L29,F-1-S6-Packaging Line-L29,F-1-S6,Packaging Line,60,1
+L30,F-1-S6-LIMS Line-L30,F-1-S6,LIMS Line,80,1
+L31,F-2-S6-R&D-L31,F-2-S6,R&D,60,1
+L32,F-3-S6-Warehouse-L32,F-3-S6,Warehouse,50,1
+L33,F-1-S7-Tier1-Production-Line-L33,F-1-S7,Tier1-Production-Line,90,1
+L34,F-1-S7-Tier2-Production-Line-L34,F-1-S7,Tier2-Production-Line,70,1
+L35,F-1-S7-Packaging Line-L35,F-1-S7,Packaging Line,80,1
+L36,F-1-S7-LIMS Line-L36,F-1-S7,LIMS Line,100,1
+L37,F-2-S7-R&D-L37,F-2-S7,R&D,100,1
+L38,F-3-S7-Warehouse-L38,F-3-S7,Warehouse,50,1
+L39,F-1-S8-Tier1-Production-Line-L39,F-1-S8,Tier1-Production-Line,50,1
+L40,F-1-S8-Tier2-Production-Line-L40,F-1-S8,Tier2-Production-Line,90,1
+L41,F-1-S8-Packaging Line-L41,F-1-S8,Packaging Line,70,1
+L42,F-1-S8-LIMS Line-L42,F-1-S8,LIMS Line,80,1
+L43,F-2-S8-R&D-L43,F-2-S8,R&D,80,1
+L44,F-1-S9-Tier1-Production-Line-L44,F-1-S9,Tier1-Production-Line,90,1
+L45,F-1-S9-Packaging Line-L45,F-1-S9,Packaging Line,90,1
+L46,F-1-S9-LIMS Line-L46,F-1-S9,LIMS Line,70,1
+L47,F-2-S9-R&D-L47,F-2-S9,R&D,50,1
+L48,F-1-S10-Tier1-Production-Line-L48,F-1-S10,Tier1-Production-Line,60,1
+L49,F-1-S10-Tier2-Production-Line-L49,F-1-S10,Tier2-Production-Line,70,1
+L50,F-1-S10-Packaging Line-L50,F-1-S10,Packaging Line,100,1
+L51,F-1-S10-LIMS Line-L51,F-1-S10,LIMS Line,50,1
+L52,F-2-S10-R&D-L52,F-2-S10,R&D,80,1

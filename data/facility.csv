@@ -1,0 +1,27 @@
+id,Name,FType,SiteID,RegionID
+F-1-S1,Clinton Laboratories Batch Manufacturing,Batch Manufacturing,S1,R2
+F-2-S1,Clinton Laboratories R&D,R&D,S1,R2
+F-3-S1,Clinton Laboratories Warehouse,Warehouse,S1,R2
+F-1-S2,Indianapolis Parenteral Manufacturing Batch Manufacturing,Batch Manufacturing,S2,R2
+F-2-S2,Indianapolis Parenteral Manufacturing R&D,R&D,S2,R2
+F-1-S3,Lilly Italia S.p.A. Continuous Manufacturing,Continuous Manufacturing,S3,R1
+F-2-S3,Lilly Italia S.p.A. R&D,R&D,S3,R1
+F-3-S3,Lilly Italia S.p.A. Warehouse,Warehouse,S3,R1
+F-1-S4,Lilly Spain S.A. Batch Manufacturing,Batch Manufacturing,S4,R1
+F-2-S4,Lilly Spain S.A. Warehouse,Warehouse,S4,R1
+F-3-S4,Lilly Spain S.A. R&D,R&D,S4,R1
+F-1-S5,Fort Dodge Animal Health Continuous Manufacturing,Continuous Manufacturing,S5,R2
+F-2-S5,Fort Dodge Animal Health Warehouse,Warehouse,S5,R2
+F-1-S6,Lilly Del Caribe Inc. Continuous Manufacturing,Continuous Manufacturing,S6,R2
+F-2-S6,Lilly Del Caribe Inc. R&D,R&D,S6,R2
+F-3-S6,Lilly Del Caribe Inc. Warehouse,Warehouse,S6,R2
+F-1-S7,Eli Lilly and Company Batch Manufacturing,Batch Manufacturing,S7,R2
+F-2-S7,Eli Lilly and Company R&D,R&D,S7,R2
+F-1-S8,Eli Lilly S.A. Continuous Manufacturing,Continuous Manufacturing,S8,R1
+F-2-S8,Eli Lilly S.A. Warehouse,Warehouse,S8,R1
+F-3-S8,Eli Lilly S.A. R&D,R&D,S8,R1
+F-1-S9,Fegersheim Pharmaceutical Operations Batch Manufacturing,Batch Manufacturing,S9,R1
+F-2-S9,Fegersheim Pharmaceutical Operations R&D,R&D,S9,R1
+F-3-S9,Fegersheim Pharmaceutical Operations Warehouse,Warehouse,S9,R1
+F-1-S10,Lilly Biotechnology Center Batch Manufacturing,Batch Manufacturing,S10,R2
+F-2-S10,Lilly Biotechnology Center Warehouse,Warehouse,S10,R2

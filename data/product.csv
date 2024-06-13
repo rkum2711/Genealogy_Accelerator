@@ -1,0 +1,11 @@
+id,Name,SiteID,BatchSizeLimit,FamilyID,RecipeID
+P1001,AdcircaÂ® (tadalafil),S7,80,PF-1,PMR-1
+P1002,AlimtaÂ® (pemetrexed),S2,90,PF-1,PMR-2
+P1003,CialisÂ® (tadalafil),S9,40,PF-2,PMR-3
+P1004,CymbaltaÂ® (duloxetine),S5,60,PF-2,PMR-4
+P1005,EmgalityÂ® (galcanezumab),S2,90,PF-3,PMR-5
+P1006,ForsteoÂ® (teriparatide),S2,70,PF-3,PMR-6
+P1007,HumalogÂ® (human insulin analogue),S5,60,PF-4,PMR-7
+P1008,HumulinÂ® (human insulin),S7,40,PF-4,PMR-8
+P1009,OlumiantÂ® (baricitinib),S2,80,PF-5,PMR-9
+P10010,StratteraÂ® (atomoxetine),S2,70,PF-5,PMR-10
