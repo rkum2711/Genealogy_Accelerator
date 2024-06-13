@@ -326,7 +326,7 @@ def generate_po(products_df, num_BOMs):
         data['BOMID'].append(BOMID)
         status = np.random.choice(Status, p=[weight / sum(status_weights) for weight in status_weights])
         data['Status'].append(status)
-        start_date = current_date - timedelta(days=i)
+        start_date = today - timedelta(days=i)
         end_date = start_date + timedelta(days=np.random.randint(1, 2))
         data['StartDate'].append(start_date)
         data['EndDate'].append(end_date)
@@ -524,7 +524,8 @@ def generate_wo(batch_df, up_df, asset_df):
         unit_procedure_ids_cleaning = get_random_unit_procedures(up_df, 'Cleaning', 1)
         unit_procedure_ids_Qms = get_random_unit_procedures(up_df, 'QMS', 1)
         unit_procedure_ids_lims = get_random_unit_procedures(up_df, 'LIMS', 3)
-        unit_procedure_ids_combined = unit_procedure_ids_stage1 + unit_procedure_ids_stage2 + unit_procedure_ids_cleaning + unit_procedure_ids_Qms + unit_procedure_ids_lims
+        unit_procedure_ids_wh = get_random_unit_procedures(up_df, 'warehouse', 3)
+        unit_procedure_ids_combined = unit_procedure_ids_stage1 + unit_procedure_ids_stage2 + unit_procedure_ids_cleaning + unit_procedure_ids_Qms + unit_procedure_ids_lims + unit_procedure_ids_wh
         for unit_procedure in unit_procedure_ids_combined:
             asset_type = up_df.loc[up_df['id'] == unit_procedure, 'AssetType'].values[0]
             wo_type = up_df.loc[up_df['id'] == unit_procedure, 'UPType'].values[0]
@@ -574,7 +575,6 @@ def generate_maintenance(asset_df, oee_df):
     }
     
     asset_ids = asset_df['id'].tolist()
-    today = datetime.today()
     one_year_ago = today - timedelta(days=365)
     count = 0
     
@@ -618,8 +618,6 @@ def generate_calibration(asset_df):
             'CalibrationPerformedBy': [],
             'CalibrationRecords': []}
     asset_ids = asset_df['id'].tolist()
-
-    today = datetime.today()
     one_year_ago = today - timedelta(days=365)
     num_records = len(asset_ids)
     
@@ -651,7 +649,6 @@ def generate_compliance(asset_df):
         compliance_status = np.random.choice(['Compliant', 'Non-Compliant'], p=[0.7, 0.3])
         regulatory_references = 'Regulatory references details...'
         documentation = 'Documentation details...'
-        
         data['id'].append(f"ComplianceRecord_{asset_id}")
         data['AssetID'].append(asset_id)
         data['ComplianceStatus'].append(compliance_status)

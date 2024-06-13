@@ -1,11 +1,11 @@
 id,Name,SiteID,BatchSizeLimit,FamilyID,RecipeID
-P1001,AdcircaÂ® (tadalafil),S1,70,PF-1,PMR-1
-P1002,AlimtaÂ® (pemetrexed),S5,70,PF-1,PMR-2
-P1003,CialisÂ® (tadalafil),S6,80,PF-2,PMR-3
-P1004,CymbaltaÂ® (duloxetine),S9,70,PF-2,PMR-4
-P1005,EmgalityÂ® (galcanezumab),S8,40,PF-3,PMR-5
-P1006,ForsteoÂ® (teriparatide),S5,50,PF-3,PMR-6
-P1007,HumalogÂ® (human insulin analogue),S6,70,PF-4,PMR-7
-P1008,HumulinÂ® (human insulin),S1,40,PF-4,PMR-8
-P1009,OlumiantÂ® (baricitinib),S2,40,PF-5,PMR-9
-P10010,StratteraÂ® (atomoxetine),S7,50,PF-5,PMR-10
+P1001,AdcircaÂ® (tadalafil),S2,70,PF-1,PMR-1
+P1002,AlimtaÂ® (pemetrexed),S9,90,PF-1,PMR-2
+P1003,CialisÂ® (tadalafil),S5,70,PF-2,PMR-3
+P1004,CymbaltaÂ® (duloxetine),S4,80,PF-2,PMR-4
+P1005,EmgalityÂ® (galcanezumab),S1,80,PF-3,PMR-5
+P1006,ForsteoÂ® (teriparatide),S8,50,PF-3,PMR-6
+P1007,HumalogÂ® (human insulin analogue),S10,50,PF-4,PMR-7
+P1008,HumulinÂ® (human insulin),S4,60,PF-4,PMR-8
+P1009,OlumiantÂ® (baricitinib),S4,90,PF-5,PMR-9
+P10010,StratteraÂ® (atomoxetine),S8,60,PF-5,PMR-10

@@ -132,6 +132,10 @@
       "Labeling machines",
       "Inspecting machines",
       "Conveyors"
+    ],
+    "warehouse": [
+      "warehouse storage",
+      "Transportation fleet"
     ]
   },
   "procedureAssetTypes": {
@@ -162,7 +166,9 @@
     "Distillation equipment": "Distillation equipment",
     "Extraction equipment": "Extraction equipment",
     "Encapsulation": "Encapsulation machines",
-    "Filtration": "Filtration machines"
+    "Filtration": "Filtration machines",
+    "warehouse storage": "Temperature-Controlled Room",
+    "Transportation fleet": "Truck"
   },
   "assetProductionLines": [
     {
@@ -222,9 +228,7 @@
     {
       "name": "Warehousing and Distribution",
       "assets": [
-        "Storage1",
-        "Storage2",
-        "Storage3",
+        "warehouse storage",
         "Transportation fleet"
       ]
     }
