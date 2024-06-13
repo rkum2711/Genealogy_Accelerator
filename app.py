@@ -210,7 +210,7 @@ def app():
         st.subheader(option)
         tab1, tab2= st.tabs(["Selected Batch Network", "Whole Network",])
         with tab2:
-            if st.button("Search"):
+            if st.button("execute"):
                 st.header("Whole Network")
                 with st.spinner("Executing query..."):
                     try:
@@ -248,7 +248,7 @@ def app():
         with tab1:
             st.header("Selected Batch Network")
             selected_batch = st.selectbox("Select batch? ", batch_ids)
-            if st.button("Search"):
+            if st.button("Selected"):
                 with st.spinner("Executing query..."):
                     try:
                         with st.spinner("Data Loading ...."):
