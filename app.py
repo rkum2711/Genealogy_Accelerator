@@ -16,12 +16,10 @@ driver = GraphDatabase.driver(uri, auth=auth)
 with open('./config.json', 'r') as file:
     config = json.load(file)
 
-
 options_list = [
     "Manufacturing Knowledge Graph",
     "Batch Genealogy",
     "Assets Traceability",
-    # "Show Selective Assets",
     # "Ask More Questions-(GEN AI)"
   ]
 asset_questions = [
@@ -34,7 +32,10 @@ asset_questions = [
     # "show asset spare part inventory consumption summary"
     ]
 batch_questions = ["Batch Monitoring",
-                   "Materials that are highly in demand"]
+                   "Materials that are highly in demand",
+                   "Purchase Order vs Batch",
+                   "List down Failed Batches",
+                   "Warehouse Distribution"]
 html_file_path = config["html_file_path"]
 network_html_file_path = config["network_html_file_path"]
 chatgpt_icon = config["chatgpt_icon"]
@@ -46,9 +47,15 @@ def get_neo4j_data(query,session):
 
 def get_id_list(node):
     with driver.session() as session:
-        results = session.run(f"MATCH (n:{node}) RETURN n.id")
+        results = session.run(f"MATCH (n:{node}) RETURN DISTINCT n.id")
         id_list = sorted([row["n.id"] for row in results])
         return id_list
+
+def get_asset_wo_id():
+    with driver.session() as session:
+        results = session.run(f"MATCH (a:asset) -[awo:assetWo] -> (wo:wo) return DISTINCT  a.id")
+        awo_distinct_id = sorted([row["a.id"] for row in results])
+        return awo_distinct_id
 
 @st.cache_data
 def get_asset_data():
@@ -62,8 +69,9 @@ def get_asset_data():
         product_ids = get_id_list("product")  
         supplier_ids = get_id_list("supplier")  
         material_ids = get_id_list("material")
-        wo_ids = get_id_list("wo")  
-        return batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids
+        wo_ids = get_id_list("wo")
+        awo_distinct_id = get_asset_wo_id()
+        return batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids, awo_distinct_id
 
 def generate_nodes_edges(data):
     net = Network(
@@ -184,7 +192,7 @@ def app():
     footer()
     st.title("Batch genealogy - Graph DB")
     # st.image(gdm_image, caption='', width=1000)
-    batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids = get_asset_data()
+    batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids, awo_distinct_id = get_asset_data()
     facility, site, region = st.columns(3)
     with facility:
         st.info(f"Total Facilities : {len(facility_ids)}")
@@ -220,7 +228,7 @@ def app():
                     try:
                         with st.spinner("Data Loading ...."):
                             query = f"""
-                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (b:batch {{id: '{selected_batch}'}})<-[pb:pBatch]-(po:po)
                             MATCH (po)<-[ppo:productPo]-(p:product)
                             MATCH (p)<-[rp:recipeProduct]-(r:recipe)
                             MATCH (r)<-[mr:materialRecipe]-(m:material)
@@ -235,7 +243,6 @@ def app():
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
                             MATCH (as)-[asr:siteRegion]->(ar:region)
-                            WHERE b.id = "{selected_batch}"
                             RETURN *
                             """
                             with driver.session() as session:
@@ -248,7 +255,7 @@ def app():
                         st.error(f"Error executing query: {e}")
         with tab2:
             st.header("Visualize and trace the operations performed by the asset")
-            selected_asset = st.selectbox("Select asset ", asset_ids)
+            selected_asset = st.selectbox("Select asset ", awo_distinct_id)
             if st.button("Asset Visualize"):
                 with st.spinner("Executing query..."):
                     try:
@@ -269,7 +276,7 @@ def app():
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
                             MATCH (as)-[asr:siteRegion]->(ar:region)
-                            WHERE a.id = "{selected_asset}"
+                            WHERE a.id = '{selected_asset}'
                             RETURN *
                             """
                             with driver.session() as session:
@@ -358,20 +365,18 @@ def app():
         if query_type == asset_questions[0]:
             selected_asset = st.selectbox("Select Asset", asset_ids)
             query = f"""
-            MATCH (a:asset)-[al:assetline]->(l:line)
+            MATCH (a:asset {{id: '{selected_asset}'}})-[al:assetline]->(l:line)
             MATCH (l)-[lf:lineFacility]->(f:facility)
             MATCH (f)-[fs:facilitySite]->(s:site)
             MATCH (s)-[sr:siteRegion]->(r:region)
-            //OPTIONAL MATCH (a)-[awo:assetWo]->(wo:wo)
             MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
             MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
             MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
             MATCH (a)<-[aoee:assetOee]-(oee:oee)
             MATCH (a)-[aoem:assetOem]->(oem:oem)
-            MATCH (a)<-[acom:assetCompliance]-(com:compliance)
-            MATCH (a)<-[amain:assetMain]-(main:maintenance)
-            MATCH (a)<-[acal:assetCal]-(cal:calibration)
-            WHERE a.id = '{selected_asset}'
+            OPTIONAL MATCH (a)<-[acom:assetCompliance]-(com:compliance)
+            OPTIONAL MATCH (a)<-[amain:assetMain]-(main:maintenance)
+            OPTIONAL MATCH (a)<-[acal:assetCal]-(cal:calibration)
             RETURN *
             """
         elif query_type == asset_questions[1]:
@@ -380,7 +385,6 @@ def app():
             MATCH (l)-[lf:lineFacility]->(f:facility)
             MATCH (f)-[fs:facilitySite]->(s:site)
             MATCH (s)-[sr:siteRegion]->(r:region)
-            //OPTIONAL MATCH (a)-[awo:assetWo]->(wo:wo)
             MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
             MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
             MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
@@ -392,18 +396,18 @@ def app():
             WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
             RETURN *
             """
-        try:
-            if st.button("Visualize"):
-                with driver.session() as session:
+        if st.button("Visualize"):
+            with driver.session() as session:
+                try:
                     with st.spinner("Executing query..."):
                         with st.spinner("Data Loading ...."):
                             graphData = get_neo4j_data(query,session)
                     with st.spinner("Converting into Graph ..."):
                         graph, node_properties = generate_nodes_edges(graphData)
                         save_graph_file(graph, html_file_path)
-                driver.close()
-        except Exception as e:
-            st.error(f"Error executing query: {e}")
+                    driver.close()
+                except Exception as e:
+                    st.error(f"Error executing query: {e}")
     elif option == options_list[1]:
         with col1:
             st.success(f"Total Batches: {len(batch_ids)}")
@@ -464,6 +468,27 @@ def app():
                         df.columns = ["Material ID", "Total Batch"]
                         st.table(df)
                 driver.close()
+        elif query_type == batch_questions[2]:
+            query = f"""
+            MATCH (b:batch)<-[pob:pBatch]-(po:po)
+            RETURN *
+            """
+        elif query_type == batch_questions[3]:
+            query = f"""
+            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+            MATCH (po)<-[ppo:productPo]-(p:product)
+            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+            MATCH (r)<-[mr:materialRecipe]-(m:material)
+            MATCH (b)<-[bwo:batchWo]-(wo:wo)
+            MATCH (wo)<-[limswo:LimsWo]-(lims:lims)
+            WHERE lims.Status = 'Failed'
+            RETURN *
+            """
+        elif query_type == batch_questions[4]:
+            query = f"""
+            MATCH (b:batch) -[bf:batchWarehouse] ->(f:facility)
+            RETURN *
+            """
         try:
             if st.button("Visualize"):
                 with driver.session() as session:
