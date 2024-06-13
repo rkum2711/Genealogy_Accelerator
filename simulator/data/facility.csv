@@ -1,0 +1,27 @@
+id,Name,FType,SiteID,RegionID
+F-1-S1,Fegersheim Pharmaceutical Operations Continuous Manufacturing,Continuous Manufacturing,S1,R1
+F-2-S1,Fegersheim Pharmaceutical Operations R&D,R&D,S1,R1
+F-3-S1,Fegersheim Pharmaceutical Operations Warehousing and Distribution,Warehousing and Distribution,S1,R1
+F-1-S2,Clinton Laboratories Continuous Manufacturing,Continuous Manufacturing,S2,R2
+F-2-S2,Clinton Laboratories R&D,R&D,S2,R2
+F-3-S2,Clinton Laboratories Warehousing and Distribution,Warehousing and Distribution,S2,R2
+F-1-S3,Eli Lilly and Company Continuous Manufacturing,Continuous Manufacturing,S3,R2
+F-2-S3,Eli Lilly and Company Warehousing and Distribution,Warehousing and Distribution,S3,R2
+F-3-S3,Eli Lilly and Company R&D,R&D,S3,R2
+F-1-S4,Lilly Italia S.p.A. Continuous Manufacturing,Continuous Manufacturing,S4,R1
+F-2-S4,Lilly Italia S.p.A. Warehousing and Distribution,Warehousing and Distribution,S4,R1
+F-3-S4,Lilly Italia S.p.A. R&D,R&D,S4,R1
+F-1-S5,Eli Lilly S.A. Continuous Manufacturing,Continuous Manufacturing,S5,R1
+F-2-S5,Eli Lilly S.A. Warehousing and Distribution,Warehousing and Distribution,S5,R1
+F-1-S6,Lilly Del Caribe Inc. Batch Manufacturing,Batch Manufacturing,S6,R2
+F-2-S6,Lilly Del Caribe Inc. R&D,R&D,S6,R2
+F-3-S6,Lilly Del Caribe Inc. Warehousing and Distribution,Warehousing and Distribution,S6,R2
+F-1-S7,Lilly Biotechnology Center Batch Manufacturing,Batch Manufacturing,S7,R2
+F-2-S7,Lilly Biotechnology Center Warehousing and Distribution,Warehousing and Distribution,S7,R2
+F-1-S8,Lilly Spain S.A. Batch Manufacturing,Batch Manufacturing,S8,R1
+F-2-S8,Lilly Spain S.A. Warehousing and Distribution,Warehousing and Distribution,S8,R1
+F-1-S9,Indianapolis Parenteral Manufacturing Continuous Manufacturing,Continuous Manufacturing,S9,R2
+F-2-S9,Indianapolis Parenteral Manufacturing Warehousing and Distribution,Warehousing and Distribution,S9,R2
+F-1-S10,Fort Dodge Animal Health Batch Manufacturing,Batch Manufacturing,S10,R2
+F-2-S10,Fort Dodge Animal Health Warehousing and Distribution,Warehousing and Distribution,S10,R2
+F-3-S10,Fort Dodge Animal Health R&D,R&D,S10,R2

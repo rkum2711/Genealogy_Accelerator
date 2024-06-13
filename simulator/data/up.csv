@@ -1,0 +1,29 @@
+id,Name,UPType,Task,AssetType
+PR-1-MII,Production-stage1-1-Mixing_ingredients,Production-stage1,Mixing ingredients,Mixers
+PR-2-GRG,Production-stage1-2-Granulation,Production-stage1,Granulation,Granulators
+PR-3-MIM,Production-stage1-3-Milling,Production-stage1,Milling,Mills
+PR-4-BLB,Production-stage1-4-Blending,Production-stage1,Blending,Blenders
+PR-5-TAC,Production-stage1-5-Tablet_compression,Production-stage1,Tablet compression,Tablet presses
+PR-6-RER,Production-stage1-6-Reactors,Production-stage1,Reactors,Reactors
+PR-7-DIE,Production-stage1-7-Distillation_equipment,Production-stage1,Distillation equipment,Distillation equipment
+PR-8-EXE,Production-stage1-8-Extraction_equipment,Production-stage1,Extraction equipment,Extraction equipment
+PR-1-PUP,Production-stage2-1-Pumps,Production-stage2,Pumps,Pumps
+PR-2-TAT,Production-stage2-2-Tanks,Production-stage2,Tanks,Tanks
+PR-3-CAF,Production-stage2-3-Capsule_filling,Production-stage2,Capsule filling,Capsule fillers
+PR-4-COC,Production-stage2-4-Coating,Production-stage2,Coating,Coating machines
+PR-5-STS,Production-stage2-5-Sterilization,Production-stage2,Sterilization,Sterilizers
+PR-6-ENE,Production-stage2-6-Encapsulation,Production-stage2,Encapsulation,Encapsulation machines
+PR-7-FIF,Production-stage2-7-Filtration,Production-stage2,Filtration,Filtration machines
+MA-1-EQP,Maintenance-1-Equipment_pre_Check,Maintenance,Equipment pre Check,Pre Check
+MA-2-EQP,Maintenance-2-Equipment_post_Check,Maintenance,Equipment post Check,Post Check
+CL-1-EQC,Cleaning-1-Equipment_cleaning,Cleaning,Equipment cleaning,Cleaning machines
+QM-1-CAC,QMS-1-Calibration,QMS,Calibration,Calibrator
+LI-1-MIT,LIMS-1-Microbiological_Testing,LIMS,Microbiological Testing,Incubators
+LI-2-CHA,LIMS-2-Chemical_Analysis,LIMS,Chemical Analysis,HPLC
+LI-3-PHT,LIMS-3-Physical_Testing,LIMS,Physical Testing,Particle Size Analyzers
+LI-4-ENM,LIMS-4-Environmental_Monitoring,LIMS,Environmental Monitoring,Air Particle Counters
+LI-5-STT,LIMS-5-Stability_Testing,LIMS,Stability Testing,Temperature and Humidity Controllers
+PA-1-PAM,Packaging-1-Packaging_machines,Packaging,Packaging machines,Packaging Machinery
+PA-2-LAM,Packaging-2-Labeling_machines,Packaging,Labeling machines,Label Printers
+PA-3-INM,Packaging-3-Inspecting_machines,Packaging,Inspecting machines,Vision Inspection Systems
+PA-4-COC,Packaging-4-Conveyors,Packaging,Conveyors,Automated Conveyors

@@ -1,0 +1,907 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/css/tom-select.min.css" integrity="sha512-43fHB3GLgZfz8QXl1RPQ8O66oIgv3po9cJ5erMt1c4QISq9dYb195T3vr5ImnJPXuVroKcGBPXBFKETW8jrPNQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/js/tom-select.complete.js" integrity="sha512-jeF9CfnvzDiw9G9xiksVjxR2lib44Gnovvkv+3CgCG6NXCD4gqlA5nDAVW5WjpA+i+/zKsUWV5xNEbW1X/HH0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: white;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="A1">A1</option>
+                                
+                                    <option value="F-1-S1">F-1-S1</option>
+                                
+                                    <option value="L1">L1</option>
+                                
+                                    <option value="R1">R1</option>
+                                
+                                    <option value="S1">S1</option>
+                                
+                                    <option value="A2">A2</option>
+                                
+                                    <option value="A3">A3</option>
+                                
+                                    <option value="A4">A4</option>
+                                
+                                    <option value="A5">A5</option>
+                                
+                                    <option value="A6">A6</option>
+                                
+                                    <option value="A7">A7</option>
+                                
+                                    <option value="A8">A8</option>
+                                
+                                    <option value="F-3-S1">F-3-S1</option>
+                                
+                                    <option value="L3">L3</option>
+                                
+                                    <option value="A9">A9</option>
+                                
+                                    <option value="A10">A10</option>
+                                
+                                    <option value="A11">A11</option>
+                                
+                                    <option value="A12">A12</option>
+                                
+                                    <option value="A13">A13</option>
+                                
+                                    <option value="F-1-S2">F-1-S2</option>
+                                
+                                    <option value="L6">L6</option>
+                                
+                                    <option value="S2">S2</option>
+                                
+                                    <option value="A14">A14</option>
+                                
+                                    <option value="A15">A15</option>
+                                
+                                    <option value="A16">A16</option>
+                                
+                                    <option value="A17">A17</option>
+                                
+                                    <option value="A18">A18</option>
+                                
+                                    <option value="A19">A19</option>
+                                
+                                    <option value="A20">A20</option>
+                                
+                                    <option value="A21">A21</option>
+                                
+                                    <option value="A22">A22</option>
+                                
+                                    <option value="F-3-S2">F-3-S2</option>
+                                
+                                    <option value="L8">L8</option>
+                                
+                                    <option value="A23">A23</option>
+                                
+                                    <option value="A24">A24</option>
+                                
+                                    <option value="A25">A25</option>
+                                
+                                    <option value="A26">A26</option>
+                                
+                                    <option value="A27">A27</option>
+                                
+                                    <option value="F-1-S3">F-1-S3</option>
+                                
+                                    <option value="L11">L11</option>
+                                
+                                    <option value="R2">R2</option>
+                                
+                                    <option value="S3">S3</option>
+                                
+                                    <option value="A28">A28</option>
+                                
+                                    <option value="A29">A29</option>
+                                
+                                    <option value="A30">A30</option>
+                                
+                                    <option value="A31">A31</option>
+                                
+                                    <option value="A32">A32</option>
+                                
+                                    <option value="A33">A33</option>
+                                
+                                    <option value="A34">A34</option>
+                                
+                                    <option value="F-3-S3">F-3-S3</option>
+                                
+                                    <option value="L13">L13</option>
+                                
+                                    <option value="A35">A35</option>
+                                
+                                    <option value="A36">A36</option>
+                                
+                                    <option value="A37">A37</option>
+                                
+                                    <option value="A38">A38</option>
+                                
+                                    <option value="A39">A39</option>
+                                
+                                    <option value="F-1-S4">F-1-S4</option>
+                                
+                                    <option value="L16">L16</option>
+                                
+                                    <option value="S4">S4</option>
+                                
+                                    <option value="A40">A40</option>
+                                
+                                    <option value="A41">A41</option>
+                                
+                                    <option value="A42">A42</option>
+                                
+                                    <option value="A43">A43</option>
+                                
+                                    <option value="A44">A44</option>
+                                
+                                    <option value="A45">A45</option>
+                                
+                                    <option value="A46">A46</option>
+                                
+                                    <option value="A47">A47</option>
+                                
+                                    <option value="A48">A48</option>
+                                
+                                    <option value="F-3-S4">F-3-S4</option>
+                                
+                                    <option value="L18">L18</option>
+                                
+                                    <option value="A49">A49</option>
+                                
+                                    <option value="A50">A50</option>
+                                
+                                    <option value="A51">A51</option>
+                                
+                                    <option value="A52">A52</option>
+                                
+                                    <option value="A53">A53</option>
+                                
+                                    <option value="F-1-S5">F-1-S5</option>
+                                
+                                    <option value="L21">L21</option>
+                                
+                                    <option value="S5">S5</option>
+                                
+                                    <option value="A54">A54</option>
+                                
+                                    <option value="A55">A55</option>
+                                
+                                    <option value="A56">A56</option>
+                                
+                                    <option value="A57">A57</option>
+                                
+                                    <option value="A58">A58</option>
+                                
+                                    <option value="A59">A59</option>
+                                
+                                    <option value="A60">A60</option>
+                                
+                                    <option value="F-3-S5">F-3-S5</option>
+                                
+                                    <option value="L23">L23</option>
+                                
+                                    <option value="A61">A61</option>
+                                
+                                    <option value="A62">A62</option>
+                                
+                                    <option value="A63">A63</option>
+                                
+                                    <option value="A64">A64</option>
+                                
+                                    <option value="A65">A65</option>
+                                
+                                    <option value="F-1-S6">F-1-S6</option>
+                                
+                                    <option value="L26">L26</option>
+                                
+                                    <option value="S6">S6</option>
+                                
+                                    <option value="A66">A66</option>
+                                
+                                    <option value="A67">A67</option>
+                                
+                                    <option value="A68">A68</option>
+                                
+                                    <option value="A69">A69</option>
+                                
+                                    <option value="A70">A70</option>
+                                
+                                    <option value="A71">A71</option>
+                                
+                                    <option value="A72">A72</option>
+                                
+                                    <option value="A73">A73</option>
+                                
+                                    <option value="A74">A74</option>
+                                
+                                    <option value="F-3-S6">F-3-S6</option>
+                                
+                                    <option value="L28">L28</option>
+                                
+                                    <option value="A75">A75</option>
+                                
+                                    <option value="A76">A76</option>
+                                
+                                    <option value="A77">A77</option>
+                                
+                                    <option value="A78">A78</option>
+                                
+                                    <option value="A79">A79</option>
+                                
+                                    <option value="F-1-S7">F-1-S7</option>
+                                
+                                    <option value="L31">L31</option>
+                                
+                                    <option value="S7">S7</option>
+                                
+                                    <option value="A80">A80</option>
+                                
+                                    <option value="A81">A81</option>
+                                
+                                    <option value="A82">A82</option>
+                                
+                                    <option value="A83">A83</option>
+                                
+                                    <option value="A84">A84</option>
+                                
+                                    <option value="A85">A85</option>
+                                
+                                    <option value="A86">A86</option>
+                                
+                                    <option value="F-3-S7">F-3-S7</option>
+                                
+                                    <option value="L33">L33</option>
+                                
+                                    <option value="A87">A87</option>
+                                
+                                    <option value="A88">A88</option>
+                                
+                                    <option value="A89">A89</option>
+                                
+                                    <option value="A90">A90</option>
+                                
+                                    <option value="A91">A91</option>
+                                
+                                    <option value="F-1-S8">F-1-S8</option>
+                                
+                                    <option value="L36">L36</option>
+                                
+                                    <option value="S8">S8</option>
+                                
+                                    <option value="A92">A92</option>
+                                
+                                    <option value="A93">A93</option>
+                                
+                                    <option value="A94">A94</option>
+                                
+                                    <option value="A95">A95</option>
+                                
+                                    <option value="A96">A96</option>
+                                
+                                    <option value="A97">A97</option>
+                                
+                                    <option value="A98">A98</option>
+                                
+                                    <option value="A99">A99</option>
+                                
+                                    <option value="A100">A100</option>
+                                
+                                    <option value="F-3-S8">F-3-S8</option>
+                                
+                                    <option value="L38">L38</option>
+                                
+                                    <option value="A101">A101</option>
+                                
+                                    <option value="A102">A102</option>
+                                
+                                    <option value="A103">A103</option>
+                                
+                                    <option value="A104">A104</option>
+                                
+                                    <option value="A105">A105</option>
+                                
+                                    <option value="F-1-S9">F-1-S9</option>
+                                
+                                    <option value="L41">L41</option>
+                                
+                                    <option value="S9">S9</option>
+                                
+                                    <option value="A106">A106</option>
+                                
+                                    <option value="A107">A107</option>
+                                
+                                    <option value="A108">A108</option>
+                                
+                                    <option value="A109">A109</option>
+                                
+                                    <option value="A110">A110</option>
+                                
+                                    <option value="A111">A111</option>
+                                
+                                    <option value="A112">A112</option>
+                                
+                                    <option value="F-3-S9">F-3-S9</option>
+                                
+                                    <option value="L43">L43</option>
+                                
+                                    <option value="A113">A113</option>
+                                
+                                    <option value="A114">A114</option>
+                                
+                                    <option value="A115">A115</option>
+                                
+                                    <option value="A116">A116</option>
+                                
+                                    <option value="A117">A117</option>
+                                
+                                    <option value="F-1-S10">F-1-S10</option>
+                                
+                                    <option value="L46">L46</option>
+                                
+                                    <option value="S10">S10</option>
+                                
+                                    <option value="A118">A118</option>
+                                
+                                    <option value="A119">A119</option>
+                                
+                                    <option value="A120">A120</option>
+                                
+                                    <option value="A121">A121</option>
+                                
+                                    <option value="A122">A122</option>
+                                
+                                    <option value="A123">A123</option>
+                                
+                                    <option value="A124">A124</option>
+                                
+                                    <option value="A125">A125</option>
+                                
+                                    <option value="A126">A126</option>
+                                
+                                    <option value="F-3-S10">F-3-S10</option>
+                                
+                                    <option value="L48">L48</option>
+                                
+                                    <option value="A127">A127</option>
+                                
+                                    <option value="A128">A128</option>
+                                
+                                    <option value="A129">A129</option>
+                                
+                                    <option value="A130">A130</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#74c476", "font": {"color": "black"}, "id": "A1", "label": "A1:Mixers", "shape": "dot", "title": "AType : Mixers\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR10\nunitProcedureID : PR-1-MII\nLineFloor : True\nid : A1\nName : A1:Mixers"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S1", "label": "Lilly Spain S.A. Manufacturing", "shape": "dot", "title": "SiteID : S1\nFType : Manufacturing\nid : F-1-S1\nRegionID : R1\nName : Lilly Spain S.A. Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L1", "label": "LineTier1-Production-Line-TypeManufacturing-F-1-S1", "shape": "dot", "title": "LType : Tier1-Production-Line\nFacilityID : F-1-S1\nFloor : True\nCapacity : 60\nid : L1\nName : LineTier1-Production-Line-TypeManufacturing-F-1-S1"}, {"color": "#17becf", "font": {"color": "black"}, "id": "R1", "label": "Europe", "shape": "dot", "title": "id : R1\nName : Europe"}, {"color": "#969696", "font": {"color": "black"}, "id": "S1", "label": "Lilly Spain S.A.", "shape": "dot", "title": "Region : Europe\nid : S1\nName : Lilly Spain S.A."}, {"color": "#74c476", "font": {"color": "black"}, "id": "A2", "label": "A2:Granulators", "shape": "dot", "title": "AType : Granulators\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR4\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A2\nName : A2:Granulators"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A3", "label": "A3:Mills", "shape": "dot", "title": "AType : Mills\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR8\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A3\nName : A3:Mills"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A4", "label": "A4:Blenders", "shape": "dot", "title": "AType : Blenders\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR7\nunitProcedureID : PR-4-BLB\nLineFloor : True\nid : A4\nName : A4:Blenders"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A5", "label": "A5:Reactors", "shape": "dot", "title": "AType : Reactors\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR4\nunitProcedureID : PR-6-RER\nLineFloor : True\nid : A5\nName : A5:Reactors"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A6", "label": "A6:Distillation equipment", "shape": "dot", "title": "AType : Distillation equipment\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR7\nunitProcedureID : PR-7-DIE\nLineFloor : True\nid : A6\nName : A6:Distillation equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A7", "label": "A7:Extraction equipment", "shape": "dot", "title": "AType : Extraction equipment\nFacilityID : F-1-S1\nLineID : L1\nManufacturerID : MFR7\nunitProcedureID : PR-8-EXE\nLineFloor : True\nid : A7\nName : A7:Extraction equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A8", "label": "A8:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S1\nLineID : L3\nManufacturerID : MFR7\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A8\nName : A8:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S1", "label": "Lilly Spain S.A. Quality Control and Assurance", "shape": "dot", "title": "SiteID : S1\nFType : Quality Control and Assurance\nid : F-3-S1\nRegionID : R1\nName : Lilly Spain S.A. Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L3", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S1", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S1\nFloor : True\nCapacity : 50\nid : L3\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A9", "label": "A9:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S1\nLineID : L3\nManufacturerID : MFR4\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A9\nName : A9:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A10", "label": "A10:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S1\nLineID : L3\nManufacturerID : MFR6\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A10\nName : A10:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A11", "label": "A11:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S1\nLineID : L3\nManufacturerID : MFR9\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A11\nName : A11:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A12", "label": "A12:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S1\nLineID : L3\nManufacturerID : MFR6\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A12\nName : A12:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A13", "label": "A13:Tablet presses", "shape": "dot", "title": "AType : Tablet presses\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR11\nunitProcedureID : PR-5-TAC\nLineFloor : True\nid : A13\nName : A13:Tablet presses"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S2", "label": "Fegersheim Pharmaceutical Operations Manufacturing", "shape": "dot", "title": "SiteID : S2\nFType : Manufacturing\nid : F-1-S2\nRegionID : R1\nName : Fegersheim Pharmaceutical Operations Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L6", "label": "LineTier2-Production Line-TypeManufacturing-F-1-S2", "shape": "dot", "title": "LType : Tier2-Production Line\nFacilityID : F-1-S2\nFloor : True\nCapacity : 90\nid : L6\nName : LineTier2-Production Line-TypeManufacturing-F-1-S2"}, {"color": "#969696", "font": {"color": "black"}, "id": "S2", "label": "Fegersheim Pharmaceutical Operations", "shape": "dot", "title": "Region : Europe\nid : S2\nName : Fegersheim Pharmaceutical Operations"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A14", "label": "A14:Capsule fillers", "shape": "dot", "title": "AType : Capsule fillers\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR12\nunitProcedureID : PR-3-CAF\nLineFloor : True\nid : A14\nName : A14:Capsule fillers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A15", "label": "A15:Coating machines", "shape": "dot", "title": "AType : Coating machines\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR10\nunitProcedureID : PR-4-COC\nLineFloor : True\nid : A15\nName : A15:Coating machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A16", "label": "A16:Encapsulation machines", "shape": "dot", "title": "AType : Encapsulation machines\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR4\nunitProcedureID : PR-6-ENE\nLineFloor : True\nid : A16\nName : A16:Encapsulation machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A17", "label": "A17:Sterilizers", "shape": "dot", "title": "AType : Sterilizers\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR1\nunitProcedureID : PR-5-STS\nLineFloor : True\nid : A17\nName : A17:Sterilizers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A18", "label": "A18:Filtration machines", "shape": "dot", "title": "AType : Filtration machines\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR7\nunitProcedureID : PR-7-FIF\nLineFloor : True\nid : A18\nName : A18:Filtration machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A19", "label": "A19:Pumps", "shape": "dot", "title": "AType : Pumps\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR1\nunitProcedureID : PR-1-PUP\nLineFloor : True\nid : A19\nName : A19:Pumps"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A20", "label": "A20:Tanks", "shape": "dot", "title": "AType : Tanks\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR6\nunitProcedureID : PR-2-TAT\nLineFloor : True\nid : A20\nName : A20:Tanks"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A21", "label": "A21:Calibrator", "shape": "dot", "title": "AType : Calibrator\nFacilityID : F-1-S2\nLineID : L6\nManufacturerID : MFR11\nunitProcedureID : QM-1-CAC\nLineFloor : True\nid : A21\nName : A21:Calibrator"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A22", "label": "A22:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S2\nLineID : L8\nManufacturerID : MFR3\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A22\nName : A22:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S2", "label": "Fegersheim Pharmaceutical Operations Quality Control and Assurance", "shape": "dot", "title": "SiteID : S2\nFType : Quality Control and Assurance\nid : F-3-S2\nRegionID : R1\nName : Fegersheim Pharmaceutical Operations Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L8", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S2", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S2\nFloor : True\nCapacity : 70\nid : L8\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S2"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A23", "label": "A23:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S2\nLineID : L8\nManufacturerID : MFR9\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A23\nName : A23:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A24", "label": "A24:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S2\nLineID : L8\nManufacturerID : MFR8\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A24\nName : A24:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A25", "label": "A25:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S2\nLineID : L8\nManufacturerID : MFR12\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A25\nName : A25:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A26", "label": "A26:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S2\nLineID : L8\nManufacturerID : MFR1\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A26\nName : A26:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A27", "label": "A27:Mixers", "shape": "dot", "title": "AType : Mixers\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR10\nunitProcedureID : PR-1-MII\nLineFloor : True\nid : A27\nName : A27:Mixers"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S3", "label": "Eli Lilly and Company Manufacturing", "shape": "dot", "title": "SiteID : S3\nFType : Manufacturing\nid : F-1-S3\nRegionID : R2\nName : Eli Lilly and Company Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L11", "label": "LineTier1-Production-Line-TypeManufacturing-F-1-S3", "shape": "dot", "title": "LType : Tier1-Production-Line\nFacilityID : F-1-S3\nFloor : True\nCapacity : 50\nid : L11\nName : LineTier1-Production-Line-TypeManufacturing-F-1-S3"}, {"color": "#17becf", "font": {"color": "black"}, "id": "R2", "label": "NA", "shape": "dot", "title": "id : R2\nName : NA"}, {"color": "#969696", "font": {"color": "black"}, "id": "S3", "label": "Eli Lilly and Company", "shape": "dot", "title": "Region : NA\nid : S3\nName : Eli Lilly and Company"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A28", "label": "A28:Granulators", "shape": "dot", "title": "AType : Granulators\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR2\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A28\nName : A28:Granulators"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A29", "label": "A29:Mills", "shape": "dot", "title": "AType : Mills\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR8\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A29\nName : A29:Mills"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A30", "label": "A30:Blenders", "shape": "dot", "title": "AType : Blenders\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR8\nunitProcedureID : PR-4-BLB\nLineFloor : True\nid : A30\nName : A30:Blenders"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A31", "label": "A31:Reactors", "shape": "dot", "title": "AType : Reactors\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR4\nunitProcedureID : PR-6-RER\nLineFloor : True\nid : A31\nName : A31:Reactors"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A32", "label": "A32:Distillation equipment", "shape": "dot", "title": "AType : Distillation equipment\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR12\nunitProcedureID : PR-7-DIE\nLineFloor : True\nid : A32\nName : A32:Distillation equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A33", "label": "A33:Extraction equipment", "shape": "dot", "title": "AType : Extraction equipment\nFacilityID : F-1-S3\nLineID : L11\nManufacturerID : MFR1\nunitProcedureID : PR-8-EXE\nLineFloor : True\nid : A33\nName : A33:Extraction equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A34", "label": "A34:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S3\nLineID : L13\nManufacturerID : MFR7\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A34\nName : A34:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S3", "label": "Eli Lilly and Company Quality Control and Assurance", "shape": "dot", "title": "SiteID : S3\nFType : Quality Control and Assurance\nid : F-3-S3\nRegionID : R2\nName : Eli Lilly and Company Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L13", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S3", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S3\nFloor : True\nCapacity : 60\nid : L13\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S3"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A35", "label": "A35:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S3\nLineID : L13\nManufacturerID : MFR11\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A35\nName : A35:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A36", "label": "A36:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S3\nLineID : L13\nManufacturerID : MFR10\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A36\nName : A36:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A37", "label": "A37:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S3\nLineID : L13\nManufacturerID : MFR7\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A37\nName : A37:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A38", "label": "A38:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S3\nLineID : L13\nManufacturerID : MFR4\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A38\nName : A38:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A39", "label": "A39:Tablet presses", "shape": "dot", "title": "AType : Tablet presses\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR10\nunitProcedureID : PR-5-TAC\nLineFloor : True\nid : A39\nName : A39:Tablet presses"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S4", "label": "Indianapolis Parenteral Manufacturing Manufacturing", "shape": "dot", "title": "SiteID : S4\nFType : Manufacturing\nid : F-1-S4\nRegionID : R2\nName : Indianapolis Parenteral Manufacturing Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L16", "label": "LineTier2-Production Line-TypeManufacturing-F-1-S4", "shape": "dot", "title": "LType : Tier2-Production Line\nFacilityID : F-1-S4\nFloor : True\nCapacity : 90\nid : L16\nName : LineTier2-Production Line-TypeManufacturing-F-1-S4"}, {"color": "#969696", "font": {"color": "black"}, "id": "S4", "label": "Indianapolis Parenteral Manufacturing", "shape": "dot", "title": "Region : NA\nid : S4\nName : Indianapolis Parenteral Manufacturing"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A40", "label": "A40:Capsule fillers", "shape": "dot", "title": "AType : Capsule fillers\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR6\nunitProcedureID : PR-3-CAF\nLineFloor : True\nid : A40\nName : A40:Capsule fillers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A41", "label": "A41:Coating machines", "shape": "dot", "title": "AType : Coating machines\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR3\nunitProcedureID : PR-4-COC\nLineFloor : True\nid : A41\nName : A41:Coating machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A42", "label": "A42:Encapsulation machines", "shape": "dot", "title": "AType : Encapsulation machines\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR3\nunitProcedureID : PR-6-ENE\nLineFloor : True\nid : A42\nName : A42:Encapsulation machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A43", "label": "A43:Sterilizers", "shape": "dot", "title": "AType : Sterilizers\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR10\nunitProcedureID : PR-5-STS\nLineFloor : True\nid : A43\nName : A43:Sterilizers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A44", "label": "A44:Filtration machines", "shape": "dot", "title": "AType : Filtration machines\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR2\nunitProcedureID : PR-7-FIF\nLineFloor : True\nid : A44\nName : A44:Filtration machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A45", "label": "A45:Pumps", "shape": "dot", "title": "AType : Pumps\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR6\nunitProcedureID : PR-1-PUP\nLineFloor : True\nid : A45\nName : A45:Pumps"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A46", "label": "A46:Tanks", "shape": "dot", "title": "AType : Tanks\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR8\nunitProcedureID : PR-2-TAT\nLineFloor : True\nid : A46\nName : A46:Tanks"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A47", "label": "A47:Calibrator", "shape": "dot", "title": "AType : Calibrator\nFacilityID : F-1-S4\nLineID : L16\nManufacturerID : MFR12\nunitProcedureID : QM-1-CAC\nLineFloor : True\nid : A47\nName : A47:Calibrator"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A48", "label": "A48:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S4\nLineID : L18\nManufacturerID : MFR3\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A48\nName : A48:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S4", "label": "Indianapolis Parenteral Manufacturing Quality Control and Assurance", "shape": "dot", "title": "SiteID : S4\nFType : Quality Control and Assurance\nid : F-3-S4\nRegionID : R2\nName : Indianapolis Parenteral Manufacturing Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L18", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S4", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S4\nFloor : True\nCapacity : 90\nid : L18\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S4"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A49", "label": "A49:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S4\nLineID : L18\nManufacturerID : MFR12\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A49\nName : A49:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A50", "label": "A50:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S4\nLineID : L18\nManufacturerID : MFR9\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A50\nName : A50:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A51", "label": "A51:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S4\nLineID : L18\nManufacturerID : MFR9\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A51\nName : A51:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A52", "label": "A52:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S4\nLineID : L18\nManufacturerID : MFR10\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A52\nName : A52:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A53", "label": "A53:Mixers", "shape": "dot", "title": "AType : Mixers\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR1\nunitProcedureID : PR-1-MII\nLineFloor : True\nid : A53\nName : A53:Mixers"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S5", "label": "Eli Lilly S.A. Manufacturing", "shape": "dot", "title": "SiteID : S5\nFType : Manufacturing\nid : F-1-S5\nRegionID : R1\nName : Eli Lilly S.A. Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L21", "label": "LineTier1-Production-Line-TypeManufacturing-F-1-S5", "shape": "dot", "title": "LType : Tier1-Production-Line\nFacilityID : F-1-S5\nFloor : True\nCapacity : 60\nid : L21\nName : LineTier1-Production-Line-TypeManufacturing-F-1-S5"}, {"color": "#969696", "font": {"color": "black"}, "id": "S5", "label": "Eli Lilly S.A.", "shape": "dot", "title": "Region : Europe\nid : S5\nName : Eli Lilly S.A."}, {"color": "#74c476", "font": {"color": "black"}, "id": "A54", "label": "A54:Granulators", "shape": "dot", "title": "AType : Granulators\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR8\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A54\nName : A54:Granulators"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A55", "label": "A55:Mills", "shape": "dot", "title": "AType : Mills\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR2\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A55\nName : A55:Mills"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A56", "label": "A56:Blenders", "shape": "dot", "title": "AType : Blenders\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR8\nunitProcedureID : PR-4-BLB\nLineFloor : True\nid : A56\nName : A56:Blenders"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A57", "label": "A57:Reactors", "shape": "dot", "title": "AType : Reactors\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR5\nunitProcedureID : PR-6-RER\nLineFloor : True\nid : A57\nName : A57:Reactors"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A58", "label": "A58:Distillation equipment", "shape": "dot", "title": "AType : Distillation equipment\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR12\nunitProcedureID : PR-7-DIE\nLineFloor : True\nid : A58\nName : A58:Distillation equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A59", "label": "A59:Extraction equipment", "shape": "dot", "title": "AType : Extraction equipment\nFacilityID : F-1-S5\nLineID : L21\nManufacturerID : MFR2\nunitProcedureID : PR-8-EXE\nLineFloor : True\nid : A59\nName : A59:Extraction equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A60", "label": "A60:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S5\nLineID : L23\nManufacturerID : MFR10\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A60\nName : A60:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S5", "label": "Eli Lilly S.A. Quality Control and Assurance", "shape": "dot", "title": "SiteID : S5\nFType : Quality Control and Assurance\nid : F-3-S5\nRegionID : R1\nName : Eli Lilly S.A. Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L23", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S5", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S5\nFloor : True\nCapacity : 50\nid : L23\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S5"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A61", "label": "A61:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S5\nLineID : L23\nManufacturerID : MFR5\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A61\nName : A61:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A62", "label": "A62:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S5\nLineID : L23\nManufacturerID : MFR1\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A62\nName : A62:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A63", "label": "A63:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S5\nLineID : L23\nManufacturerID : MFR4\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A63\nName : A63:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A64", "label": "A64:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S5\nLineID : L23\nManufacturerID : MFR1\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A64\nName : A64:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A65", "label": "A65:Tablet presses", "shape": "dot", "title": "AType : Tablet presses\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR3\nunitProcedureID : PR-5-TAC\nLineFloor : True\nid : A65\nName : A65:Tablet presses"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S6", "label": "Lilly Italia S.p.A. Manufacturing", "shape": "dot", "title": "SiteID : S6\nFType : Manufacturing\nid : F-1-S6\nRegionID : R1\nName : Lilly Italia S.p.A. Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L26", "label": "LineTier2-Production Line-TypeManufacturing-F-1-S6", "shape": "dot", "title": "LType : Tier2-Production Line\nFacilityID : F-1-S6\nFloor : True\nCapacity : 80\nid : L26\nName : LineTier2-Production Line-TypeManufacturing-F-1-S6"}, {"color": "#969696", "font": {"color": "black"}, "id": "S6", "label": "Lilly Italia S.p.A.", "shape": "dot", "title": "Region : Europe\nid : S6\nName : Lilly Italia S.p.A."}, {"color": "#74c476", "font": {"color": "black"}, "id": "A66", "label": "A66:Capsule fillers", "shape": "dot", "title": "AType : Capsule fillers\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR10\nunitProcedureID : PR-3-CAF\nLineFloor : True\nid : A66\nName : A66:Capsule fillers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A67", "label": "A67:Coating machines", "shape": "dot", "title": "AType : Coating machines\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR5\nunitProcedureID : PR-4-COC\nLineFloor : True\nid : A67\nName : A67:Coating machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A68", "label": "A68:Encapsulation machines", "shape": "dot", "title": "AType : Encapsulation machines\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR11\nunitProcedureID : PR-6-ENE\nLineFloor : True\nid : A68\nName : A68:Encapsulation machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A69", "label": "A69:Sterilizers", "shape": "dot", "title": "AType : Sterilizers\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR2\nunitProcedureID : PR-5-STS\nLineFloor : True\nid : A69\nName : A69:Sterilizers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A70", "label": "A70:Filtration machines", "shape": "dot", "title": "AType : Filtration machines\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR10\nunitProcedureID : PR-7-FIF\nLineFloor : True\nid : A70\nName : A70:Filtration machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A71", "label": "A71:Pumps", "shape": "dot", "title": "AType : Pumps\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR6\nunitProcedureID : PR-1-PUP\nLineFloor : True\nid : A71\nName : A71:Pumps"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A72", "label": "A72:Tanks", "shape": "dot", "title": "AType : Tanks\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR7\nunitProcedureID : PR-2-TAT\nLineFloor : True\nid : A72\nName : A72:Tanks"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A73", "label": "A73:Calibrator", "shape": "dot", "title": "AType : Calibrator\nFacilityID : F-1-S6\nLineID : L26\nManufacturerID : MFR7\nunitProcedureID : QM-1-CAC\nLineFloor : True\nid : A73\nName : A73:Calibrator"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A74", "label": "A74:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S6\nLineID : L28\nManufacturerID : MFR5\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A74\nName : A74:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S6", "label": "Lilly Italia S.p.A. Quality Control and Assurance", "shape": "dot", "title": "SiteID : S6\nFType : Quality Control and Assurance\nid : F-3-S6\nRegionID : R1\nName : Lilly Italia S.p.A. Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L28", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S6", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S6\nFloor : True\nCapacity : 90\nid : L28\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S6"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A75", "label": "A75:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S6\nLineID : L28\nManufacturerID : MFR1\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A75\nName : A75:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A76", "label": "A76:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S6\nLineID : L28\nManufacturerID : MFR7\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A76\nName : A76:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A77", "label": "A77:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S6\nLineID : L28\nManufacturerID : MFR5\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A77\nName : A77:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A78", "label": "A78:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S6\nLineID : L28\nManufacturerID : MFR3\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A78\nName : A78:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A79", "label": "A79:Mixers", "shape": "dot", "title": "AType : Mixers\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR8\nunitProcedureID : PR-1-MII\nLineFloor : True\nid : A79\nName : A79:Mixers"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S7", "label": "Lilly Biotechnology Center Manufacturing", "shape": "dot", "title": "SiteID : S7\nFType : Manufacturing\nid : F-1-S7\nRegionID : R2\nName : Lilly Biotechnology Center Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L31", "label": "LineTier1-Production-Line-TypeManufacturing-F-1-S7", "shape": "dot", "title": "LType : Tier1-Production-Line\nFacilityID : F-1-S7\nFloor : True\nCapacity : 70\nid : L31\nName : LineTier1-Production-Line-TypeManufacturing-F-1-S7"}, {"color": "#969696", "font": {"color": "black"}, "id": "S7", "label": "Lilly Biotechnology Center", "shape": "dot", "title": "Region : NA\nid : S7\nName : Lilly Biotechnology Center"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A80", "label": "A80:Granulators", "shape": "dot", "title": "AType : Granulators\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR9\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A80\nName : A80:Granulators"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A81", "label": "A81:Mills", "shape": "dot", "title": "AType : Mills\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR5\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A81\nName : A81:Mills"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A82", "label": "A82:Blenders", "shape": "dot", "title": "AType : Blenders\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR2\nunitProcedureID : PR-4-BLB\nLineFloor : True\nid : A82\nName : A82:Blenders"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A83", "label": "A83:Reactors", "shape": "dot", "title": "AType : Reactors\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR1\nunitProcedureID : PR-6-RER\nLineFloor : True\nid : A83\nName : A83:Reactors"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A84", "label": "A84:Distillation equipment", "shape": "dot", "title": "AType : Distillation equipment\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR12\nunitProcedureID : PR-7-DIE\nLineFloor : True\nid : A84\nName : A84:Distillation equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A85", "label": "A85:Extraction equipment", "shape": "dot", "title": "AType : Extraction equipment\nFacilityID : F-1-S7\nLineID : L31\nManufacturerID : MFR1\nunitProcedureID : PR-8-EXE\nLineFloor : True\nid : A85\nName : A85:Extraction equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A86", "label": "A86:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S7\nLineID : L33\nManufacturerID : MFR9\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A86\nName : A86:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S7", "label": "Lilly Biotechnology Center Quality Control and Assurance", "shape": "dot", "title": "SiteID : S7\nFType : Quality Control and Assurance\nid : F-3-S7\nRegionID : R2\nName : Lilly Biotechnology Center Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L33", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S7", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S7\nFloor : True\nCapacity : 100\nid : L33\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S7"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A87", "label": "A87:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S7\nLineID : L33\nManufacturerID : MFR12\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A87\nName : A87:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A88", "label": "A88:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S7\nLineID : L33\nManufacturerID : MFR8\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A88\nName : A88:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A89", "label": "A89:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S7\nLineID : L33\nManufacturerID : MFR9\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A89\nName : A89:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A90", "label": "A90:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S7\nLineID : L33\nManufacturerID : MFR6\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A90\nName : A90:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A91", "label": "A91:Tablet presses", "shape": "dot", "title": "AType : Tablet presses\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR2\nunitProcedureID : PR-5-TAC\nLineFloor : True\nid : A91\nName : A91:Tablet presses"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S8", "label": "Fort Dodge Animal Health Manufacturing", "shape": "dot", "title": "SiteID : S8\nFType : Manufacturing\nid : F-1-S8\nRegionID : R2\nName : Fort Dodge Animal Health Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L36", "label": "LineTier2-Production Line-TypeManufacturing-F-1-S8", "shape": "dot", "title": "LType : Tier2-Production Line\nFacilityID : F-1-S8\nFloor : True\nCapacity : 70\nid : L36\nName : LineTier2-Production Line-TypeManufacturing-F-1-S8"}, {"color": "#969696", "font": {"color": "black"}, "id": "S8", "label": "Fort Dodge Animal Health", "shape": "dot", "title": "Region : NA\nid : S8\nName : Fort Dodge Animal Health"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A92", "label": "A92:Capsule fillers", "shape": "dot", "title": "AType : Capsule fillers\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR9\nunitProcedureID : PR-3-CAF\nLineFloor : True\nid : A92\nName : A92:Capsule fillers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A93", "label": "A93:Coating machines", "shape": "dot", "title": "AType : Coating machines\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR12\nunitProcedureID : PR-4-COC\nLineFloor : True\nid : A93\nName : A93:Coating machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A94", "label": "A94:Encapsulation machines", "shape": "dot", "title": "AType : Encapsulation machines\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR8\nunitProcedureID : PR-6-ENE\nLineFloor : True\nid : A94\nName : A94:Encapsulation machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A95", "label": "A95:Sterilizers", "shape": "dot", "title": "AType : Sterilizers\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR8\nunitProcedureID : PR-5-STS\nLineFloor : True\nid : A95\nName : A95:Sterilizers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A96", "label": "A96:Filtration machines", "shape": "dot", "title": "AType : Filtration machines\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR3\nunitProcedureID : PR-7-FIF\nLineFloor : True\nid : A96\nName : A96:Filtration machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A97", "label": "A97:Pumps", "shape": "dot", "title": "AType : Pumps\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR6\nunitProcedureID : PR-1-PUP\nLineFloor : True\nid : A97\nName : A97:Pumps"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A98", "label": "A98:Tanks", "shape": "dot", "title": "AType : Tanks\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR1\nunitProcedureID : PR-2-TAT\nLineFloor : True\nid : A98\nName : A98:Tanks"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A99", "label": "A99:Calibrator", "shape": "dot", "title": "AType : Calibrator\nFacilityID : F-1-S8\nLineID : L36\nManufacturerID : MFR9\nunitProcedureID : QM-1-CAC\nLineFloor : True\nid : A99\nName : A99:Calibrator"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A100", "label": "A100:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S8\nLineID : L38\nManufacturerID : MFR5\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A100\nName : A100:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S8", "label": "Fort Dodge Animal Health Quality Control and Assurance", "shape": "dot", "title": "SiteID : S8\nFType : Quality Control and Assurance\nid : F-3-S8\nRegionID : R2\nName : Fort Dodge Animal Health Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L38", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S8", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S8\nFloor : True\nCapacity : 80\nid : L38\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S8"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A101", "label": "A101:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S8\nLineID : L38\nManufacturerID : MFR2\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A101\nName : A101:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A102", "label": "A102:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S8\nLineID : L38\nManufacturerID : MFR7\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A102\nName : A102:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A103", "label": "A103:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S8\nLineID : L38\nManufacturerID : MFR2\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A103\nName : A103:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A104", "label": "A104:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S8\nLineID : L38\nManufacturerID : MFR6\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A104\nName : A104:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A105", "label": "A105:Mixers", "shape": "dot", "title": "AType : Mixers\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR9\nunitProcedureID : PR-1-MII\nLineFloor : True\nid : A105\nName : A105:Mixers"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S9", "label": "Lilly Del Caribe Inc. Manufacturing", "shape": "dot", "title": "SiteID : S9\nFType : Manufacturing\nid : F-1-S9\nRegionID : R2\nName : Lilly Del Caribe Inc. Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L41", "label": "LineTier1-Production-Line-TypeManufacturing-F-1-S9", "shape": "dot", "title": "LType : Tier1-Production-Line\nFacilityID : F-1-S9\nFloor : True\nCapacity : 80\nid : L41\nName : LineTier1-Production-Line-TypeManufacturing-F-1-S9"}, {"color": "#969696", "font": {"color": "black"}, "id": "S9", "label": "Lilly Del Caribe Inc.", "shape": "dot", "title": "Region : NA\nid : S9\nName : Lilly Del Caribe Inc."}, {"color": "#74c476", "font": {"color": "black"}, "id": "A106", "label": "A106:Granulators", "shape": "dot", "title": "AType : Granulators\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR7\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A106\nName : A106:Granulators"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A107", "label": "A107:Mills", "shape": "dot", "title": "AType : Mills\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR7\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A107\nName : A107:Mills"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A108", "label": "A108:Blenders", "shape": "dot", "title": "AType : Blenders\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR2\nunitProcedureID : PR-4-BLB\nLineFloor : True\nid : A108\nName : A108:Blenders"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A109", "label": "A109:Reactors", "shape": "dot", "title": "AType : Reactors\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR10\nunitProcedureID : PR-6-RER\nLineFloor : True\nid : A109\nName : A109:Reactors"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A110", "label": "A110:Distillation equipment", "shape": "dot", "title": "AType : Distillation equipment\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR5\nunitProcedureID : PR-7-DIE\nLineFloor : True\nid : A110\nName : A110:Distillation equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A111", "label": "A111:Extraction equipment", "shape": "dot", "title": "AType : Extraction equipment\nFacilityID : F-1-S9\nLineID : L41\nManufacturerID : MFR4\nunitProcedureID : PR-8-EXE\nLineFloor : True\nid : A111\nName : A111:Extraction equipment"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A112", "label": "A112:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S9\nLineID : L43\nManufacturerID : MFR12\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A112\nName : A112:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S9", "label": "Lilly Del Caribe Inc. Quality Control and Assurance", "shape": "dot", "title": "SiteID : S9\nFType : Quality Control and Assurance\nid : F-3-S9\nRegionID : R2\nName : Lilly Del Caribe Inc. Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L43", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S9", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S9\nFloor : True\nCapacity : 100\nid : L43\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S9"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A113", "label": "A113:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S9\nLineID : L43\nManufacturerID : MFR9\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A113\nName : A113:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A114", "label": "A114:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S9\nLineID : L43\nManufacturerID : MFR10\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A114\nName : A114:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A115", "label": "A115:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S9\nLineID : L43\nManufacturerID : MFR1\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A115\nName : A115:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A116", "label": "A116:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S9\nLineID : L43\nManufacturerID : MFR4\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A116\nName : A116:Temperature and Humidity Controllers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A117", "label": "A117:Tablet presses", "shape": "dot", "title": "AType : Tablet presses\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR11\nunitProcedureID : PR-5-TAC\nLineFloor : True\nid : A117\nName : A117:Tablet presses"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S10", "label": "Clinton Laboratories Manufacturing", "shape": "dot", "title": "SiteID : S10\nFType : Manufacturing\nid : F-1-S10\nRegionID : R2\nName : Clinton Laboratories Manufacturing"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L46", "label": "LineTier2-Production Line-TypeManufacturing-F-1-S10", "shape": "dot", "title": "LType : Tier2-Production Line\nFacilityID : F-1-S10\nFloor : True\nCapacity : 80\nid : L46\nName : LineTier2-Production Line-TypeManufacturing-F-1-S10"}, {"color": "#969696", "font": {"color": "black"}, "id": "S10", "label": "Clinton Laboratories", "shape": "dot", "title": "Region : NA\nid : S10\nName : Clinton Laboratories"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A118", "label": "A118:Capsule fillers", "shape": "dot", "title": "AType : Capsule fillers\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR11\nunitProcedureID : PR-3-CAF\nLineFloor : True\nid : A118\nName : A118:Capsule fillers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A119", "label": "A119:Coating machines", "shape": "dot", "title": "AType : Coating machines\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR10\nunitProcedureID : PR-4-COC\nLineFloor : True\nid : A119\nName : A119:Coating machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A120", "label": "A120:Encapsulation machines", "shape": "dot", "title": "AType : Encapsulation machines\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR3\nunitProcedureID : PR-6-ENE\nLineFloor : True\nid : A120\nName : A120:Encapsulation machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A121", "label": "A121:Sterilizers", "shape": "dot", "title": "AType : Sterilizers\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR1\nunitProcedureID : PR-5-STS\nLineFloor : True\nid : A121\nName : A121:Sterilizers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A122", "label": "A122:Filtration machines", "shape": "dot", "title": "AType : Filtration machines\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR12\nunitProcedureID : PR-7-FIF\nLineFloor : True\nid : A122\nName : A122:Filtration machines"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A123", "label": "A123:Pumps", "shape": "dot", "title": "AType : Pumps\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR7\nunitProcedureID : PR-1-PUP\nLineFloor : True\nid : A123\nName : A123:Pumps"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A124", "label": "A124:Tanks", "shape": "dot", "title": "AType : Tanks\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR10\nunitProcedureID : PR-2-TAT\nLineFloor : True\nid : A124\nName : A124:Tanks"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A125", "label": "A125:Calibrator", "shape": "dot", "title": "AType : Calibrator\nFacilityID : F-1-S10\nLineID : L46\nManufacturerID : MFR3\nunitProcedureID : QM-1-CAC\nLineFloor : True\nid : A125\nName : A125:Calibrator"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A126", "label": "A126:Incubators", "shape": "dot", "title": "AType : Incubators\nFacilityID : F-3-S10\nLineID : L48\nManufacturerID : MFR8\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A126\nName : A126:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S10", "label": "Clinton Laboratories Quality Control and Assurance", "shape": "dot", "title": "SiteID : S10\nFType : Quality Control and Assurance\nid : F-3-S10\nRegionID : R2\nName : Clinton Laboratories Quality Control and Assurance"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L48", "label": "LineLIMS Line-TypeQuality Control and Assurance-F-3-S10", "shape": "dot", "title": "LType : LIMS Line\nFacilityID : F-3-S10\nFloor : True\nCapacity : 80\nid : L48\nName : LineLIMS Line-TypeQuality Control and Assurance-F-3-S10"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A127", "label": "A127:HPLC", "shape": "dot", "title": "AType : HPLC\nFacilityID : F-3-S10\nLineID : L48\nManufacturerID : MFR3\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A127\nName : A127:HPLC"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A128", "label": "A128:Particle Size Analyzers", "shape": "dot", "title": "AType : Particle Size Analyzers\nFacilityID : F-3-S10\nLineID : L48\nManufacturerID : MFR3\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A128\nName : A128:Particle Size Analyzers"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A129", "label": "A129:Air Particle Counters", "shape": "dot", "title": "AType : Air Particle Counters\nFacilityID : F-3-S10\nLineID : L48\nManufacturerID : MFR4\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A129\nName : A129:Air Particle Counters"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A130", "label": "A130:Temperature and Humidity Controllers", "shape": "dot", "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-3-S10\nLineID : L48\nManufacturerID : MFR10\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A130\nName : A130:Temperature and Humidity Controllers"}]);
+                  edges = new vis.DataSet([{"from": "A1", "title": "aline", "to": "L1"}, {"from": "F-1-S1", "title": "fsite", "to": "S1"}, {"from": "L1", "title": "lfacility", "to": "F-1-S1"}, {"from": "S1", "title": "sregion", "to": "R1"}, {"from": "A2", "title": "aline", "to": "L1"}, {"from": "A3", "title": "aline", "to": "L1"}, {"from": "A4", "title": "aline", "to": "L1"}, {"from": "A5", "title": "aline", "to": "L1"}, {"from": "A6", "title": "aline", "to": "L1"}, {"from": "A7", "title": "aline", "to": "L1"}, {"from": "A8", "title": "aline", "to": "L3"}, {"from": "F-3-S1", "title": "fsite", "to": "S1"}, {"from": "L3", "title": "lfacility", "to": "F-3-S1"}, {"from": "A9", "title": "aline", "to": "L3"}, {"from": "A10", "title": "aline", "to": "L3"}, {"from": "A11", "title": "aline", "to": "L3"}, {"from": "A12", "title": "aline", "to": "L3"}, {"from": "A13", "title": "aline", "to": "L6"}, {"from": "F-1-S2", "title": "fsite", "to": "S2"}, {"from": "L6", "title": "lfacility", "to": "F-1-S2"}, {"from": "S2", "title": "sregion", "to": "R1"}, {"from": "A14", "title": "aline", "to": "L6"}, {"from": "A15", "title": "aline", "to": "L6"}, {"from": "A16", "title": "aline", "to": "L6"}, {"from": "A17", "title": "aline", "to": "L6"}, {"from": "A18", "title": "aline", "to": "L6"}, {"from": "A19", "title": "aline", "to": "L6"}, {"from": "A20", "title": "aline", "to": "L6"}, {"from": "A21", "title": "aline", "to": "L6"}, {"from": "A22", "title": "aline", "to": "L8"}, {"from": "F-3-S2", "title": "fsite", "to": "S2"}, {"from": "L8", "title": "lfacility", "to": "F-3-S2"}, {"from": "A23", "title": "aline", "to": "L8"}, {"from": "A24", "title": "aline", "to": "L8"}, {"from": "A25", "title": "aline", "to": "L8"}, {"from": "A26", "title": "aline", "to": "L8"}, {"from": "A27", "title": "aline", "to": "L11"}, {"from": "F-1-S3", "title": "fsite", "to": "S3"}, {"from": "L11", "title": "lfacility", "to": "F-1-S3"}, {"from": "S3", "title": "sregion", "to": "R2"}, {"from": "A28", "title": "aline", "to": "L11"}, {"from": "A29", "title": "aline", "to": "L11"}, {"from": "A30", "title": "aline", "to": "L11"}, {"from": "A31", "title": "aline", "to": "L11"}, {"from": "A32", "title": "aline", "to": "L11"}, {"from": "A33", "title": "aline", "to": "L11"}, {"from": "A34", "title": "aline", "to": "L13"}, {"from": "F-3-S3", "title": "fsite", "to": "S3"}, {"from": "L13", "title": "lfacility", "to": "F-3-S3"}, {"from": "A35", "title": "aline", "to": "L13"}, {"from": "A36", "title": "aline", "to": "L13"}, {"from": "A37", "title": "aline", "to": "L13"}, {"from": "A38", "title": "aline", "to": "L13"}, {"from": "A39", "title": "aline", "to": "L16"}, {"from": "F-1-S4", "title": "fsite", "to": "S4"}, {"from": "L16", "title": "lfacility", "to": "F-1-S4"}, {"from": "S4", "title": "sregion", "to": "R2"}, {"from": "A40", "title": "aline", "to": "L16"}, {"from": "A41", "title": "aline", "to": "L16"}, {"from": "A42", "title": "aline", "to": "L16"}, {"from": "A43", "title": "aline", "to": "L16"}, {"from": "A44", "title": "aline", "to": "L16"}, {"from": "A45", "title": "aline", "to": "L16"}, {"from": "A46", "title": "aline", "to": "L16"}, {"from": "A47", "title": "aline", "to": "L16"}, {"from": "A48", "title": "aline", "to": "L18"}, {"from": "F-3-S4", "title": "fsite", "to": "S4"}, {"from": "L18", "title": "lfacility", "to": "F-3-S4"}, {"from": "A49", "title": "aline", "to": "L18"}, {"from": "A50", "title": "aline", "to": "L18"}, {"from": "A51", "title": "aline", "to": "L18"}, {"from": "A52", "title": "aline", "to": "L18"}, {"from": "A53", "title": "aline", "to": "L21"}, {"from": "F-1-S5", "title": "fsite", "to": "S5"}, {"from": "L21", "title": "lfacility", "to": "F-1-S5"}, {"from": "S5", "title": "sregion", "to": "R1"}, {"from": "A54", "title": "aline", "to": "L21"}, {"from": "A55", "title": "aline", "to": "L21"}, {"from": "A56", "title": "aline", "to": "L21"}, {"from": "A57", "title": "aline", "to": "L21"}, {"from": "A58", "title": "aline", "to": "L21"}, {"from": "A59", "title": "aline", "to": "L21"}, {"from": "A60", "title": "aline", "to": "L23"}, {"from": "F-3-S5", "title": "fsite", "to": "S5"}, {"from": "L23", "title": "lfacility", "to": "F-3-S5"}, {"from": "A61", "title": "aline", "to": "L23"}, {"from": "A62", "title": "aline", "to": "L23"}, {"from": "A63", "title": "aline", "to": "L23"}, {"from": "A64", "title": "aline", "to": "L23"}, {"from": "A65", "title": "aline", "to": "L26"}, {"from": "F-1-S6", "title": "fsite", "to": "S6"}, {"from": "L26", "title": "lfacility", "to": "F-1-S6"}, {"from": "S6", "title": "sregion", "to": "R1"}, {"from": "A66", "title": "aline", "to": "L26"}, {"from": "A67", "title": "aline", "to": "L26"}, {"from": "A68", "title": "aline", "to": "L26"}, {"from": "A69", "title": "aline", "to": "L26"}, {"from": "A70", "title": "aline", "to": "L26"}, {"from": "A71", "title": "aline", "to": "L26"}, {"from": "A72", "title": "aline", "to": "L26"}, {"from": "A73", "title": "aline", "to": "L26"}, {"from": "A74", "title": "aline", "to": "L28"}, {"from": "F-3-S6", "title": "fsite", "to": "S6"}, {"from": "L28", "title": "lfacility", "to": "F-3-S6"}, {"from": "A75", "title": "aline", "to": "L28"}, {"from": "A76", "title": "aline", "to": "L28"}, {"from": "A77", "title": "aline", "to": "L28"}, {"from": "A78", "title": "aline", "to": "L28"}, {"from": "A79", "title": "aline", "to": "L31"}, {"from": "F-1-S7", "title": "fsite", "to": "S7"}, {"from": "L31", "title": "lfacility", "to": "F-1-S7"}, {"from": "S7", "title": "sregion", "to": "R2"}, {"from": "A80", "title": "aline", "to": "L31"}, {"from": "A81", "title": "aline", "to": "L31"}, {"from": "A82", "title": "aline", "to": "L31"}, {"from": "A83", "title": "aline", "to": "L31"}, {"from": "A84", "title": "aline", "to": "L31"}, {"from": "A85", "title": "aline", "to": "L31"}, {"from": "A86", "title": "aline", "to": "L33"}, {"from": "F-3-S7", "title": "fsite", "to": "S7"}, {"from": "L33", "title": "lfacility", "to": "F-3-S7"}, {"from": "A87", "title": "aline", "to": "L33"}, {"from": "A88", "title": "aline", "to": "L33"}, {"from": "A89", "title": "aline", "to": "L33"}, {"from": "A90", "title": "aline", "to": "L33"}, {"from": "A91", "title": "aline", "to": "L36"}, {"from": "F-1-S8", "title": "fsite", "to": "S8"}, {"from": "L36", "title": "lfacility", "to": "F-1-S8"}, {"from": "S8", "title": "sregion", "to": "R2"}, {"from": "A92", "title": "aline", "to": "L36"}, {"from": "A93", "title": "aline", "to": "L36"}, {"from": "A94", "title": "aline", "to": "L36"}, {"from": "A95", "title": "aline", "to": "L36"}, {"from": "A96", "title": "aline", "to": "L36"}, {"from": "A97", "title": "aline", "to": "L36"}, {"from": "A98", "title": "aline", "to": "L36"}, {"from": "A99", "title": "aline", "to": "L36"}, {"from": "A100", "title": "aline", "to": "L38"}, {"from": "F-3-S8", "title": "fsite", "to": "S8"}, {"from": "L38", "title": "lfacility", "to": "F-3-S8"}, {"from": "A101", "title": "aline", "to": "L38"}, {"from": "A102", "title": "aline", "to": "L38"}, {"from": "A103", "title": "aline", "to": "L38"}, {"from": "A104", "title": "aline", "to": "L38"}, {"from": "A105", "title": "aline", "to": "L41"}, {"from": "F-1-S9", "title": "fsite", "to": "S9"}, {"from": "L41", "title": "lfacility", "to": "F-1-S9"}, {"from": "S9", "title": "sregion", "to": "R2"}, {"from": "A106", "title": "aline", "to": "L41"}, {"from": "A107", "title": "aline", "to": "L41"}, {"from": "A108", "title": "aline", "to": "L41"}, {"from": "A109", "title": "aline", "to": "L41"}, {"from": "A110", "title": "aline", "to": "L41"}, {"from": "A111", "title": "aline", "to": "L41"}, {"from": "A112", "title": "aline", "to": "L43"}, {"from": "F-3-S9", "title": "fsite", "to": "S9"}, {"from": "L43", "title": "lfacility", "to": "F-3-S9"}, {"from": "A113", "title": "aline", "to": "L43"}, {"from": "A114", "title": "aline", "to": "L43"}, {"from": "A115", "title": "aline", "to": "L43"}, {"from": "A116", "title": "aline", "to": "L43"}, {"from": "A117", "title": "aline", "to": "L46"}, {"from": "F-1-S10", "title": "fsite", "to": "S10"}, {"from": "L46", "title": "lfacility", "to": "F-1-S10"}, {"from": "S10", "title": "sregion", "to": "R2"}, {"from": "A118", "title": "aline", "to": "L46"}, {"from": "A119", "title": "aline", "to": "L46"}, {"from": "A120", "title": "aline", "to": "L46"}, {"from": "A121", "title": "aline", "to": "L46"}, {"from": "A122", "title": "aline", "to": "L46"}, {"from": "A123", "title": "aline", "to": "L46"}, {"from": "A124", "title": "aline", "to": "L46"}, {"from": "A125", "title": "aline", "to": "L46"}, {"from": "A126", "title": "aline", "to": "L48"}, {"from": "F-3-S10", "title": "fsite", "to": "S10"}, {"from": "L48", "title": "lfacility", "to": "F-3-S10"}, {"from": "A127", "title": "aline", "to": "L48"}, {"from": "A128", "title": "aline", "to": "L48"}, {"from": "A129", "title": "aline", "to": "L48"}, {"from": "A130", "title": "aline", "to": "L48"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+    <style>
+        #legend {
+            position: absolute;
+            top: 150px; /* Adjusted top position */
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid black;
+            padding: 10px;
+            display: none; /* Initially hidden */
+            z-index: 1000;
+        }
+        #legend h5 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        #legend ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #legend li {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        #legend span {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 10px;
+            border: 1px solid #000;
+        }
+        #legend-toggle {
+            position: absolute;
+            top: 110px; /* Adjusted top position */
+            right: 10px;
+            padding: 5px 10px;
+            background: #28a745; /* Green color */
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #legend-toggle:hover {
+            background: #218838; /* Darker green on hover */
+        }
+    </style>
+    <button id="legend-toggle">Toggle Legend</button>
+    <div id="legend">
+        <h5>Node Legend</h5>
+        <ul>
+    <li><span style="background: #74c476;"></span> ASSET</li><li><span style="background: #9e9ac8;"></span> LINE</li><li><span style="background: #dadaeb;"></span> FACILITY</li><li><span style="background: #969696;"></span> SITE</li><li><span style="background: #17becf;"></span> REGION</li><li><span style="background: #d6616b;"></span> PRODUCT</li><li><span style="background: #3182bd;"></span> PURCHASEORDER</li><li><span style="background: #ffbb78;"></span> MANUFACTUER</li><li><span style="background: #d6616b;"></span> ASSET_HEALTH</li><li><span style="background: #ad494a;"></span> WO</li><li><span style="background: #ff9896;"></span> ASSET_INFORMATION_SYSTEM</li><li><span style="background: #a55194;"></span> OEE</li><li><span style="background: #5254a3;"></span> ASSET_OPERATIONS</li><li><span style="background: #ebfa63;"></span> CALIBRATIONS</li><li><span style="background: #8ca252;"></span> MAINTENANCE</li><li><span style="background: #c6dbef;"></span> COMPLIANCE</li><li><span style="background: #ad494a;"></span> BATCH</li><li><span style="background: red;"></span> FAILED</li><li><span style="background: green;"></span> PASSED</li>
+        </ul>
+    </div>
+    <script>
+        document.getElementById('legend-toggle').addEventListener('click', function() {
+            var legend = document.getElementById('legend');
+            if (legend.style.display === 'none' || legend.style.display === '') {
+                legend.style.display = 'block';
+            } else {
+                legend.style.display = 'none';
+            }
+        });
+    </script>
+    </body>
+</html>

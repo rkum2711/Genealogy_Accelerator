@@ -1,0 +1,336 @@
+{
+  "product_list": [
+    "Adcirca® (tadalafil)",
+    "Alimta® (pemetrexed)",
+    "Cialis® (tadalafil)",
+    "Cymbalta® (duloxetine)",
+    "Emgality® (galcanezumab)",
+    "Forsteo® (teriparatide)",
+    "Humalog® (human insulin analogue)",
+    "Humulin® (human insulin)",
+    "Olumiant® (baricitinib)",
+    "Strattera® (atomoxetine)",
+    "Taltz® (ixekizumab)",
+    "Trulicity® (dulaglutide)",
+    "Yentreve® (duloxetine)",
+    "Zypadhera® (olanzapine pamoate monohydrate)",
+    "Zyprexa® (olanzapine)"
+  ],
+  "asset_types": [
+    "Mixers",
+    "Granulators",
+    "Mills",
+    "Blenders",
+    "Tablet presses",
+    "Capsule fillers",
+    "Coating machines",
+    "Encapsulation machines",
+    "Drying equipment",
+    "Sterilizers",
+    "Filtration equipment",
+    "Packaging machines",
+    "Labeling machines",
+    "Inspecting machines",
+    "Conveyors",
+    "Pumps",
+    "Tanks",
+    "Reactors",
+    "Distillation equipment",
+    "Extraction equipment"
+  ],
+  "us_state_names": [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+  ],
+  "unitProcedureTypes": {
+    "Production-stage1": [
+      "Mixing ingredients",
+      "Granulation",
+      "Milling",
+      "Blending",
+      "Tablet compression",
+      "Reactors",
+      "Distillation equipment",
+      "Extraction equipment"
+    ],
+    "Production-stage2": [
+      "Pumps",
+      "Tanks",
+      "Capsule filling",
+      "Coating",
+      "Sterilization",
+      "Encapsulation",
+      "Filtration"
+    ],
+    "Maintenance": [
+      "Equipment pre Check",
+      "Equipment post Check"
+    ],
+    "Cleaning": [
+      "Equipment cleaning"
+    ],
+    "QMS": [
+      "Calibration"
+    ],
+    "LIMS": [
+      "Microbiological Testing",
+      "Chemical Analysis",
+      "Physical Testing",
+      "Environmental Monitoring",
+      "Stability Testing"
+    ],
+    "Packaging": [
+      "Packaging machines",
+      "Labeling machines",
+      "Inspecting machines",
+      "Conveyors"
+    ]
+  },
+  "procedureAssetTypes": {
+    "Mixing ingredients": "Mixers",
+    "Granulation": "Granulators",
+    "Milling": "Mills",
+    "Blending": "Blenders",
+    "Tablet compression": "Tablet presses",
+    "Capsule filling": "Capsule fillers",
+    "Coating": "Coating machines",
+    "Sterilization": "Sterilizers",
+    "Equipment pre Check": "Pre Check",
+    "Equipment post Check": "Post Check",
+    "Equipment cleaning": "Cleaning machines",
+    "Calibration": "Calibrator",
+    "Packaging machines": "Packaging Machinery",
+    "Labeling machines": "Label Printers",
+    "Inspecting machines": "Vision Inspection Systems",
+    "Conveyors": "Automated Conveyors",
+    "Microbiological Testing":"Incubators",
+    "Chemical Analysis": "HPLC",
+    "Physical Testing": "Particle Size Analyzers",
+    "Environmental Monitoring": "Air Particle Counters",
+    "Stability Testing": "Temperature and Humidity Controllers",
+    "Pumps": "Pumps",
+    "Tanks": "Tanks",
+    "Reactors": "Reactors",
+    "Distillation equipment": "Distillation equipment",
+    "Extraction equipment": "Extraction equipment",
+    "Encapsulation": "Encapsulation machines",
+    "Filtration": "Filtration machines"
+  },
+  "assetProductionLines": [
+    {
+      "name": "Tier1-Production-Line",
+      "assets": [
+        "Mixers",
+        "Granulators",
+        "Mills",
+        "Blenders",
+        "Reactors",
+        "Distillation equipment",
+        "Extraction equipment"
+      ]
+    },
+    {
+      "name": "Tier2-Production Line",
+      "assets": [
+        "Tablet presses",
+        "Capsule fillers",
+        "Coating machines",
+        "Encapsulation machines",
+        "Sterilizers",
+        "Filtration machines",
+        "Pumps",
+        "Tanks",
+        "Calibrator"
+      ]
+    },
+    {
+      "name": "Packaging Line",
+      "assets": [
+        "Packaging Machinery",
+        "Label Printers",
+        "Vision Inspection Systems",
+        "Automated Conveyors"
+      ]
+    },
+    {
+      "name": "LIMS Line",
+      "assets": [
+        "Incubators",
+        "HPLC",
+        "Particle Size Analyzers",
+        "Air Particle Counters",
+        "Temperature and Humidity Controllers"
+      ]
+    },
+    {
+      "name": "R&D",
+      "assets": [
+        "HTS",
+        "Combinatorial chemistry labs",
+        "Bioinformatics",
+        "Clinical trial"
+      ]
+    },
+    {
+      "name": "Warehousing and Distribution",
+      "assets": [
+        "Storage1",
+        "Storage2",
+        "Storage3",
+        "Transportation fleet"
+      ]
+    }
+
+  ],
+  "eli_lilly_global_locations": [
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "Indiana",
+        "County": "Marion",
+        "City": "Indianapolis",
+        "Plant Name": "Indianapolis Parenteral Manufacturing"
+    },
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "New Jersey",
+        "County": "Somerset",
+        "City": "Branchburg",
+        "Plant Name": "Lilly Biotechnology Center"
+    },
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "Indiana",
+        "County": "Vermillion",
+        "City": "Clinton",
+        "Plant Name": "Clinton Laboratories"
+    },
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "Ohio",
+        "County": "Hamilton",
+        "City": "Evendale",
+        "Plant Name": "Eli Lilly and Company"
+    },
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "Iowa",
+        "County": "Webster",
+        "City": "Fort Dodge",
+        "Plant Name": "Fort Dodge Animal Health"
+    },
+    {
+        "Country": "United States",
+        "Region": "NA",
+        "State": "Rhode Island",
+        "County": "Providence",
+        "City": "Cumberland",
+        "Plant Name": "Lilly Del Caribe Inc."
+    },
+    {
+        "Country": "Ireland",
+        "Region": "Europe",
+        "City": "Kinsale",
+        "Plant Name": "Eli Lilly S.A."
+    },
+    {
+        "Country": "Italy",
+        "Region": "Europe",
+        "City": "Sesto Fiorentino",
+        "Plant Name": "Lilly Italia S.p.A."
+    },
+    {
+        "Country": "France",
+        "Region": "Europe",
+        "City": "Fegersheim",
+        "Plant Name": "Fegersheim Pharmaceutical Operations"
+    },
+    {
+        "Country": "Spain",
+        "Region": "Europe",
+        "City": "Alcobendas",
+        "Plant Name": "Lilly Spain S.A."
+    }
+],
+  "country_codes" :{
+    "United States": "US",
+    "Ireland": "IE",
+    "Italy": "IT",
+    "France": "FR",
+    "Spain": "ES"
+},
+"facility_types" :[
+  "Continous Manufacturing",
+  "Batch Manucaturing",
+  "R&D", 
+  "Warehousing and Distribution"
+],
+"pharma_asset_suppliers" :[
+  "GE Healthcare Life Sciences",
+  "Thermo Fisher Scientific",
+  "Sartorius",
+  "MilliporeSigma (Merck)",
+  "Pall Corporation (Danaher)",
+  "Eppendorf",
+  "Agilent Technologies",
+  "Waters Corporation",
+  "Shimadzu Corporation",
+  "PerkinElmer",
+  "Rockwell Automation",
+  "ABB"
+],
+  "num_products": 10,
+  "num_oems": 10
+}
