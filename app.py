@@ -575,6 +575,22 @@ def app():
             MATCH (b:batch)-[bf:batchWarehouse]->(f:facility)
             RETURN *
             """
+            if st.button("TABLE"):
+                query = f"""
+                MATCH (b:batch)-[bf:batchWarehouse]->(f:facility)
+                WITH f, COUNT(b) AS TotalBatches
+                ORDER BY TotalBatches DESC
+                RETURN f.id, f.SiteID, f.RegionID, f.FType, TotalBatches
+                """
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
+                    with st.spinner("Converting into RESULT ..."):
+                        df = pd.DataFrame(graphData, columns=keys)
+                        st.table(df)
+                driver.close()
         try:
             if st.button("Visualize"):
                 with driver.session() as session:
