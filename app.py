@@ -507,9 +507,9 @@ def app():
                 MATCH (po)-[bpo:pBatch]->(b:batch)
                 MATCH (m) <-[sm:supplierMaterial]-(sup:supplier)
                 WITH m, sup, COUNT(DISTINCT b) as totalBatchCount, COUNT(DISTINCT p) as totalProductCount
-                ORDER BY totalbatch DESC
+                ORDER BY totalBatchCount DESC
                 limit 10
-                RETURN m.id, sup.id, sup.Name, sup.Address, totalbatch, totalproduct
+                RETURN m.id, sup.id, sup.Name, sup.Address, totalBatchCount, totalProductCount
                 """
                 with driver.session() as session:
                     with st.spinner("Executing query..."):
