@@ -506,7 +506,7 @@ def app():
                 MATCH (p)-[ppo:productPo]->(po:po)
                 MATCH (po)-[bpo:pBatch]->(b:batch)
                 MATCH (m) <-[sm:supplierMaterial]-(sup:supplier)
-                WITH m, sup, count(b) as totalbatch,count(p) as totalproduct
+                WITH m, sup, COUNT(DISTINCT b) as totalBatchCount, COUNT(DISTINCT p) as totalProductCount
                 ORDER BY totalbatch DESC
                 limit 10
                 RETURN m.id, sup.id, sup.Name, sup.Address, totalbatch, totalproduct
