@@ -261,15 +261,45 @@ function highlightFilter(filter) {
                             >
                                 <option selected>Select a Node by ID</option>
                                 
-                                    <option value="A17">A17</option>
+                                    <option value="M8">M8</option>
                                 
-                                    <option value="AM017">AM017</option>
+                                    <option value="SUP20">SUP20</option>
                                 
-                                    <option value="AO017">AO017</option>
+                                    <option value="M17">M17</option>
                                 
-                                    <option value="OEE017">OEE017</option>
+                                    <option value="SUP34">SUP34</option>
                                 
-                                    <option value="MFR12">MFR12</option>
+                                    <option value="M2">M2</option>
+                                
+                                    <option value="SUP5">SUP5</option>
+                                
+                                    <option value="M9">M9</option>
+                                
+                                    <option value="SUP40">SUP40</option>
+                                
+                                    <option value="M26">M26</option>
+                                
+                                    <option value="SUP36">SUP36</option>
+                                
+                                    <option value="M4">M4</option>
+                                
+                                    <option value="SUP44">SUP44</option>
+                                
+                                    <option value="M15">M15</option>
+                                
+                                    <option value="SUP45">SUP45</option>
+                                
+                                    <option value="M29">M29</option>
+                                
+                                    <option value="SUP37">SUP37</option>
+                                
+                                    <option value="M7">M7</option>
+                                
+                                    <option value="SUP39">SUP39</option>
+                                
+                                    <option value="M28">M28</option>
+                                
+                                    <option value="SUP14">SUP14</option>
                                 
                             </select>
                         </div>
@@ -323,8 +353,8 @@ function highlightFilter(filter) {
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#74c476", "font": {"color": "black"}, "id": "A17", "label": "A17:Packaging Machinery", "shape": "dot", "title": "AType : Packaging Machinery\nFacilityID : F-1-S1\nLineID : L3\nManufacturerID : MFR12\nunitProcedureID : PA-1-PAM\nLineFloor : True\nid : A17\nName : A17:Packaging Machinery"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM017", "label": "AM017", "shape": "dot", "title": "Temperature : 20.26\nVibration : 5.72\nNoise : 40.55\nThroughput : 97.82\nid : AM017\nAssetID : A17\nPressure : 0.83"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO017", "label": "AO017", "shape": "dot", "title": "Availability : 87.69\nTotalProductionQuantity : 670\nQuality : 89.55\nDowntime : 12.31\nid : AO017\nGoodQuantity : 600.0001015373388\nPerformance : 99.96\nAssetID : A17"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE017", "label": "OEE017", "shape": "dot", "title": "id : OEE017\nAssetID : A17\nOEE : 78.49"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR12", "label": "MFR12", "shape": "dot", "title": "ManufacturerName : ABB\nid : MFR12"}]);
-                  edges = new vis.DataSet([{"from": "AM017", "title": "assetMachine", "to": "A17"}, {"from": "OEE017", "title": "assetOee", "to": "A17"}, {"from": "A17", "title": "assetOem", "to": "MFR12"}, {"from": "AO017", "title": "assetOper", "to": "A17"}]);
+                  nodes = new vis.DataSet([{"color": "#2ca02c", "font": {"color": "black"}, "id": "M8", "label": "Material8", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-03-18T00:00:00.000000000+00:00\nStorage : STORAGE-Il\nQty : 840\nid : M8\nBatchDate : 2024-03-18T00:00:00.000000000+00:00\nName : Material8\nLocation : Illinois"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP20", "label": "Supplier20", "shape": "dot", "title": "Email : supplier20@example.com\nAddress : Address20\nPhone : 123-456-1019\nid : SUP20\nName : Supplier20"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M17", "label": "Material17", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-11-30T00:00:00.000000000+00:00\nStorage : STORAGE-So\nQty : 480\nid : M17\nBatchDate : 2023-12-01T00:00:00.000000000+00:00\nName : Material17\nLocation : South Carolina"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP34", "label": "Supplier34", "shape": "dot", "title": "Email : supplier34@example.com\nAddress : Address34\nPhone : 123-456-1033\nid : SUP34\nName : Supplier34"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M2", "label": "Material2", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2025-09-20T00:00:00.000000000+00:00\nStorage : STORAGE-Co\nQty : 190\nid : M2\nBatchDate : 2023-09-21T00:00:00.000000000+00:00\nName : Material2\nLocation : Colorado"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP5", "label": "Supplier5", "shape": "dot", "title": "Email : supplier5@example.com\nAddress : Address5\nPhone : 123-456-1004\nid : SUP5\nName : Supplier5"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M9", "label": "Material9", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-01-27T00:00:00.000000000+00:00\nStorage : STORAGE-Al\nQty : 910\nid : M9\nBatchDate : 2023-01-28T00:00:00.000000000+00:00\nName : Material9\nLocation : Alabama"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP40", "label": "Supplier40", "shape": "dot", "title": "Email : supplier40@example.com\nAddress : Address40\nPhone : 123-456-1039\nid : SUP40\nName : Supplier40"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M26", "label": "Material26", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-03-21T00:00:00.000000000+00:00\nStorage : STORAGE-Ha\nQty : 860\nid : M26\nBatchDate : 2023-03-22T00:00:00.000000000+00:00\nName : Material26\nLocation : Hawaii"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP36", "label": "Supplier36", "shape": "dot", "title": "Email : supplier36@example.com\nAddress : Address36\nPhone : 123-456-1035\nid : SUP36\nName : Supplier36"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M4", "label": "Material4", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-10-18T00:00:00.000000000+00:00\nStorage : STORAGE-Ok\nQty : 110\nid : M4\nBatchDate : 2023-10-19T00:00:00.000000000+00:00\nName : Material4\nLocation : Oklahoma"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP44", "label": "Supplier44", "shape": "dot", "title": "Email : supplier44@example.com\nAddress : Address44\nPhone : 123-456-1043\nid : SUP44\nName : Supplier44"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M15", "label": "Material15", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2027-01-28T00:00:00.000000000+00:00\nStorage : STORAGE-Ne\nQty : 720\nid : M15\nBatchDate : 2024-01-29T00:00:00.000000000+00:00\nName : Material15\nLocation : Nebraska"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP45", "label": "Supplier45", "shape": "dot", "title": "Email : supplier45@example.com\nAddress : Address45\nPhone : 123-456-1044\nid : SUP45\nName : Supplier45"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M29", "label": "Material29", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2024-07-08T00:00:00.000000000+00:00\nStorage : STORAGE-No\nQty : 260\nid : M29\nBatchDate : 2023-07-09T00:00:00.000000000+00:00\nName : Material29\nLocation : North Dakota"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP37", "label": "Supplier37", "shape": "dot", "title": "Email : supplier37@example.com\nAddress : Address37\nPhone : 123-456-1036\nid : SUP37\nName : Supplier37"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M7", "label": "Material7", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2026-08-23T00:00:00.000000000+00:00\nStorage : STORAGE-Ma\nQty : 380\nid : M7\nBatchDate : 2023-08-24T00:00:00.000000000+00:00\nName : Material7\nLocation : Maryland"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP39", "label": "Supplier39", "shape": "dot", "title": "Email : supplier39@example.com\nAddress : Address39\nPhone : 123-456-1038\nid : SUP39\nName : Supplier39"}, {"color": "#2ca02c", "font": {"color": "black"}, "id": "M28", "label": "Material28", "shape": "dot", "title": "Status : Passed\nExpiryDate : 2025-05-10T00:00:00.000000000+00:00\nStorage : STORAGE-Ok\nQty : 520\nid : M28\nBatchDate : 2023-05-11T00:00:00.000000000+00:00\nName : Material28\nLocation : Oklahoma"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP14", "label": "Supplier14", "shape": "dot", "title": "Email : supplier14@example.com\nAddress : Address14\nPhone : 123-456-1013\nid : SUP14\nName : Supplier14"}]);
+                  edges = new vis.DataSet([{"from": "SUP20", "title": "supplierMaterial", "to": "M8"}, {"from": "SUP34", "title": "supplierMaterial", "to": "M17"}, {"from": "SUP5", "title": "supplierMaterial", "to": "M2"}, {"from": "SUP40", "title": "supplierMaterial", "to": "M9"}, {"from": "SUP36", "title": "supplierMaterial", "to": "M26"}, {"from": "SUP44", "title": "supplierMaterial", "to": "M4"}, {"from": "SUP45", "title": "supplierMaterial", "to": "M15"}, {"from": "SUP37", "title": "supplierMaterial", "to": "M29"}, {"from": "SUP39", "title": "supplierMaterial", "to": "M7"}, {"from": "SUP14", "title": "supplierMaterial", "to": "M28"}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });

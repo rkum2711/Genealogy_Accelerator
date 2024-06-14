@@ -393,11 +393,45 @@ def app():
             WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
             RETURN *
             """
+            if st.button("TABLE"):
+                query = f"""
+                MATCH (a:asset)-[al:assetline]->(l:line)
+                MATCH (l)-[lf:lineFacility]->(f:facility)
+                MATCH (f)-[fs:facilitySite]->(s:site)
+                MATCH (s)-[sr:siteRegion]->(r:region)
+                MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+                MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+                MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+                MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                MATCH (a)-[aoem:assetOem]->(oem:oem)
+                MATCH (a)<-[acom:assetCompliance]-(com:compliance)
+                MATCH (a)<-[amain:assetMain]-(main:maintenance)
+                MATCH (a)<-[acal:assetCal]-(cal:calibration)
+                WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
+                RETURN a.id,a.Name,f.Name,s.Name, ao.Downtime AS downtime
+                ORDER BY downtime DESC
+                LIMIT 10
+                """
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
+                    with st.spinner("Converting into RESULT ..."):
+                        df = pd.DataFrame(graphData, columns=keys)
+                        st.table(df)
+                driver.close()
         elif query_type == asset_questions[2]:
+            query = f"""
+            MATCH (a:asset)-[:assetWO]->(wo:wo)
+            RETURN a, count(wo) AS operationCount
+            ORDER BY operationCount DESC
+            LIMIT 10;
+            """
             if st.button("TABLE"):
                 query = f"""
                 MATCH (a:asset)-[:assetWO]->(wo:wo)
-                RETURN a.id, count(wo) AS operationCount
+                RETURN a.id, a.Name, count(wo) AS operationCount
                 ORDER BY operationCount DESC
                 LIMIT 10;
                 """
@@ -405,30 +439,24 @@ def app():
                     with st.spinner("Executing query..."):
                         with st.spinner("Data Loading ...."):
                             graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
                     with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData)
-                        df.columns = ["Asset ID", "Total WorkOrders"]
+                        df = pd.DataFrame(graphData, columns=keys)
                         st.table(df)
                 driver.close()
-            else:
-                query = f"""
-                MATCH (a:asset)-[:assetWO]->(wo:wo)
-                RETURN a.id, count(wo) AS operationCount
-                ORDER BY operationCount DESC
-                LIMIT 10;
-                """
-        if st.button("Visualize"):
-            with driver.session() as session:
-                try:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                    with st.spinner("Converting into Graph ..."):
-                        graph, node_properties = generate_nodes_edges(graphData)
-                        save_graph_file(graph, html_file_path)
-                    driver.close()
-                except Exception as e:
-                    st.error(f"Error executing query: {e}")
+        if not query_type == asset_questions[2]:
+            if st.button("Visualize"):
+                with driver.session() as session:
+                    try:
+                        with st.spinner("Executing query..."):
+                            with st.spinner("Data Loading ...."):
+                                graphData = get_neo4j_data(query,session)
+                        with st.spinner("Converting into Graph ..."):
+                            graph, node_properties = generate_nodes_edges(graphData)
+                            save_graph_file(graph, html_file_path)
+                        driver.close()
+                    except Exception as e:
+                        st.error(f"Error executing query: {e}")
     elif option == options_list[1]:
         with col1:
             st.success(f"Total Batch: {len(batch_ids)}")
@@ -465,10 +493,11 @@ def app():
             MATCH (r)-[pr:recipeProduct]->(p:product)
             MATCH (p)-[ppo:productPo]->(po:po)
             MATCH (po)-[bpo:pBatch]->(b:batch)
-            WITH m, count(b) as totalbatch
+            MATCH (m)<-[sm:supplierMaterial]-(sup:supplier)
+            WITH m, sm, sup, count(b) as totalbatch
             ORDER BY totalbatch DESC
             limit {int(limit)}
-            RETURN m
+            RETURN m,sm,sup
             """
             if st.button("TABLE"):
                 query = f"""
@@ -476,18 +505,19 @@ def app():
                 MATCH (r)-[pr:recipeProduct]->(p:product)
                 MATCH (p)-[ppo:productPo]->(po:po)
                 MATCH (po)-[bpo:pBatch]->(b:batch)
-                WITH m, count(b) as totalbatch
+                MATCH (m) <-[sm:supplierMaterial]-(sup:supplier)
+                WITH m, sup, count(b) as totalbatch,count(p) as totalproduct
                 ORDER BY totalbatch DESC
-                limit {int(limit)}
-                RETURN m.id, totalbatch
+                limit 10
+                RETURN m.id, sup.id, sup.Name, sup.Address, totalbatch, totalproduct
                 """
                 with driver.session() as session:
                     with st.spinner("Executing query..."):
                         with st.spinner("Data Loading ...."):
                             graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
                     with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData)
-                        df.columns = ["Material ID", "Total Batch"]
+                        df = pd.DataFrame(graphData, columns=keys)
                         st.table(df)
                 driver.close()
         elif query_type == batch_questions[2]:
@@ -495,6 +525,20 @@ def app():
             MATCH (b:batch)<-[pob:pBatch]-(po:po)
             RETURN *
             """
+            if st.button("TABLE"):
+                query = f"""
+                MATCH (b:batch)<-[pob:pBatch]-(po:po)
+                RETURN po.id, po.Qty, po.Status, count(b) AS batchcount
+                """
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
+                    with st.spinner("Converting into RESULT ..."):
+                        df = pd.DataFrame(graphData, columns=keys)
+                        st.table(df)
+                driver.close()
         elif query_type == batch_questions[3]:
             query = f"""
             MATCH (b:batch)<-[pb:pBatch]-(po:po)
@@ -506,6 +550,26 @@ def app():
             WHERE lims.Status = 'Failed'
             RETURN *
             """
+            if st.button("TABLE"):
+                query = f"""
+                MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                MATCH (po)<-[ppo:productPo]-(p:product)
+                MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                MATCH (r)<-[mr:materialRecipe]-(m:material)
+                MATCH (b)-[blims:batchLims]->(lims:lims)
+                MATCH (lims)-[limswo:limsWO]-(wo:wo)
+                WHERE lims.Status = 'Failed'
+                RETURN b.id, po.id, p.id, p.Name, wo.id, lims.Test, lims.Result, lims.Status
+                """
+                with driver.session() as session:
+                    with st.spinner("Executing query..."):
+                        with st.spinner("Data Loading ...."):
+                            graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
+                    with st.spinner("Converting into RESULT ..."):
+                        df = pd.DataFrame(graphData, columns=keys)
+                        st.table(df)
+                driver.close()
         elif query_type == batch_questions[4]:
             query = f"""
             MATCH (b:batch)-[bf:batchWarehouse]->(f:facility)
@@ -557,9 +621,9 @@ def app():
                     with driver.session() as session:
                         with st.spinner("Executing query..."):
                             graphData = get_neo4j_data(query,session)
+                            keys = graphData.keys()
                         with st.spinner("Converting into RESULT ..."):
-                            df = pd.DataFrame(graphData)
-                            df.columns = ["Asset ID", "OEE"]
+                            df = pd.DataFrame(graphData, columns=keys)
                             st.table(df)
                     driver.close()
                 elif asset:
@@ -576,9 +640,9 @@ def app():
                             with st.spinner("Executing query..."):
                                 with st.spinner("Data Loading ...."):
                                     graphData = get_neo4j_data(query,session)
-                            with st.spinner("Converting into Graph ..."):
-                                graph, node_properties = generate_nodes_edges(graphData)
-                                save_graph_file(graph, html_file_path)
+                                with st.spinner("Converting into Graph ..."):
+                                    graph, node_properties = generate_nodes_edges(graphData)
+                                    save_graph_file(graph, html_file_path)
                         driver.close()
                     except Exception as e:
                         st.error(f"Error executing query: {e}")
