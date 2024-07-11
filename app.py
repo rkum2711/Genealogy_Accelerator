@@ -220,8 +220,7 @@ def app():
         with col7:
             st.info(f"Total WO : {len(wo_ids)}")
         st.subheader(option)
-        tab1, tab2, tab3, tab4 = st.tabs(["Batch", "Asset", 
-                                          "Purchase Order","Product"])
+        tab1, tab2 = st.tabs(["Purchase Order","Product"])
         # with tab1:
         #     st.header("Visualize and trace the operations performed on the batch throughout its lifecycle")
         #     selected_batch = st.selectbox("Select batch ", batch_ids)
@@ -311,7 +310,6 @@ def app():
                             MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
                             MATCH (a)<-[aoee:assetOee]-(oee:oee)
                             MATCH (a)-[aoem:assetOem]->(oem:oem)
-                            OPTIONAL MATCH (a)-[awo:assetWO]-(wo:wo)
                             OPTIONAL MATCH (a)<-[acom:assetCompliance]-(com:compliance)
                             OPTIONAL MATCH (a)<-[amain:assetMain]-(main:maintenance)
                             OPTIONAL MATCH (a)<-[acal:assetCal]-(cal:calibration)
