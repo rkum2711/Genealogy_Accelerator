@@ -310,9 +310,6 @@ def app():
                             MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
                             MATCH (a)<-[aoee:assetOee]-(oee:oee)
                             MATCH (a)-[aoem:assetOem]->(oem:oem)
-                            OPTIONAL MATCH (a)<-[acom:assetCompliance]-(com:compliance)
-                            OPTIONAL MATCH (a)<-[amain:assetMain]-(main:maintenance)
-                            OPTIONAL MATCH (a)<-[acal:assetCal]-(cal:calibration)
                             WHERE po.id = "{selected_PO}"
                             RETURN *
                             """
