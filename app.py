@@ -20,7 +20,7 @@ options_list = [
     "Manufacturing Knowledge Graph",
     "Batch Genealogy",
     "Assets Traceability",
-    "Ask More Questions-(GEN AI)"
+    # "Ask More Questions-(GEN AI)"
   ]
 asset_questions = [
     "Asset Monitoring", 
@@ -93,6 +93,8 @@ def generate_nodes_edges(data):
     added_nodes = set()
     node_properties = {}
     batch_connections = {}
+    wo_connections = {}
+    asset_connections = {}
     for record in data:
         for key, value in record.items():
             if value is not None and "id" in value.keys() and value["id"] not in added_nodes:
@@ -102,6 +104,8 @@ def generate_nodes_edges(data):
                 node_size = 25  # Default size
                 node_prop_html = "\n".join(f"{k} : {v}" for k, v in value._properties.items())
 
+                if node_label == "LIMS" and value._properties.get("Status") == "Failed":
+                    node_color = "red"
                 if node_label == "po".upper():
                     node_size =  50 # Increase size
                 if node_label == "batch".upper():
@@ -116,6 +120,10 @@ def generate_nodes_edges(data):
                 # Track batch connections
                 if node_label == "BATCH":
                     batch_connections[node_id] = []
+                elif node_label == "WO":
+                    wo_connections[node_id] = []
+                elif node_label == "ASSET":
+                    asset_connections[node_id] = []
 
         for key, value in record.items():
             if value is not None and hasattr(value, 'start_node'):
@@ -130,12 +138,31 @@ def generate_nodes_edges(data):
                     elif start_label == "LIMS" and end_label == "BATCH":
                         batch_connections[value.end_node["id"]].append(value.start_node["id"])
 
-    # Second pass: Update batch nodes color if any connected LIMS node failed
+                    # Track WO connections
+                    if start_label == "WO" and end_label == "ASSET":
+                        wo_connections[value.start_node["id"]].append(value.end_node["id"])
+                    elif start_label == "ASSET" and end_label == "WO":
+                        wo_connections[value.end_node["id"]].append(value.start_node["id"])
+
+                    # Track asset to OEE connections
+                    if start_label == "ASSET" and end_label == "MACHINE_DATA":
+                        asset_connections[value.start_node["id"]].append(value.end_node["id"])
+                    elif start_label == "MACHINE_DATA" and end_label == "ASSET":
+                        asset_connections[value.end_node["id"]].append(value.start_node["id"])
+
+    #Update batch nodes color if any connected LIMS node failed
+    failed_batches = set()
     for batch_id, lims_ids in batch_connections.items():
         for lims_id in lims_ids:
             if node_properties[lims_id].get("Status") == "Failed":
                 net.get_node(batch_id)["color"] = "red"
-                net.get_node(batch_id)["size"] = 35
+                failed_batches.add(batch_id)
+                break
+    #Update asset nodes color if any connected OEE node has OEE < 70
+    for asset_id, machine_ids in asset_connections.items():
+        for id in machine_ids:
+            if node_properties[id].get("Temperature") > 24:
+                net.get_node(asset_id)["color"] = "red"
                 break
     return net, node_properties
 
@@ -191,7 +218,7 @@ def save_graph_file(graph,html_file_path):
             background: #218838; /* Darker green on hover */
         }}
     </style>
-    <button id="legend-toggle">Toggle Legend</button>
+    <button id="legend-toggle">Node Info</button>
     <div id="legend">
         <h5>Node Legend</h5>
         <ul>
@@ -250,7 +277,7 @@ def app():
         with col7:
             st.info(f"Total WO : {len(wo_ids)}")
         st.subheader(option)
-        tab1, tab2 = st.tabs(["Purchase Order","Product"])
+        tab1, tab2, tab3 = st.tabs(["UI Tracking","Saved Question", "GEN AI"])
         # with tab1:
         #     st.header("Visualize and trace the operations performed on the batch throughout its lifecycle")
         #     selected_batch = st.selectbox("Select batch ", batch_ids)
@@ -313,9 +340,9 @@ def app():
         #             except Exception as e:
         #                 st.error(f"Error executing query: {e}")
         with tab1:
-            st.header("Visualize all operations executed for a Purchase Order (PO)")
+            st.header("Visualize all batches and assets executed for a Process Order (PO)")
             selected_PO = st.selectbox("Select PO ", po_ids)
-            if st.button("PO Visualize"):
+            if st.button("Query Knowledge Graph"):
                 with st.spinner("Executing query..."):
                     try:
                         with st.spinner("Data Loading ...."):
@@ -353,12 +380,103 @@ def app():
                     except Exception as e:
                         st.error(f"Error executing query: {e}")
         with tab2:
-            st.header("Visualize all operations executed for a Product.")
-            selected_product = st.selectbox("Select Product", product_ids)
-            if st.button("Product Visualize"):
-                with st.spinner("Executing query..."):
-                    try:
-                        with st.spinner("Data Loading ...."):
+            st.header("View the traceability of failed batches for a selected PO")
+            selected_PO1 = st.selectbox("Select Process order ", po_ids)
+            try:
+                if st.button("Query Graph"):
+                    query = f"""
+                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                    MATCH (po)<-[ppo:productPo]-(p:product)
+                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                    MATCH (r)<-[mr:materialRecipe]-(m:material)
+                    MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                    MATCH (f)-[fs:facilitySite]->(s:site)
+                    MATCH (s)-[sr:siteRegion]->(re:region)
+                    MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                    MATCH (b)-[blims:batchLims]->(lims:lims)
+                    MATCH (wo)<-[awo:assetWO]->(a:asset)
+                    MATCH (a)-[al:assetline]->(l:line)
+                    MATCH (l)-[lf:lineFacility]->(af:facility)
+                    MATCH (af)-[afs:facilitySite]->(as:site)
+                    MATCH (as)-[asr:siteRegion]->(ar:region)
+                    MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+                    MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+                    MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+                    MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                    MATCH (a)-[aoem:assetOem]->(oem:oem)
+                    WHERE po.id = "{selected_PO1}" AND lims.Status = "Failed"
+                    RETURN b,bwo,wo,blims,lims,awo,a,al,l,lf,af,afs,as,asr,ar,ainfo,ai,amachine,am,aoee,oee,aoem,oem
+                    """
+                    with driver.session() as session:
+                        with st.spinner("Executing query..."):
+                            with st.spinner("Data Loading ...."):
+                                graphData = get_neo4j_data(query,session)
+                        with st.spinner("Converting into Graph ..."):
+                            graph, node_properties = generate_nodes_edges(graphData)
+                            save_graph_file(graph, html_file_path)
+                if st.button("TABLE"):
+                    query = f"""
+                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                    MATCH (po)<-[ppo:productPo]-(p:product)
+                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                    MATCH (r)<-[mr:materialRecipe]-(m:material)
+                    MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                    MATCH (f)-[fs:facilitySite]->(s:site)
+                    MATCH (s)-[sr:siteRegion]->(re:region)
+                    MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                    MATCH (b)-[blims:batchLims]->(lims:lims)
+                    MATCH (wo)<-[awo:assetWO]->(a:asset)
+                    MATCH (a)-[al:assetline]->(l:line)
+                    MATCH (l)-[lf:lineFacility]->(af:facility)
+                    MATCH (af)-[afs:facilitySite]->(as:site)
+                    MATCH (as)-[asr:siteRegion]->(ar:region)
+                    MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+                    MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+                    MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+                    MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                    MATCH (a)-[aoem:assetOem]->(oem:oem)
+                    WHERE po.id = "{selected_PO1}"
+                    AND lims.Status = "Failed"
+                    AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
+                    AND am.Temperature > 24
+                    RETURN po.id AS PO_ID, 
+                        b.id AS Batch_ID, 
+                        a.id AS Asset_ID,
+                        a.Name AS Asset_Name, 
+                        lims.Status AS Lims_Status, 
+                        am.Temperature AS Machine_Temperature, 
+                        l.id AS Line_ID, 
+                        f.id AS Facility_ID, 
+                        s.Name AS Site, 
+                        re.Name AS Region
+                    """
+                    with driver.session() as session:
+                        with st.spinner("Executing query..."):
+                            with st.spinner("Data Loading ...."):
+                                graphData = get_neo4j_data(query,session)
+                                keys = graphData.keys()
+                        with st.spinner("Converting into RESULT ..."):
+                            df = pd.DataFrame(graphData, columns=keys)
+                            st.table(df)
+                driver.close()
+            except Exception as e:
+                st.error(f"Error executing query: {e}")
+        with tab3:
+            st.image(chatgpt_icon, width=50)
+            ai_search = st.text_input("AI CHATBOT", "")
+            if st.button("RUN"):
+                try:
+                    batches = re.findall(r'batch(?:es|s)?', ai_search, flags=re.IGNORECASE)
+                    pid = re.findall(r'PO\d+', ai_search, flags=re.IGNORECASE)[0]
+                    all = re.findall(r'all?', ai_search, flags=re.IGNORECASE)
+                    failed = re.findall(r'fail?', ai_search, flags=re.IGNORECASE)
+                    asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
+                    if batches:
+                        if all:
                             query = f"""
                             MATCH (b:batch)<-[pb:pBatch]-(po:po)
                             MATCH (po)<-[ppo:productPo]-(p:product)
@@ -370,22 +488,124 @@ def app():
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
                             MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (b)-[blims:batchLims]->(lims:lims)
                             MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
                             MATCH (af)-[afs:facilitySite]->(as:site)
                             MATCH (as)-[asr:siteRegion]->(ar:region)
-                            WHERE p.id = "{selected_product}"
+                            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+                            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+                            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                            MATCH (a)-[aoem:assetOem]->(oem:oem)
+                            WHERE po.id = "{pid}" 
+                            AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
+                            AND am.Temperature > 24
+                            RETURN b.id
+                            """
+                        if failed:
+                            query = f"""
+                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
+                            MATCH (po)<-[ppo:productPo]-(p:product)
+                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+                            MATCH (r)<-[mr:materialRecipe]-(m:material)
+                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+                            MATCH (f)-[fs:facilitySite]->(s:site)
+                            MATCH (s)-[sr:siteRegion]->(re:region)
+                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (b)-[blims:batchLims]->(lims:lims)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
+                            MATCH (a)-[al:assetline]->(l:line)
+                            MATCH (l)-[lf:lineFacility]->(af:facility)
+                            MATCH (af)-[afs:facilitySite]->(as:site)
+                            MATCH (as)-[asr:siteRegion]->(ar:region)
+                            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
+                            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
+                            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
+                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                            MATCH (a)-[aoem:assetOem]->(oem:oem)
+                            WHERE po.id = "{pid}" 
+                            AND lims.Status = "Failed"
+                            AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
+                            AND am.Temperature > 24
+                            RETURN b.id
+                            """
+                        with driver.session() as session:
+                            with st.spinner("Executing query..."):
+                                graphData = get_neo4j_data(query,session)
+                                keys = graphData.keys()
+                            with st.spinner("Converting into RESULT ..."):
+                                df = pd.DataFrame(graphData, columns=keys)
+                                st.table(df)
+                        driver.close()
+                    elif asset:
+                        bid = re.findall(r'BPO\d+-\d+-\d+', ai_search, flags=re.IGNORECASE)[0]
+                        if bid:
+                            st.text(bid)
+                        else:
+                            bid = st.text("batch id not available in the database")
+                        try:
+                            query = f"""
+                            MATCH (b:batch)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (wo)<-[awo:assetWO]->(a:asset)
+                            MATCH (a)<-[amachine:assetMachine]-(machine:machine_data)
+                            MATCH (a)<-[aoper:assetOper]-(od:operation_data)
+                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
+                            MATCH (a)-[aoem:assetOem]->(oem:oem)
+                            WHERE b.id = "{bid}" 
                             RETURN *
                             """
                             with driver.session() as session:
-                                graphData = get_neo4j_data(query,session)
-                                with st.spinner("Converting into Graph ..."):
-                                    graph, node_properties = generate_nodes_edges(graphData)
-                                    save_graph_file(graph, html_file_path)
+                                with st.spinner("Executing query..."):
+                                    with st.spinner("Data Loading ...."):
+                                        graphData = get_neo4j_data(query,session)
+                                    with st.spinner("Converting into Graph ..."):
+                                        graph, node_properties = generate_nodes_edges(graphData)
+                                        save_graph_file(graph, html_file_path)
                             driver.close()
-                    except Exception as e:
-                        st.error(f"Error executing query: {e}")
+                        except Exception as e:
+                            st.error(f"Error executing query: {e}")
+                    else:
+                        st.error("Please Try Again")
+                except Exception as e:
+                    st.error(f"Error executing query: {e}")
+        # with tab2:
+        #     st.header("Visualize all operations executed for a Product.")
+        #     selected_product = st.selectbox("Select Product", product_ids)
+        #     if st.button("Product Visualize"):
+        #         with st.spinner("Executing query..."):
+        #             try:
+        #                 with st.spinner("Data Loading ...."):
+        #                     query = f"""
+        #                     MATCH (b:batch)<-[pb:pBatch]-(po:po)
+        #                     MATCH (po)<-[ppo:productPo]-(p:product)
+        #                     MATCH (p)<-[rp:recipeProduct]-(r:recipe)
+        #                     MATCH (r)<-[mr:materialRecipe]-(m:material)
+        #                     MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
+        #                     MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
+        #                     MATCH (pm)<-[fpm:facilityPm]-(f:facility)
+        #                     MATCH (f)-[fs:facilitySite]->(s:site)
+        #                     MATCH (s)-[sr:siteRegion]->(re:region)
+        #                     MATCH (b)<-[bwo:batchWO]->(wo:wo)
+        #                     MATCH (wo)<-[awo:assetWO]->(a:asset)
+        #                     MATCH (a)-[al:assetline]->(l:line)
+        #                     MATCH (l)-[lf:lineFacility]->(af:facility)
+        #                     MATCH (af)-[afs:facilitySite]->(as:site)
+        #                     MATCH (as)-[asr:siteRegion]->(ar:region)
+        #                     WHERE p.id = "{selected_product}"
+        #                     RETURN *
+        #                     """
+        #                     with driver.session() as session:
+        #                         graphData = get_neo4j_data(query,session)
+        #                         with st.spinner("Converting into Graph ..."):
+        #                             graph, node_properties = generate_nodes_edges(graphData)
+        #                             save_graph_file(graph, html_file_path)
+        #                     driver.close()
+        #             except Exception as e:
+        #                 st.error(f"Error executing query: {e}")
     elif option == options_list[2]:
         with col1:
             st.success(f"Total Assets: {len(asset_ids)}")
@@ -638,68 +858,68 @@ def app():
                 driver.close()
         except Exception as e:
             st.error(f"Error executing query: {e}")
-    elif option == options_list[3]:
-        st.image(chatgpt_icon, width=50)
-        ai_search = st.text_input("AI CHATBOT", "")
-        if st.button("RUN"):
-            try:
-                oee = re.findall(r'OEE?', ai_search, flags=re.IGNORECASE)
-                high = re.findall(r'high?', ai_search, flags=re.IGNORECASE)
-                low = re.findall(r'low?', ai_search, flags=re.IGNORECASE)
-                asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
-                if oee:
-                    if high:
-                        query = f"""
-                        MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-                        RETURN a.id, oee.OEE
-                        ORDER BY oee.OEE DESC
-                        LIMIT 10
-                        """
-                    elif low:
-                        query = f"""
-                        MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-                        RETURN a.id, oee.OEE
-                        ORDER BY oee.OEE ASC
-                        LIMIT 10
-                        """
-                    else:
-                        query = f"""
-                        MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-                        RETURN a.id, a.Name, oee.OEE
-                        ORDER BY oee.OEE DESC
-                        LIMIT 10
-                        """
-                    with driver.session() as session:
-                        with st.spinner("Executing query..."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                        with st.spinner("Converting into RESULT ..."):
-                            df = pd.DataFrame(graphData, columns=keys)
-                            st.table(df)
-                    driver.close()
-                elif asset:
-                    asset_id = re.findall(r'A\d+', ai_search)[0]
-                    try:
-                        query = f"""
-                        MATCH (a:asset {{id: '{asset_id}'}})<-[amachine:assetMachine]-(machine:machine_data)
-                        MATCH (a)<-[aoper:assetOper]-(od:operation_data)
-                        MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                        MATCH (a)-[aoem:assetOem]->(oem:oem)
-                        RETURN *
-                        """
-                        with driver.session() as session:
-                            with st.spinner("Executing query..."):
-                                with st.spinner("Data Loading ...."):
-                                    graphData = get_neo4j_data(query,session)
-                                with st.spinner("Converting into Graph ..."):
-                                    graph, node_properties = generate_nodes_edges(graphData)
-                                    save_graph_file(graph, html_file_path)
-                        driver.close()
-                    except Exception as e:
-                        st.error(f"Error executing query: {e}")
-                else:
-                    st.error("Please Try Again")
-            except Exception as e:
-                st.error(f"Error executing query: {e}")
+    # elif option == options_list[3]:
+    #     st.image(chatgpt_icon, width=50)
+    #     ai_search = st.text_input("AI CHATBOT", "")
+    #     if st.button("RUN"):
+    #         try:
+    #             oee = re.findall(r'OEE?', ai_search, flags=re.IGNORECASE)
+    #             high = re.findall(r'high?', ai_search, flags=re.IGNORECASE)
+    #             low = re.findall(r'low?', ai_search, flags=re.IGNORECASE)
+    #             asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
+    #             if oee:
+    #                 if high:
+    #                     query = f"""
+    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
+    #                     RETURN a.id, oee.OEE
+    #                     ORDER BY oee.OEE DESC
+    #                     LIMIT 10
+    #                     """
+    #                 elif low:
+    #                     query = f"""
+    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
+    #                     RETURN a.id, oee.OEE
+    #                     ORDER BY oee.OEE ASC
+    #                     LIMIT 10
+    #                     """
+    #                 else:
+    #                     query = f"""
+    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
+    #                     RETURN a.id, a.Name, oee.OEE
+    #                     ORDER BY oee.OEE DESC
+    #                     LIMIT 10
+    #                     """
+    #                 with driver.session() as session:
+    #                     with st.spinner("Executing query..."):
+    #                         graphData = get_neo4j_data(query,session)
+    #                         keys = graphData.keys()
+    #                     with st.spinner("Converting into RESULT ..."):
+    #                         df = pd.DataFrame(graphData, columns=keys)
+    #                         st.table(df)
+    #                 driver.close()
+    #             elif asset:
+    #                 asset_id = re.findall(r'A\d+', ai_search)[0]
+    #                 try:
+    #                     query = f"""
+    #                     MATCH (a:asset {{id: '{asset_id}'}})<-[amachine:assetMachine]-(machine:machine_data)
+    #                     MATCH (a)<-[aoper:assetOper]-(od:operation_data)
+    #                     MATCH (a)<-[aoee:assetOee]-(oee:oee)
+    #                     MATCH (a)-[aoem:assetOem]->(oem:oem)
+    #                     RETURN *
+    #                     """
+    #                     with driver.session() as session:
+    #                         with st.spinner("Executing query..."):
+    #                             with st.spinner("Data Loading ...."):
+    #                                 graphData = get_neo4j_data(query,session)
+    #                             with st.spinner("Converting into Graph ..."):
+    #                                 graph, node_properties = generate_nodes_edges(graphData)
+    #                                 save_graph_file(graph, html_file_path)
+    #                     driver.close()
+    #                 except Exception as e:
+    #                     st.error(f"Error executing query: {e}")
+    #             else:
+    #                 st.error("Please Try Again")
+    #         except Exception as e:
+    #             st.error(f"Error executing query: {e}")
 if __name__ == "__main__":
     app()
