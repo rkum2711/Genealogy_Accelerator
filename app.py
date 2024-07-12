@@ -380,7 +380,7 @@ def app():
                     except Exception as e:
                         st.error(f"Error executing query: {e}")
         with tab2:
-            st.header("View the traceability of failed batches for a selected PO")
+            st.header("Query the failed batches for a selected PO and its root cause?")
             selected_PO1 = st.selectbox("Select Process order ", po_ids)
             try:
                 if st.button("Query Graph"):
@@ -502,7 +502,7 @@ def app():
                             WHERE po.id = "{pid}" 
                             AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
                             AND am.Temperature > 24
-                            RETURN b.id
+                            RETURN DISTINCT b.id AS batch_id
                             """
                         if failed:
                             query = f"""
@@ -531,7 +531,7 @@ def app():
                             AND lims.Status = "Failed"
                             AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
                             AND am.Temperature > 24
-                            RETURN b.id
+                            RETURN DISTINCT b.id AS batch_id
                             """
                         with driver.session() as session:
                             with st.spinner("Executing query..."):
