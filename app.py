@@ -254,28 +254,28 @@ def app():
     batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids, awo_distinct_id = get_asset_data()
     facility, site, region = st.columns([1,1,1])
     with facility:
-        st.info(f"Total Facilities : {len(facility_ids)}")
+        st.info(f"Facilities : {len(facility_ids)}")
     with site:
-        st.info(f"Total Sites : {len(site_ids)}")
+        st.info(f"Sites : {len(site_ids)}")
     with region:
-        st.info(f"Total Region : {len(region_ids)}")
+        st.info(f"Region : {len(region_ids)}")
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1,1,1,1,1,1,1])
     option = st.sidebar.radio('Select Options', options_list)
     if option == options_list[0]:
         with col1:
-            st.success(f"Total Batchs:{len(batch_ids)}")
+            st.success(f"Batchs:{len(batch_ids)}")
         with col2:
-            st.info(f"Total Purchase Orders:{len(po_ids)}")
+            st.info(f"PO:{len(po_ids)}")
         with col3:
-            st.info(f"Total Products:{len(product_ids)}")
+            st.info(f"Products:{len(product_ids)}")
         with col4:
-            st.info(f"Total materials:{len(material_ids)}")
+            st.info(f"Materials:{len(material_ids)}")
         with col5:
-            st.info(f"Total Suppliers:{len(supplier_ids)}")
+            st.info(f"Suppliers:{len(supplier_ids)}")
         with col6:
-            st.success(f"Total Assets:{len(asset_ids)}")
+            st.success(f"Assets:{len(asset_ids)}")
         with col7:
-            st.info(f"Total WO : {len(wo_ids)}")
+            st.info(f"WO : {len(wo_ids)}")
         st.subheader(option)
         tab1, tab2, tab3 = st.tabs(["UI Tracking","Saved Question", "GEN AI"])
         # with tab1:
