@@ -265,13 +265,13 @@ def app():
         with col1:
             st.success(f"Batchs:{len(batch_ids)}")
         with col2:
-            st.info(f"PO:{len(po_ids)}")
+            st.info(f"PO : {len(po_ids)}")
         with col3:
-            st.info(f"Products:{len(product_ids)}")
+            st.info(f"Product:{len(product_ids)}")
         with col4:
-            st.info(f"Materials:{len(material_ids)}")
+            st.info(f"Material:{len(material_ids)}")
         with col5:
-            st.info(f"Suppliers:{len(supplier_ids)}")
+            st.info(f"Supplier:{len(supplier_ids)}")
         with col6:
             st.success(f"Assets:{len(asset_ids)}")
         with col7:
