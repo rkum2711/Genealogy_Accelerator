@@ -92,21 +92,51 @@ def generate_nodes_edges(data):
     # net.repulsion()
     added_nodes = set()
     node_properties = {}
+    batch_connections = {}
     for record in data:
         for key, value in record.items():
             if value is not None and "id" in value.keys() and value["id"] not in added_nodes:
                 node_id = value.get('id')
                 node_label = list(value.labels)[0].upper() if value.labels else "UNKNOWN"
                 node_color = legend_mapping.get(node_label, "#000000")
+                node_size = 25  # Default size
                 node_prop_html = "\n".join(f"{k} : {v}" for k, v in value._properties.items())
-                net.add_node(node_id, label=value.get('Name'), title=node_prop_html, color = node_color)
+
+                if node_label == "po".upper():
+                    node_size =  50 # Increase size
+                if node_label == "batch".upper():
+                    node_size = 35  # Increase size
+                if node_label == "asset".upper():
+                    node_size = 35  # Increase size
+
+                net.add_node(node_id, label=value.get('Name'), title=node_prop_html, color = node_color, size=node_size)
                 added_nodes.add(node_id)
                 node_properties[node_id] = value._properties
+
+                # Track batch connections
+                if node_label == "BATCH":
+                    batch_connections[node_id] = []
 
         for key, value in record.items():
             if value is not None and hasattr(value, 'start_node'):
                 if value.start_node["id"] in added_nodes and value.end_node["id"] in added_nodes:
                     net.add_edge(value.start_node["id"], value.end_node["id"], title=value.type)
+
+                    # Track batch to LIMS connections
+                    start_label = list(value.start_node.labels)[0].upper() if value.start_node.labels else "UNKNOWN"
+                    end_label = list(value.end_node.labels)[0].upper() if value.end_node.labels else "UNKNOWN"
+                    if start_label == "BATCH" and end_label == "LIMS":
+                        batch_connections[value.start_node["id"]].append(value.end_node["id"])
+                    elif start_label == "LIMS" and end_label == "BATCH":
+                        batch_connections[value.end_node["id"]].append(value.start_node["id"])
+
+    # Second pass: Update batch nodes color if any connected LIMS node failed
+    for batch_id, lims_ids in batch_connections.items():
+        for lims_id in lims_ids:
+            if node_properties[lims_id].get("Status") == "Failed":
+                net.get_node(batch_id)["color"] = "red"
+                net.get_node(batch_id)["size"] = 35
+                break
     return net, node_properties
 
 def save_graph_file(graph,html_file_path):
@@ -300,6 +330,7 @@ def app():
                             MATCH (f)-[fs:facilitySite]->(s:site)
                             MATCH (s)-[sr:siteRegion]->(re:region)
                             MATCH (b)<-[bwo:batchWO]->(wo:wo)
+                            MATCH (b)-[blims:batchLims]->(lims:lims)
                             MATCH (wo)<-[awo:assetWO]->(a:asset)
                             MATCH (a)-[al:assetline]->(l:line)
                             MATCH (l)-[lf:lineFacility]->(af:facility)
