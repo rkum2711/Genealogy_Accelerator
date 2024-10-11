@@ -20,6 +20,13 @@ def layout(*args):
       #MainMenu {visibility: hidden;}
       footer {visibility: hidden;}
       .stApp { bottom: 100px; }
+      .stMain {
+            flex: 1;
+        }
+        
+        iframe{
+            width:100%
+        }
     </style>
     """
 
