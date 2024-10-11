@@ -26,7 +26,8 @@ def layout(*args):
             overflow-x: hidden;
         }
         iframe{
-            width:100%;
+            # width: 100%;
+            width:76vw;
         }
         .stMainBlockContainer  .stVerticalBlock {
             width: 76vw;
