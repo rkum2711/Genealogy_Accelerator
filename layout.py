@@ -23,6 +23,7 @@ def layout(*args):
       .stMain {
             flex: 1;
             align-items: flex-start;
+            overflow-x: hidden;
         }
         
         iframe{
