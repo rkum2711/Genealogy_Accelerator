@@ -217,6 +217,13 @@ def save_graph_file(graph,html_file_path):
         #legend-toggle:hover {{
             background: #218838; /* Darker green on hover */
         }}
+        .stMain {{
+            flex: 1;
+        }}
+        
+        iframe{{
+            width:100%
+        }}
     </style>
     <button id="legend-toggle">Node Info</button>
     <div id="legend">
