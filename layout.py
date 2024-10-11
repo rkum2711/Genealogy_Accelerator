@@ -22,6 +22,7 @@ def layout(*args):
       .stApp { bottom: 100px; }
       .stMain {
             flex: 1;
+            align-items: flex-start;
         }
         
         iframe{
