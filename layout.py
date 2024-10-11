@@ -28,14 +28,11 @@ def layout(*args):
         iframe{
             width:100%;
         }
-        .stVerticalBlock {
+        .stMainBlockContainer  .stVerticalBlock {
             width: 76vw;
         }
         .stAppHeader {
             box-shadow: 0 2px 8px #f0f1f2;
-        }
-        .stSidebarUserContent{
-            overflow-x: hidden;
         }
     </style>
     """
