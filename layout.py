@@ -25,7 +25,11 @@ def layout(*args):
         }
         
         iframe{
-            width:100%
+            width:100%;
+        }
+        
+        .stVerticalBlock {
+            width: 76vw;
         }
     </style>
     """
