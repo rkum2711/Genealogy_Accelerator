@@ -55,23 +55,23 @@ def get_id_list(node):
 
 def get_asset_wo_id():
     with driver.session() as session:
-        results = session.run(f"MATCH (a:asset) -[awo:assetWo] -> (wo:wo) return DISTINCT  a.id")
+        results = session.run(f"MATCH (a:Asset) -[PER:PERFORMED_ON] -> (WO:WO) return DISTINCT  a.id")
         awo_distinct_id = sorted([row["a.id"] for row in results])
         return awo_distinct_id
 
 @st.cache_data
 def get_asset_data():
     with st.spinner("Connecting GraphDB"):
-        batch_ids = get_id_list("batch") 
-        asset_ids = get_id_list("asset")
-        facility_ids = get_id_list("facility") 
-        site_ids = get_id_list("site") 
-        region_ids = get_id_list("region") 
-        po_ids = get_id_list("po")
-        product_ids = get_id_list("product")  
-        supplier_ids = get_id_list("supplier")  
-        material_ids = get_id_list("material")
-        wo_ids = get_id_list("wo")
+        batch_ids = get_id_list("Batch") 
+        asset_ids = get_id_list("Asset")
+        facility_ids = get_id_list("Facility") 
+        site_ids = get_id_list("Site") 
+        region_ids = get_id_list("Region") 
+        po_ids = get_id_list("ProcessOrder")
+        product_ids = get_id_list("Product")  
+        supplier_ids = get_id_list("Supplier")  
+        material_ids = get_id_list("Materials")
+        wo_ids = get_id_list("WO")
         awo_distinct_id = get_asset_wo_id()
         return batch_ids, asset_ids, facility_ids, site_ids, region_ids,po_ids,product_ids,supplier_ids,material_ids,wo_ids, awo_distinct_id
 
@@ -347,27 +347,25 @@ def app():
                     try:
                         with st.spinner("Data Loading ...."):
                             query = f"""
-                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                            MATCH (po)<-[ppo:productPo]-(p:product)
-                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                            MATCH (r)<-[mr:materialRecipe]-(m:material)
-                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                            MATCH (f)-[fs:facilitySite]->(s:site)
-                            MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
-                            MATCH (b)-[blims:batchLims]->(lims:lims)
-                            MATCH (wo)<-[awo:assetWO]->(a:asset)
-                            MATCH (a)-[al:assetline]->(l:line)
-                            MATCH (l)-[lf:lineFacility]->(af:facility)
-                            MATCH (af)-[afs:facilitySite]->(as:site)
-                            MATCH (as)-[asr:siteRegion]->(ar:region)
-                            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                            MATCH (a)-[aoem:assetOem]->(oem:oem)
+                            MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+                            MATCH (b)-[YI:YIELDS]->(p:Product)
+                            MATCH (p)-[FW:FORMULATED_WITH]->(r:Recipe)
+                            MATCH (r)-[UM:USES_MATERIAL]->(m:Materials)
+                            MATCH (m)-[SB:SUPPLIED_BY]->(sup:Supplier)
+                            MATCH (m)-[SI:STORED_IN]->(pm:PlantMaterial)
+                            MATCH (pm)-[AA:AVAILABLE_AT]->(f:Facility)
+                            MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
+                            MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
+                            MATCH (b)-[EB:EXECUTED_BY]->(wo:WO)
+                            MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
+                            MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
+                            MATCH (a)-[AL:ASSIGNED_TO_LINE]->(l:Line)
+                            MATCH (l)-[LF:LOCATED_IN_FACILITY]->(af:Facility)
+                            MATCH (a)-[HI:HAS_INFO]->(ai:AssetInfo)
+                            MATCH (a)-[HM:HAS_METADATA]->(ao:Operation)
+                            MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+                            MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
+                            MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
                             WHERE po.id = "{selected_PO}"
                             RETURN *
                             """
@@ -385,29 +383,29 @@ def app():
             try:
                 if st.button("Query Graph"):
                     query = f"""
-                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                    MATCH (po)<-[ppo:productPo]-(p:product)
-                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                    MATCH (r)<-[mr:materialRecipe]-(m:material)
-                    MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                    MATCH (f)-[fs:facilitySite]->(s:site)
-                    MATCH (s)-[sr:siteRegion]->(re:region)
-                    MATCH (b)<-[bwo:batchWO]->(wo:wo)
-                    MATCH (b)-[blims:batchLims]->(lims:lims)
-                    MATCH (wo)<-[awo:assetWO]->(a:asset)
-                    MATCH (a)-[al:assetline]->(l:line)
-                    MATCH (l)-[lf:lineFacility]->(af:facility)
-                    MATCH (af)-[afs:facilitySite]->(as:site)
-                    MATCH (as)-[asr:siteRegion]->(ar:region)
-                    MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                    MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                    MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                    MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                    MATCH (a)-[aoem:assetOem]->(oem:oem)
+                    MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+                    MATCH (b)-[YI:YIELDS]->(p:Product)
+                    MATCH (p)-[FW:FORMULATED_WITH]->(r:Recipe)
+                    MATCH (r)-[UM:USES_MATERIAL]->(m:Materials)
+                    MATCH (m)-[SB:SUPPLIED_BY]->(sup:Supplier)
+                    MATCH (m)-[SI:STORED_IN]->(pm:PlantMaterial)
+                    MATCH (pm)-[AA:AVAILABLE_AT]->(f:Facility)
+                    MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
+                    MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
+                    MATCH (b)-[EB:EXECUTED_BY]->(wo:WO)
+                    MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
+                    MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
+                    MATCH (a)-[AL:ASSIGNED_TO_LINE]->(l:Line)
+                    OPTIONAL MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
+                    MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
+                    MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
+                    MATCH (a)-[HI:HAS_INFO]->(ai:AssetInfo)
+                    MATCH (a)-[HM:HAS_METADATA]->(ao:Operation)
+                    MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+                    MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
+                    MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
                     WHERE po.id = "{selected_PO1}" AND lims.Status = "Failed"
-                    RETURN b,bwo,wo,blims,lims,awo,a,al,l,lf,af,afs,as,asr,ar,ainfo,ai,amachine,am,aoee,oee,aoem,oem
+                    RETURN *
                     """
                     with driver.session() as session:
                         with st.spinner("Executing query..."):

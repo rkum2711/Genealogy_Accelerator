@@ -238,6 +238,75 @@ function highlightFilter(filter) {
              }
 
              
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
 
              
 
@@ -261,81 +330,209 @@ function highlightFilter(filter) {
                             >
                                 <option selected>Select a Node by ID</option>
                                 
-                                    <option value="A111">A111</option>
+                                    <option value="A34">A34</option>
+                                
+                                    <option value="F-1-S2">F-1-S2</option>
+                                
+                                    <option value="AI034">AI034</option>
+                                
+                                    <option value="AM034">AM034</option>
+                                
+                                    <option value="AO034">AO034</option>
                                 
                                     <option value="BPO1-1-1">BPO1-1-1</option>
                                 
-                                    <option value="AM111">AM111</option>
+                                    <option value="F-3-S1">F-3-S1</option>
                                 
-                                    <option value="AO111">AO111</option>
+                                    <option value="L8">L8</option>
                                 
-                                    <option value="OEE111">OEE111</option>
+                                    <option value="LIMS-1">LIMS-1</option>
                                 
-                                    <option value="MFR5">MFR5</option>
+                                    <option value="M3">M3</option>
                                 
-                                    <option value="WO-BPO1-1-1-Production-stage1">WO-BPO1-1-1-Production-stage1</option>
+                                    <option value="OEE034">OEE034</option>
                                 
-                                    <option value="A112">A112</option>
+                                    <option value="MFR7">MFR7</option>
                                 
-                                    <option value="AM112">AM112</option>
+                                    <option value="P10010">P10010</option>
                                 
-                                    <option value="AO112">AO112</option>
+                                    <option value="PM29">PM29</option>
                                 
-                                    <option value="OEE112">OEE112</option>
+                                    <option value="PO1">PO1</option>
                                 
-                                    <option value="MFR4">MFR4</option>
+                                    <option value="PMR-10">PMR-10</option>
                                 
-                                    <option value="A121">A121</option>
+                                    <option value="R2">R2</option>
                                 
-                                    <option value="AM121">AM121</option>
+                                    <option value="S1">S1</option>
                                 
-                                    <option value="AO121">AO121</option>
-                                
-                                    <option value="OEE121">OEE121</option>
-                                
-                                    <option value="MFR3">MFR3</option>
+                                    <option value="SUP26">SUP26</option>
                                 
                                     <option value="WO-BPO1-1-1-LIMS">WO-BPO1-1-1-LIMS</option>
                                 
-                                    <option value="A122">A122</option>
+                                    <option value="F-2-S5">F-2-S5</option>
                                 
-                                    <option value="AM122">AM122</option>
+                                    <option value="M4">M4</option>
                                 
-                                    <option value="AO122">AO122</option>
+                                    <option value="PM13">PM13</option>
                                 
-                                    <option value="OEE122">OEE122</option>
+                                    <option value="S5">S5</option>
                                 
-                                    <option value="MFR8">MFR8</option>
+                                    <option value="SUP7">SUP7</option>
                                 
-                                    <option value="A125">A125</option>
+                                    <option value="F-2-S7">F-2-S7</option>
                                 
-                                    <option value="AM125">AM125</option>
+                                    <option value="M24">M24</option>
                                 
-                                    <option value="AO125">AO125</option>
+                                    <option value="PM18">PM18</option>
                                 
-                                    <option value="OEE125">OEE125</option>
+                                    <option value="S7">S7</option>
                                 
-                                    <option value="A46">A46</option>
+                                    <option value="SUP53">SUP53</option>
                                 
-                                    <option value="AM046">AM046</option>
+                                    <option value="F-3-S8">F-3-S8</option>
                                 
-                                    <option value="AO046">AO046</option>
+                                    <option value="M25">M25</option>
                                 
-                                    <option value="OEE046">OEE046</option>
+                                    <option value="PM21">PM21</option>
+                                
+                                    <option value="R1">R1</option>
+                                
+                                    <option value="S8">S8</option>
+                                
+                                    <option value="SUP27">SUP27</option>
+                                
+                                    <option value="A35">A35</option>
+                                
+                                    <option value="AI035">AI035</option>
+                                
+                                    <option value="AM035">AM035</option>
+                                
+                                    <option value="AO035">AO035</option>
+                                
+                                    <option value="OEE035">OEE035</option>
                                 
                                     <option value="MFR1">MFR1</option>
                                 
-                                    <option value="WO-BPO1-1-1-Warehouse">WO-BPO1-1-1-Warehouse</option>
+                                    <option value="A37">A37</option>
                                 
-                                    <option value="A47">A47</option>
+                                    <option value="AI037">AI037</option>
                                 
-                                    <option value="AM047">AM047</option>
+                                    <option value="AM037">AM037</option>
                                 
-                                    <option value="AO047">AO047</option>
+                                    <option value="AO037">AO037</option>
                                 
-                                    <option value="OEE047">OEE047</option>
+                                    <option value="OEE037">OEE037</option>
                                 
-                                    <option value="MFR11">MFR11</option>
+                                    <option value="MFR3">MFR3</option>
+                                
+                                    <option value="LIMS-2">LIMS-2</option>
+                                
+                                    <option value="LIMS-3">LIMS-3</option>
+                                
+                                    <option value="BPO1-1-2">BPO1-1-2</option>
+                                
+                                    <option value="LIMS-4">LIMS-4</option>
+                                
+                                    <option value="WO-BPO1-1-2-LIMS">WO-BPO1-1-2-LIMS</option>
+                                
+                                    <option value="A36">A36</option>
+                                
+                                    <option value="AI036">AI036</option>
+                                
+                                    <option value="AM036">AM036</option>
+                                
+                                    <option value="AO036">AO036</option>
+                                
+                                    <option value="OEE036">OEE036</option>
+                                
+                                    <option value="MFR9">MFR9</option>
+                                
+                                    <option value="A38">A38</option>
+                                
+                                    <option value="AI038">AI038</option>
+                                
+                                    <option value="AM038">AM038</option>
+                                
+                                    <option value="AO038">AO038</option>
+                                
+                                    <option value="OEE038">OEE038</option>
+                                
+                                    <option value="MFR6">MFR6</option>
+                                
+                                    <option value="LIMS-5">LIMS-5</option>
+                                
+                                    <option value="LIMS-6">LIMS-6</option>
+                                
+                                    <option value="BPO1-1-3">BPO1-1-3</option>
+                                
+                                    <option value="LIMS-7">LIMS-7</option>
+                                
+                                    <option value="WO-BPO1-1-3-LIMS">WO-BPO1-1-3-LIMS</option>
+                                
+                                    <option value="LIMS-8">LIMS-8</option>
+                                
+                                    <option value="LIMS-9">LIMS-9</option>
+                                
+                                    <option value="BPO1-1-4">BPO1-1-4</option>
+                                
+                                    <option value="LIMS-10">LIMS-10</option>
+                                
+                                    <option value="WO-BPO1-1-4-LIMS">WO-BPO1-1-4-LIMS</option>
+                                
+                                    <option value="LIMS-11">LIMS-11</option>
+                                
+                                    <option value="LIMS-12">LIMS-12</option>
+                                
+                                    <option value="BPO1-1-5">BPO1-1-5</option>
+                                
+                                    <option value="LIMS-13">LIMS-13</option>
+                                
+                                    <option value="WO-BPO1-1-5-LIMS">WO-BPO1-1-5-LIMS</option>
+                                
+                                    <option value="LIMS-14">LIMS-14</option>
+                                
+                                    <option value="LIMS-15">LIMS-15</option>
+                                
+                                    <option value="BPO1-1-6">BPO1-1-6</option>
+                                
+                                    <option value="LIMS-16">LIMS-16</option>
+                                
+                                    <option value="WO-BPO1-1-6-LIMS">WO-BPO1-1-6-LIMS</option>
+                                
+                                    <option value="LIMS-17">LIMS-17</option>
+                                
+                                    <option value="LIMS-18">LIMS-18</option>
+                                
+                                    <option value="BPO1-1-7">BPO1-1-7</option>
+                                
+                                    <option value="LIMS-19">LIMS-19</option>
+                                
+                                    <option value="WO-BPO1-1-7-LIMS">WO-BPO1-1-7-LIMS</option>
+                                
+                                    <option value="LIMS-20">LIMS-20</option>
+                                
+                                    <option value="LIMS-21">LIMS-21</option>
+                                
+                                    <option value="BPO1-1-8">BPO1-1-8</option>
+                                
+                                    <option value="LIMS-22">LIMS-22</option>
+                                
+                                    <option value="WO-BPO1-1-8-LIMS">WO-BPO1-1-8-LIMS</option>
+                                
+                                    <option value="LIMS-23">LIMS-23</option>
+                                
+                                    <option value="LIMS-24">LIMS-24</option>
+                                
+                                    <option value="BPO1-1-9">BPO1-1-9</option>
+                                
+                                    <option value="LIMS-25">LIMS-25</option>
+                                
+                                    <option value="WO-BPO1-1-9-LIMS">WO-BPO1-1-9-LIMS</option>
+                                
+                                    <option value="LIMS-26">LIMS-26</option>
+                                
+                                    <option value="LIMS-27">LIMS-27</option>
                                 
                             </select>
                         </div>
@@ -349,6 +546,15 @@ function highlightFilter(filter) {
             <div id="mynetwork" class="card-body"></div>
         </div>
 
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
         
         
 
@@ -389,8 +595,8 @@ function highlightFilter(filter) {
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "red", "font": {"color": "black"}, "id": "A111", "label": "A111:Granulators", "shape": "dot", "size": 35, "title": "AType : Granulators\nFacilityID : F-1-S5\nLineID : L22\nManufacturerID : MFR5\nunitProcedureID : PR-2-GRG\nLineFloor : True\nid : A111\nName : A111:Granulators"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-1", "label": "Batch-BPO1-1-1-P1006-50", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S5\nSiteID : S5\nWarehouseFacilityID : F-3-S5\nQty : 50\nProductID : P1006\nid : BPO1-1-1\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-1-P1006-50\nPOID : PO1"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM111", "label": "AM111", "shape": "dot", "size": 25, "title": "Temperature : 24.21\nVibration : 7.96\nNoise : 47.59\nThroughput : 97.13\nid : AM111\nAssetID : A111\nPressure : 0.89"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO111", "label": "AO111", "shape": "dot", "size": 25, "title": "Availability : 86.49\nTotalProductionQuantity : 924\nQuality : 89.55\nDowntime : 13.51\nid : AO111\nGoodQuantity : 827.4628265977626\nPerformance : 98.26\nAssetID : A111"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE111", "label": "OEE111", "shape": "dot", "size": 25, "title": "id : OEE111\nAssetID : A111\nOEE : 76.1"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR5", "label": "MFR5", "shape": "dot", "size": 25, "title": "ManufacturerName : Pall Corporation (Danaher)\nid : MFR5"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-1-Production-stage1", "label": "BPO1-1-1-Production-stage1-P1006-F-1-S5", "shape": "dot", "size": 25, "title": "Status : Cancelled\nSiteID : S5\nTask : Granulation\nBatchQty : 50\nWOType : Production-stage1\nBatchID : BPO1-1-1\nProductID : P1006\nEndDate : 2024-06-14\nName : BPO1-1-1-Production-stage1-P1006-F-1-S5\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S5\nAssetType : Granulators\nUnitProcedureID : PR-2-GRG\nid : WO-BPO1-1-1-Production-stage1\nAssetID : A111\nPOID : PO1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A112", "label": "A112:Mills", "shape": "dot", "size": 35, "title": "AType : Mills\nFacilityID : F-1-S5\nLineID : L22\nManufacturerID : MFR4\nunitProcedureID : PR-3-MIM\nLineFloor : True\nid : A112\nName : A112:Mills"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM112", "label": "AM112", "shape": "dot", "size": 25, "title": "Temperature : 18.45\nVibration : 19.05\nNoise : 52.36\nThroughput : 75.55\nid : AM112\nAssetID : A112\nPressure : 0.71"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO112", "label": "AO112", "shape": "dot", "size": 25, "title": "Availability : 86.38\nTotalProductionQuantity : 706\nQuality : 89.55\nDowntime : 13.62\nid : AO112\nGoodQuantity : 632.2389129632256\nPerformance : 88.07\nAssetID : A112"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE112", "label": "OEE112", "shape": "dot", "size": 25, "title": "id : OEE112\nAssetID : A112\nOEE : 68.13"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR4", "label": "MFR4", "shape": "dot", "size": 25, "title": "ManufacturerName : MilliporeSigma (Merck)\nid : MFR4"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A121", "label": "A121:Incubators", "shape": "dot", "size": 35, "title": "AType : Incubators\nFacilityID : F-1-S5\nLineID : L24\nManufacturerID : MFR3\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A121\nName : A121:Incubators"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM121", "label": "AM121", "shape": "dot", "size": 25, "title": "Temperature : 22.92\nVibration : 6.54\nNoise : 41.37\nThroughput : 96.37\nid : AM121\nAssetID : A121\nPressure : 0.85"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO121", "label": "AO121", "shape": "dot", "size": 25, "title": "Availability : 86.34\nTotalProductionQuantity : 521\nQuality : 89.55\nDowntime : 13.66\nid : AO121\nGoodQuantity : 466.5672431357514\nPerformance : 96.75\nAssetID : A121"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE121", "label": "OEE121", "shape": "dot", "size": 25, "title": "id : OEE121\nAssetID : A121\nOEE : 74.8"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR3", "label": "MFR3", "shape": "dot", "size": 25, "title": "ManufacturerName : Sartorius\nid : MFR3"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-1-LIMS", "label": "BPO1-1-1-LIMS-P1006-F-1-S5", "shape": "dot", "size": 25, "title": "Status : Cancelled\nSiteID : S5\nTask : Chemical Analysis\nBatchQty : 50\nWOType : LIMS\nBatchID : BPO1-1-1\nProductID : P1006\nEndDate : 2024-06-14\nName : BPO1-1-1-LIMS-P1006-F-1-S5\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S5\nAssetType : HPLC\nUnitProcedureID : LI-2-CHA\nid : WO-BPO1-1-1-LIMS\nAssetID : A122\nPOID : PO1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A122", "label": "A122:HPLC", "shape": "dot", "size": 35, "title": "AType : HPLC\nFacilityID : F-1-S5\nLineID : L24\nManufacturerID : MFR8\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A122\nName : A122:HPLC"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM122", "label": "AM122", "shape": "dot", "size": 25, "title": "Temperature : 21.74\nVibration : 11.66\nNoise : 55.65\nThroughput : 89.39\nid : AM122\nAssetID : A122\nPressure : 0.79"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO122", "label": "AO122", "shape": "dot", "size": 25, "title": "Availability : 81.65\nTotalProductionQuantity : 845\nQuality : 89.55\nDowntime : 18.35\nid : AO122\nGoodQuantity : 756.7165459687332\nPerformance : 87.59\nAssetID : A122"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE122", "label": "OEE122", "shape": "dot", "size": 25, "title": "id : OEE122\nAssetID : A122\nOEE : 64.04"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR8", "label": "MFR8", "shape": "dot", "size": 25, "title": "ManufacturerName : Waters Corporation\nid : MFR8"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A125", "label": "A125:Temperature and Humidity Controllers", "shape": "dot", "size": 35, "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-1-S5\nLineID : L24\nManufacturerID : MFR8\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A125\nName : A125:Temperature and Humidity Controllers"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM125", "label": "AM125", "shape": "dot", "size": 25, "title": "Temperature : 20.04\nVibration : 9.64\nNoise : 48.87\nThroughput : 99.54\nid : AM125\nAssetID : A125\nPressure : 0.81"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO125", "label": "AO125", "shape": "dot", "size": 25, "title": "Availability : 83.26\nTotalProductionQuantity : 700\nQuality : 89.55\nDowntime : 16.74\nid : AO125\nGoodQuantity : 626.8657777255778\nPerformance : 98.64\nAssetID : A125"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE125", "label": "OEE125", "shape": "dot", "size": 25, "title": "id : OEE125\nAssetID : A125\nOEE : 73.55"}, {"color": "red", "font": {"color": "black"}, "id": "A46", "label": "A46:Temperature-Controlled Room", "shape": "dot", "size": 35, "title": "AType : Temperature-Controlled Room\nFacilityID : F-2-S2\nLineID : L9\nManufacturerID : MFR1\nunitProcedureID : WA-1-WAS\nLineFloor : True\nid : A46\nName : A46:Temperature-Controlled Room"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM046", "label": "AM046", "shape": "dot", "size": 25, "title": "Temperature : 26.82\nVibration : 14.84\nNoise : 56.82\nThroughput : 82.63\nid : AM046\nAssetID : A46\nPressure : 0.76"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO046", "label": "AO046", "shape": "dot", "size": 25, "title": "Availability : 82.87\nTotalProductionQuantity : 613\nQuality : 89.55\nDowntime : 17.13\nid : AO046\nGoodQuantity : 548.9553167796845\nPerformance : 86.49\nAssetID : A46"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE046", "label": "OEE046", "shape": "dot", "size": 25, "title": "id : OEE046\nAssetID : A46\nOEE : 64.18"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR1", "label": "MFR1", "shape": "dot", "size": 25, "title": "ManufacturerName : GE Healthcare Life Sciences\nid : MFR1"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-1-Warehouse", "label": "BPO1-1-1-Warehouse-P1006-F-1-S5", "shape": "dot", "size": 25, "title": "Status : Completed\nSiteID : S5\nTask : warehouse storage\nBatchQty : 50\nWOType : Warehouse\nBatchID : BPO1-1-1\nProductID : P1006\nEndDate : 2024-06-14\nName : BPO1-1-1-Warehouse-P1006-F-1-S5\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S5\nAssetType : Temperature-Controlled Room\nUnitProcedureID : WA-1-WAS\nid : WO-BPO1-1-1-Warehouse\nAssetID : A46\nPOID : PO1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A47", "label": "A47:Truck", "shape": "dot", "size": 35, "title": "AType : Truck\nFacilityID : F-2-S2\nLineID : L9\nManufacturerID : MFR11\nunitProcedureID : WA-2-TRF\nLineFloor : True\nid : A47\nName : A47:Truck"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "AM047", "label": "AM047", "shape": "dot", "size": 25, "title": "Temperature : 20.19\nVibration : 19.93\nNoise : 59.56\nThroughput : 84.59\nid : AM047\nAssetID : A47\nPressure : 0.77"}, {"color": "#5254a3", "font": {"color": "black"}, "id": "AO047", "label": "AO047", "shape": "dot", "size": 25, "title": "Availability : 82.45\nTotalProductionQuantity : 871\nQuality : 89.55\nDowntime : 17.55\nid : AO047\nGoodQuantity : 780.0001319985404\nPerformance : 86.09\nAssetID : A47"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE047", "label": "OEE047", "shape": "dot", "size": 25, "title": "id : OEE047\nAssetID : A47\nOEE : 63.56"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR11", "label": "MFR11", "shape": "dot", "size": 25, "title": "ManufacturerName : Rockwell Automation\nid : MFR11"}]);
-                  edges = new vis.DataSet([{"from": "AM111", "title": "assetMachine", "to": "A111"}, {"from": "OEE111", "title": "assetOee", "to": "A111"}, {"from": "A111", "title": "assetOem", "to": "MFR5"}, {"from": "AO111", "title": "assetOper", "to": "A111"}, {"from": "A111", "title": "assetWO", "to": "WO-BPO1-1-1-Production-stage1"}, {"from": "WO-BPO1-1-1-Production-stage1", "title": "batchWO", "to": "BPO1-1-1"}, {"from": "AM112", "title": "assetMachine", "to": "A112"}, {"from": "OEE112", "title": "assetOee", "to": "A112"}, {"from": "A112", "title": "assetOem", "to": "MFR4"}, {"from": "AO112", "title": "assetOper", "to": "A112"}, {"from": "A112", "title": "assetWO", "to": "WO-BPO1-1-1-Production-stage1"}, {"from": "AM121", "title": "assetMachine", "to": "A121"}, {"from": "OEE121", "title": "assetOee", "to": "A121"}, {"from": "A121", "title": "assetOem", "to": "MFR3"}, {"from": "AO121", "title": "assetOper", "to": "A121"}, {"from": "A121", "title": "assetWO", "to": "WO-BPO1-1-1-LIMS"}, {"from": "WO-BPO1-1-1-LIMS", "title": "batchWO", "to": "BPO1-1-1"}, {"from": "AM122", "title": "assetMachine", "to": "A122"}, {"from": "OEE122", "title": "assetOee", "to": "A122"}, {"from": "A122", "title": "assetOem", "to": "MFR8"}, {"from": "AO122", "title": "assetOper", "to": "A122"}, {"from": "A122", "title": "assetWO", "to": "WO-BPO1-1-1-LIMS"}, {"from": "AM125", "title": "assetMachine", "to": "A125"}, {"from": "OEE125", "title": "assetOee", "to": "A125"}, {"from": "A125", "title": "assetOem", "to": "MFR8"}, {"from": "AO125", "title": "assetOper", "to": "A125"}, {"from": "A125", "title": "assetWO", "to": "WO-BPO1-1-1-LIMS"}, {"from": "AM046", "title": "assetMachine", "to": "A46"}, {"from": "OEE046", "title": "assetOee", "to": "A46"}, {"from": "A46", "title": "assetOem", "to": "MFR1"}, {"from": "AO046", "title": "assetOper", "to": "A46"}, {"from": "A46", "title": "assetWO", "to": "WO-BPO1-1-1-Warehouse"}, {"from": "WO-BPO1-1-1-Warehouse", "title": "batchWO", "to": "BPO1-1-1"}, {"from": "AM047", "title": "assetMachine", "to": "A47"}, {"from": "OEE047", "title": "assetOee", "to": "A47"}, {"from": "A47", "title": "assetOem", "to": "MFR11"}, {"from": "AO047", "title": "assetOper", "to": "A47"}, {"from": "A47", "title": "assetWO", "to": "WO-BPO1-1-1-Warehouse"}]);
+                  nodes = new vis.DataSet([{"color": "#74c476", "font": {"color": "black"}, "id": "A34", "label": "A34:Incubators", "shape": "dot", "size": 35, "title": "AType : Incubators\nFacilityID : F-1-S2\nLineID : L8\nManufacturerID : MFR7\nunitProcedureID : LI-1-MIT\nLineFloor : True\nid : A34\nName : A34:Incubators"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-1-S2", "label": "Indianapolis Parenteral Manufacturing Batch Manufacturing", "shape": "dot", "size": 25, "title": "FType : Batch Manufacturing\nSiteID : S2\nid : F-1-S2\nRegionID : R2\nName : Indianapolis Parenteral Manufacturing Batch Manufacturing"}, {"color": "#000000", "font": {"color": "black"}, "id": "AI034", "label": "AI034", "shape": "dot", "size": 25, "title": "CommissionDate : 2023-09-22 12:16:19.672021\nHasInsurance : NO\nAMCYears : 1\nid : AI034\nAssetID : A34\nWarrantyYears : 1"}, {"color": "#000000", "font": {"color": "black"}, "id": "AM034", "label": "AM034", "shape": "dot", "size": 25, "title": "Temperature : 23.72\nVibration : 18.58\nNoise : 55.78\nThroughput : 73.7\nid : AM034\nAssetID : A34\nPressure : 0.79"}, {"color": "#000000", "font": {"color": "black"}, "id": "AO034", "label": "AO034", "shape": "dot", "size": 25, "title": "Availability : 80.07\nTotalProductionQuantity : 796\nQuality : 80.63\nDowntime : 19.93\nid : AO034\nGoodQuantity : 641.8098643504774\nPerformance : 87.71\nAssetID : A34"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-1", "label": "Batch-BPO1-1-1-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-1\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-1-P10010-70\nPOID : PO1"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S1", "label": "Clinton Laboratories Warehouse", "shape": "dot", "size": 25, "title": "FType : Warehouse\nSiteID : S1\nid : F-3-S1\nRegionID : R2\nName : Clinton Laboratories Warehouse"}, {"color": "#9e9ac8", "font": {"color": "black"}, "id": "L8", "label": "F-1-S2-LIMS Line-L8", "shape": "dot", "size": 25, "title": "LType : LIMS Line\nFacilityID : F-1-S2\nFloor : True\nCapacity : 90\nid : L8\nName : F-1-S2-LIMS Line-L8"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-1", "label": "LIMS-1", "shape": "dot", "size": 25, "title": "Status : InProgress\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-1-LIMS\nid : LIMS-1\nWOID : WO-BPO1-1-1-LIMS\nAssetID : A34\nResult : 85"}, {"color": "#000000", "font": {"color": "black"}, "id": "M3", "label": "Material3", "shape": "dot", "size": 25, "title": "Status : Passed\nExpiryDate : 2026-01-29T00:00:00.000000000+00:00\nStorage : STORAGE-Ne\nQty : 100\nid : M3\nBatchDate : 2024-01-30T00:00:00.000000000+00:00\nName : Material3\nLocation : Nebraska"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE034", "label": "OEE034", "shape": "dot", "size": 25, "title": "id : OEE034\nAssetID : A34\nOEE : 56.63"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR7", "label": "MFR7", "shape": "dot", "size": 25, "title": "ManufacturerName : Agilent Technologies\nid : MFR7"}, {"color": "#d6616b", "font": {"color": "black"}, "id": "P10010", "label": "Strattera\u00c2\u00ae (atomoxetine)", "shape": "dot", "size": 25, "title": "SiteID : S2\nBatchSizeLimit : 70\nFamilyID : PF-5\nRecipeID : PMR-10\nid : P10010\nName : Strattera\u00c2\u00ae (atomoxetine)"}, {"color": "#000000", "font": {"color": "black"}, "id": "PM29", "label": "PM-M3-F-3-S1", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-3-S1\nMaterialID : M3\nExpiryDate : 2026-01-29T00:00:00.000000000+00:00\nQty : 100\nid : PM29\nBatchDate : 2024-01-30T00:00:00.000000000+00:00\nName : PM-M3-F-3-S1"}, {"color": "#000000", "font": {"color": "black"}, "id": "PO1", "label": "PO1", "shape": "dot", "size": 25, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nQty : 610\nProductID : P10010\nid : PO1\nBOMID : BOM0010\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : PO1"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "PMR-10", "label": "Recipe10", "shape": "dot", "size": 25, "title": "MaterialID : M3\nQty : 40\nid : PMR-10\nName : Recipe10"}, {"color": "#17becf", "font": {"color": "black"}, "id": "R2", "label": "NA", "shape": "dot", "size": 25, "title": "id : R2\nName : NA"}, {"color": "#969696", "font": {"color": "black"}, "id": "S1", "label": "Clinton Laboratories", "shape": "dot", "size": 25, "title": "Region : NA\nid : S1\nName : Clinton Laboratories"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP26", "label": "Supplier26", "shape": "dot", "size": 25, "title": "Email : supplier26@example.com\nAddress : Address26\nPhone : 123-456-1025\nid : SUP26\nName : Supplier26"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-1-LIMS", "label": "BPO1-1-1-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Planned\nSiteID : S2\nTask : Chemical Analysis\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-1\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-1-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : HPLC\nUnitProcedureID : LI-2-CHA\nid : WO-BPO1-1-1-LIMS\nAssetID : A35\nPOID : PO1"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-2-S5", "label": "Fort Dodge Animal Health Warehouse", "shape": "dot", "size": 25, "title": "FType : Warehouse\nSiteID : S5\nid : F-2-S5\nRegionID : R2\nName : Fort Dodge Animal Health Warehouse"}, {"color": "#000000", "font": {"color": "black"}, "id": "M4", "label": "Material4", "shape": "dot", "size": 25, "title": "Status : Passed\nExpiryDate : 2025-04-09T00:00:00.000000000+00:00\nStorage : STORAGE-So\nQty : 810\nid : M4\nBatchDate : 2024-04-09T00:00:00.000000000+00:00\nName : Material4\nLocation : South Carolina"}, {"color": "#000000", "font": {"color": "black"}, "id": "PM13", "label": "PM-M4-F-2-S5", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-2-S5\nMaterialID : M4\nExpiryDate : 2025-04-09T00:00:00.000000000+00:00\nQty : 810\nid : PM13\nBatchDate : 2024-04-09T00:00:00.000000000+00:00\nName : PM-M4-F-2-S5"}, {"color": "#969696", "font": {"color": "black"}, "id": "S5", "label": "Fort Dodge Animal Health", "shape": "dot", "size": 25, "title": "Region : NA\nid : S5\nName : Fort Dodge Animal Health"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP7", "label": "Supplier7", "shape": "dot", "size": 25, "title": "Email : supplier7@example.com\nAddress : Address7\nPhone : 123-456-1006\nid : SUP7\nName : Supplier7"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-2-S7", "label": "Eli Lilly and Company R\u0026D", "shape": "dot", "size": 25, "title": "FType : R\u0026D\nSiteID : S7\nid : F-2-S7\nRegionID : R2\nName : Eli Lilly and Company R\u0026D"}, {"color": "#000000", "font": {"color": "black"}, "id": "M24", "label": "Material24", "shape": "dot", "size": 25, "title": "Status : Passed\nExpiryDate : 2027-05-22T00:00:00.000000000+00:00\nStorage : STORAGE-Ne\nQty : 690\nid : M24\nBatchDate : 2024-05-22T00:00:00.000000000+00:00\nName : Material24\nLocation : Nebraska"}, {"color": "#000000", "font": {"color": "black"}, "id": "PM18", "label": "PM-M24-F-2-S7", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-2-S7\nMaterialID : M24\nExpiryDate : 2027-05-22T00:00:00.000000000+00:00\nQty : 690\nid : PM18\nBatchDate : 2024-05-22T00:00:00.000000000+00:00\nName : PM-M24-F-2-S7"}, {"color": "#969696", "font": {"color": "black"}, "id": "S7", "label": "Eli Lilly and Company", "shape": "dot", "size": 25, "title": "Region : NA\nid : S7\nName : Eli Lilly and Company"}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP53", "label": "Supplier53", "shape": "dot", "size": 25, "title": "Email : supplier53@example.com\nAddress : Address53\nPhone : 123-456-1052\nid : SUP53\nName : Supplier53"}, {"color": "#dadaeb", "font": {"color": "black"}, "id": "F-3-S8", "label": "Eli Lilly S.A. R\u0026D", "shape": "dot", "size": 25, "title": "FType : R\u0026D\nSiteID : S8\nid : F-3-S8\nRegionID : R1\nName : Eli Lilly S.A. R\u0026D"}, {"color": "#000000", "font": {"color": "black"}, "id": "M25", "label": "Material25", "shape": "dot", "size": 25, "title": "Status : Passed\nExpiryDate : 2024-12-02T00:00:00.000000000+00:00\nStorage : STORAGE-Fl\nQty : 500\nid : M25\nBatchDate : 2023-12-03T00:00:00.000000000+00:00\nName : Material25\nLocation : Florida"}, {"color": "#000000", "font": {"color": "black"}, "id": "PM21", "label": "PM-M25-F-3-S8", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-3-S8\nMaterialID : M25\nExpiryDate : 2024-12-02T00:00:00.000000000+00:00\nQty : 500\nid : PM21\nBatchDate : 2023-12-03T00:00:00.000000000+00:00\nName : PM-M25-F-3-S8"}, {"color": "#17becf", "font": {"color": "black"}, "id": "R1", "label": "Europe", "shape": "dot", "size": 25, "title": "id : R1\nName : Europe"}, {"color": "#969696", "font": {"color": "black"}, "id": "S8", "label": "Eli Lilly S.A.", "shape": "dot", "size": 25, "title": "Region : Europe\nid : S8\nName : Eli Lilly S.A."}, {"color": "#e377c2", "font": {"color": "black"}, "id": "SUP27", "label": "Supplier27", "shape": "dot", "size": 25, "title": "Email : supplier27@example.com\nAddress : Address27\nPhone : 123-456-1026\nid : SUP27\nName : Supplier27"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A35", "label": "A35:HPLC", "shape": "dot", "size": 35, "title": "AType : HPLC\nFacilityID : F-1-S2\nLineID : L8\nManufacturerID : MFR1\nunitProcedureID : LI-2-CHA\nLineFloor : True\nid : A35\nName : A35:HPLC"}, {"color": "#000000", "font": {"color": "black"}, "id": "AI035", "label": "AI035", "shape": "dot", "size": 25, "title": "CommissionDate : 2023-09-22 12:16:19.672021\nHasInsurance : YES\nAMCYears : 1\nid : AI035\nAssetID : A35\nWarrantyYears : 4"}, {"color": "#000000", "font": {"color": "black"}, "id": "AM035", "label": "AM035", "shape": "dot", "size": 25, "title": "Temperature : 22.1\nVibration : 18.92\nNoise : 50.79\nThroughput : 81.06\nid : AM035\nAssetID : A35\nPressure : 0.72"}, {"color": "#000000", "font": {"color": "black"}, "id": "AO035", "label": "AO035", "shape": "dot", "size": 25, "title": "Availability : 85.28\nTotalProductionQuantity : 520\nQuality : 80.63\nDowntime : 14.72\nid : AO035\nGoodQuantity : 419.27277570634203\nPerformance : 85.76\nAssetID : A35"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE035", "label": "OEE035", "shape": "dot", "size": 25, "title": "id : OEE035\nAssetID : A35\nOEE : 58.97"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR1", "label": "MFR1", "shape": "dot", "size": 25, "title": "ManufacturerName : GE Healthcare Life Sciences\nid : MFR1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A37", "label": "A37:Air Particle Counters", "shape": "dot", "size": 35, "title": "AType : Air Particle Counters\nFacilityID : F-1-S2\nLineID : L8\nManufacturerID : MFR3\nunitProcedureID : LI-4-ENM\nLineFloor : True\nid : A37\nName : A37:Air Particle Counters"}, {"color": "#000000", "font": {"color": "black"}, "id": "AI037", "label": "AI037", "shape": "dot", "size": 25, "title": "CommissionDate : 2023-09-22 12:16:19.672021\nHasInsurance : YES\nAMCYears : 1\nid : AI037\nAssetID : A37\nWarrantyYears : 1"}, {"color": "#000000", "font": {"color": "black"}, "id": "AM037", "label": "AM037", "shape": "dot", "size": 25, "title": "Temperature : 27.15\nVibration : 19.49\nNoise : 54.52\nThroughput : 72.61\nid : AM037\nAssetID : A37\nPressure : 0.75"}, {"color": "#000000", "font": {"color": "black"}, "id": "AO037", "label": "AO037", "shape": "dot", "size": 25, "title": "Availability : 82.33\nTotalProductionQuantity : 931\nQuality : 80.63\nDowntime : 17.67\nid : AO037\nGoodQuantity : 750.6595272742393\nPerformance : 96.86\nAssetID : A37"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE037", "label": "OEE037", "shape": "dot", "size": 25, "title": "id : OEE037\nAssetID : A37\nOEE : 64.3"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR3", "label": "MFR3", "shape": "dot", "size": 25, "title": "ManufacturerName : Sartorius\nid : MFR3"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-2", "label": "LIMS-2", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Environmental Monitoring\nname : LIMS-A37-WO-BPO1-1-1-LIMS\nid : LIMS-2\nWOID : WO-BPO1-1-1-LIMS\nAssetID : A37\nResult : 100"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-3", "label": "LIMS-3", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Chemical Analysis\nname : LIMS-A35-WO-BPO1-1-1-LIMS\nid : LIMS-3\nWOID : WO-BPO1-1-1-LIMS\nAssetID : A35\nResult : 97"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-2", "label": "Batch-BPO1-1-2-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-2\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-2-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-4", "label": "LIMS-4", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Stability Testing\nname : LIMS-A38-WO-BPO1-1-2-LIMS\nid : LIMS-4\nWOID : WO-BPO1-1-2-LIMS\nAssetID : A38\nResult : 93"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-2-LIMS", "label": "BPO1-1-2-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Completed\nSiteID : S2\nTask : Physical Testing\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-2\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-2-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Particle Size Analyzers\nUnitProcedureID : LI-3-PHT\nid : WO-BPO1-1-2-LIMS\nAssetID : A36\nPOID : PO1"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A36", "label": "A36:Particle Size Analyzers", "shape": "dot", "size": 35, "title": "AType : Particle Size Analyzers\nFacilityID : F-1-S2\nLineID : L8\nManufacturerID : MFR9\nunitProcedureID : LI-3-PHT\nLineFloor : True\nid : A36\nName : A36:Particle Size Analyzers"}, {"color": "#000000", "font": {"color": "black"}, "id": "AI036", "label": "AI036", "shape": "dot", "size": 25, "title": "CommissionDate : 2023-09-22 12:16:19.672021\nHasInsurance : NO\nAMCYears : 1\nid : AI036\nAssetID : A36\nWarrantyYears : 4"}, {"color": "#000000", "font": {"color": "black"}, "id": "AM036", "label": "AM036", "shape": "dot", "size": 25, "title": "Temperature : 22.73\nVibration : 12.68\nNoise : 59.33\nThroughput : 75.53\nid : AM036\nAssetID : A36\nPressure : 0.7"}, {"color": "#000000", "font": {"color": "black"}, "id": "AO036", "label": "AO036", "shape": "dot", "size": 25, "title": "Availability : 89.8\nTotalProductionQuantity : 848\nQuality : 80.63\nDowntime : 10.2\nid : AO036\nGoodQuantity : 683.7371419211116\nPerformance : 91.96\nAssetID : A36"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE036", "label": "OEE036", "shape": "dot", "size": 25, "title": "id : OEE036\nAssetID : A36\nOEE : 66.58"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR9", "label": "MFR9", "shape": "dot", "size": 25, "title": "ManufacturerName : Shimadzu Corporation\nid : MFR9"}, {"color": "#74c476", "font": {"color": "black"}, "id": "A38", "label": "A38:Temperature and Humidity Controllers", "shape": "dot", "size": 35, "title": "AType : Temperature and Humidity Controllers\nFacilityID : F-1-S2\nLineID : L8\nManufacturerID : MFR6\nunitProcedureID : LI-5-STT\nLineFloor : True\nid : A38\nName : A38:Temperature and Humidity Controllers"}, {"color": "#000000", "font": {"color": "black"}, "id": "AI038", "label": "AI038", "shape": "dot", "size": 25, "title": "CommissionDate : 2019-09-25 12:16:19.672021\nHasInsurance : NO\nAMCYears : 4\nid : AI038\nAssetID : A38\nWarrantyYears : 4"}, {"color": "#000000", "font": {"color": "black"}, "id": "AM038", "label": "AM038", "shape": "dot", "size": 25, "title": "Temperature : 24.81\nVibration : 18.02\nNoise : 53.72\nThroughput : 86.17\nid : AM038\nAssetID : A38\nPressure : 0.75"}, {"color": "#000000", "font": {"color": "black"}, "id": "AO038", "label": "AO038", "shape": "dot", "size": 25, "title": "Availability : 80.67\nTotalProductionQuantity : 553\nQuality : 80.63\nDowntime : 19.33\nid : AO038\nGoodQuantity : 445.88047108770604\nPerformance : 87.43\nAssetID : A38"}, {"color": "#a55194", "font": {"color": "black"}, "id": "OEE038", "label": "OEE038", "shape": "dot", "size": 25, "title": "id : OEE038\nAssetID : A38\nOEE : 56.87"}, {"color": "#ffbb78", "font": {"color": "black"}, "id": "MFR6", "label": "MFR6", "shape": "dot", "size": 25, "title": "ManufacturerName : Eppendorf\nid : MFR6"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-5", "label": "LIMS-5", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Chemical Analysis\nname : LIMS-A35-WO-BPO1-1-2-LIMS\nid : LIMS-5\nWOID : WO-BPO1-1-2-LIMS\nAssetID : A35\nResult : 97"}, {"color": "red", "font": {"color": "black"}, "id": "LIMS-6", "label": "LIMS-6", "shape": "dot", "size": 25, "title": "Status : Failed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-2-LIMS\nid : LIMS-6\nWOID : WO-BPO1-1-2-LIMS\nAssetID : A36\nResult : 65"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-3", "label": "Batch-BPO1-1-3-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-3\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-3-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-7", "label": "LIMS-7", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-3-LIMS\nid : LIMS-7\nWOID : WO-BPO1-1-3-LIMS\nAssetID : A36\nResult : 97"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-3-LIMS", "label": "BPO1-1-3-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : On Hold\nSiteID : S2\nTask : Microbiological Testing\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-3\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-3-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Incubators\nUnitProcedureID : LI-1-MIT\nid : WO-BPO1-1-3-LIMS\nAssetID : A34\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-8", "label": "LIMS-8", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Environmental Monitoring\nname : LIMS-A37-WO-BPO1-1-3-LIMS\nid : LIMS-8\nWOID : WO-BPO1-1-3-LIMS\nAssetID : A37\nResult : 91"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-9", "label": "LIMS-9", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-3-LIMS\nid : LIMS-9\nWOID : WO-BPO1-1-3-LIMS\nAssetID : A34\nResult : 100"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-4", "label": "Batch-BPO1-1-4-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-4\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-4-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-10", "label": "LIMS-10", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Environmental Monitoring\nname : LIMS-A37-WO-BPO1-1-4-LIMS\nid : LIMS-10\nWOID : WO-BPO1-1-4-LIMS\nAssetID : A37\nResult : 97"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-4-LIMS", "label": "BPO1-1-4-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Cancelled\nSiteID : S2\nTask : Microbiological Testing\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-4\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-4-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Incubators\nUnitProcedureID : LI-1-MIT\nid : WO-BPO1-1-4-LIMS\nAssetID : A34\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-11", "label": "LIMS-11", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-4-LIMS\nid : LIMS-11\nWOID : WO-BPO1-1-4-LIMS\nAssetID : A36\nResult : 94"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-12", "label": "LIMS-12", "shape": "dot", "size": 25, "title": "Status : InProgress\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-4-LIMS\nid : LIMS-12\nWOID : WO-BPO1-1-4-LIMS\nAssetID : A34\nResult : 81"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-5", "label": "Batch-BPO1-1-5-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-5\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-5-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-13", "label": "LIMS-13", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-5-LIMS\nid : LIMS-13\nWOID : WO-BPO1-1-5-LIMS\nAssetID : A34\nResult : 95"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-5-LIMS", "label": "BPO1-1-5-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : On Hold\nSiteID : S2\nTask : Chemical Analysis\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-5\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-5-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : HPLC\nUnitProcedureID : LI-2-CHA\nid : WO-BPO1-1-5-LIMS\nAssetID : A35\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-14", "label": "LIMS-14", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Environmental Monitoring\nname : LIMS-A37-WO-BPO1-1-5-LIMS\nid : LIMS-14\nWOID : WO-BPO1-1-5-LIMS\nAssetID : A37\nResult : 94"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-15", "label": "LIMS-15", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Chemical Analysis\nname : LIMS-A35-WO-BPO1-1-5-LIMS\nid : LIMS-15\nWOID : WO-BPO1-1-5-LIMS\nAssetID : A35\nResult : 99"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-6", "label": "Batch-BPO1-1-6-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-6\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-6-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-16", "label": "LIMS-16", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-6-LIMS\nid : LIMS-16\nWOID : WO-BPO1-1-6-LIMS\nAssetID : A34\nResult : 98"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-6-LIMS", "label": "BPO1-1-6-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Planned\nSiteID : S2\nTask : Stability Testing\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-6\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-6-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Temperature and Humidity Controllers\nUnitProcedureID : LI-5-STT\nid : WO-BPO1-1-6-LIMS\nAssetID : A38\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-17", "label": "LIMS-17", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-6-LIMS\nid : LIMS-17\nWOID : WO-BPO1-1-6-LIMS\nAssetID : A36\nResult : 94"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-18", "label": "LIMS-18", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Stability Testing\nname : LIMS-A38-WO-BPO1-1-6-LIMS\nid : LIMS-18\nWOID : WO-BPO1-1-6-LIMS\nAssetID : A38\nResult : 99"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-7", "label": "Batch-BPO1-1-7-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-7\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-7-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-19", "label": "LIMS-19", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-7-LIMS\nid : LIMS-19\nWOID : WO-BPO1-1-7-LIMS\nAssetID : A34\nResult : 100"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-7-LIMS", "label": "BPO1-1-7-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Cancelled\nSiteID : S2\nTask : Chemical Analysis\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-7\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-7-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : HPLC\nUnitProcedureID : LI-2-CHA\nid : WO-BPO1-1-7-LIMS\nAssetID : A35\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-20", "label": "LIMS-20", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Stability Testing\nname : LIMS-A38-WO-BPO1-1-7-LIMS\nid : LIMS-20\nWOID : WO-BPO1-1-7-LIMS\nAssetID : A38\nResult : 94"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-21", "label": "LIMS-21", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Chemical Analysis\nname : LIMS-A35-WO-BPO1-1-7-LIMS\nid : LIMS-21\nWOID : WO-BPO1-1-7-LIMS\nAssetID : A35\nResult : 93"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-8", "label": "Batch-BPO1-1-8-P10010-70", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 70\nProductID : P10010\nid : BPO1-1-8\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-8-P10010-70\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-22", "label": "LIMS-22", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Stability Testing\nname : LIMS-A38-WO-BPO1-1-8-LIMS\nid : LIMS-22\nWOID : WO-BPO1-1-8-LIMS\nAssetID : A38\nResult : 91"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-8-LIMS", "label": "BPO1-1-8-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : On Hold\nSiteID : S2\nTask : Microbiological Testing\nBatchQty : 70\nWOType : LIMS\nBatchID : BPO1-1-8\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-8-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Incubators\nUnitProcedureID : LI-1-MIT\nid : WO-BPO1-1-8-LIMS\nAssetID : A34\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-23", "label": "LIMS-23", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-8-LIMS\nid : LIMS-23\nWOID : WO-BPO1-1-8-LIMS\nAssetID : A36\nResult : 99"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-24", "label": "LIMS-24", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-8-LIMS\nid : LIMS-24\nWOID : WO-BPO1-1-8-LIMS\nAssetID : A34\nResult : 92"}, {"color": "indigo", "font": {"color": "black"}, "id": "BPO1-1-9", "label": "Batch-BPO1-1-9-P10010-50", "shape": "dot", "size": 35, "title": "Status : Completed\nStartDate : 2024-06-13T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nSiteID : S2\nWarehouseFacilityID : F-2-S4\nQty : 50\nProductID : P10010\nid : BPO1-1-9\nEndDate : 2024-06-14T00:00:00.000000000+00:00\nName : Batch-BPO1-1-9-P10010-50\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-25", "label": "LIMS-25", "shape": "dot", "size": 25, "title": "Status : InProgress\nFacilityID : F-1-S2\nSiteID : S2\nTest : Microbiological Testing\nname : LIMS-A34-WO-BPO1-1-9-LIMS\nid : LIMS-25\nWOID : WO-BPO1-1-9-LIMS\nAssetID : A34\nResult : 81"}, {"color": "#ad494a", "font": {"color": "black"}, "id": "WO-BPO1-1-9-LIMS", "label": "BPO1-1-9-LIMS-P10010-F-1-S2", "shape": "dot", "size": 25, "title": "Status : Completed\nSiteID : S2\nTask : Environmental Monitoring\nBatchQty : 50\nWOType : LIMS\nBatchID : BPO1-1-9\nProductID : P10010\nEndDate : 2024-06-14\nName : BPO1-1-9-LIMS-P10010-F-1-S2\nStartDate : 2024-06-14T00:00:00.000000000+00:00\nFacilityID : F-1-S2\nAssetType : Air Particle Counters\nUnitProcedureID : LI-4-ENM\nid : WO-BPO1-1-9-LIMS\nAssetID : A37\nPOID : PO1"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-26", "label": "LIMS-26", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Physical Testing\nname : LIMS-A36-WO-BPO1-1-9-LIMS\nid : LIMS-26\nWOID : WO-BPO1-1-9-LIMS\nAssetID : A36\nResult : 94"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "LIMS-27", "label": "LIMS-27", "shape": "dot", "size": 25, "title": "Status : Passed\nFacilityID : F-1-S2\nSiteID : S2\nTest : Environmental Monitoring\nname : LIMS-A37-WO-BPO1-1-9-LIMS\nid : LIMS-27\nWOID : WO-BPO1-1-9-LIMS\nAssetID : A37\nResult : 97"}]);
+                  edges = new vis.DataSet([{"from": "PM29", "title": "AVAILABLE_AT", "to": "F-3-S1"}, {"from": "A34", "title": "ASSIGNED_TO_LINE", "to": "L8"}, {"from": "A34", "title": "HAS_ATTRIBUTE", "to": "AM034"}, {"from": "BPO1-1-1", "title": "EXECUTED_BY", "to": "WO-BPO1-1-1-LIMS"}, {"from": "P10010", "title": "FORMULATED_WITH", "to": "PMR-10"}, {"from": "A34", "title": "HAS_INFO", "to": "AI034"}, {"from": "A34", "title": "HAS_METADATA", "to": "AO034"}, {"from": "A34", "title": "HAS_OEE", "to": "OEE034"}, {"from": "L8", "title": "LOCATED_IN_FACILITY", "to": "F-1-S2"}, {"from": "S1", "title": "LOCATED_IN_REGION", "to": "R2"}, {"from": "F-3-S1", "title": "LOCATED_AT_SITE", "to": "S1"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-1"}, {"from": "A34", "title": "PROVIDED_BY_OEM", "to": "MFR7"}, {"from": "WO-BPO1-1-1-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-1-LIMS", "title": "RECORDED_IN", "to": "LIMS-1"}, {"from": "M3", "title": "SUPPLIED_BY", "to": "SUP26"}, {"from": "M3", "title": "STORED_IN", "to": "PM29"}, {"from": "PMR-10", "title": "USES_MATERIAL", "to": "M3"}, {"from": "BPO1-1-1", "title": "YIELDS", "to": "P10010"}, {"from": "PM13", "title": "AVAILABLE_AT", "to": "F-2-S5"}, {"from": "S5", "title": "LOCATED_IN_REGION", "to": "R2"}, {"from": "F-2-S5", "title": "LOCATED_AT_SITE", "to": "S5"}, {"from": "M4", "title": "SUPPLIED_BY", "to": "SUP7"}, {"from": "M4", "title": "STORED_IN", "to": "PM13"}, {"from": "PMR-10", "title": "USES_MATERIAL", "to": "M4"}, {"from": "PM18", "title": "AVAILABLE_AT", "to": "F-2-S7"}, {"from": "S7", "title": "LOCATED_IN_REGION", "to": "R2"}, {"from": "F-2-S7", "title": "LOCATED_AT_SITE", "to": "S7"}, {"from": "M24", "title": "SUPPLIED_BY", "to": "SUP53"}, {"from": "M24", "title": "STORED_IN", "to": "PM18"}, {"from": "PMR-10", "title": "USES_MATERIAL", "to": "M24"}, {"from": "PM21", "title": "AVAILABLE_AT", "to": "F-3-S8"}, {"from": "S8", "title": "LOCATED_IN_REGION", "to": "R1"}, {"from": "F-3-S8", "title": "LOCATED_AT_SITE", "to": "S8"}, {"from": "M25", "title": "SUPPLIED_BY", "to": "SUP27"}, {"from": "M25", "title": "STORED_IN", "to": "PM21"}, {"from": "PMR-10", "title": "USES_MATERIAL", "to": "M25"}, {"from": "A35", "title": "ASSIGNED_TO_LINE", "to": "L8"}, {"from": "A35", "title": "HAS_ATTRIBUTE", "to": "AM035"}, {"from": "A35", "title": "HAS_INFO", "to": "AI035"}, {"from": "A35", "title": "HAS_METADATA", "to": "AO035"}, {"from": "A35", "title": "HAS_OEE", "to": "OEE035"}, {"from": "A35", "title": "PROVIDED_BY_OEM", "to": "MFR1"}, {"from": "WO-BPO1-1-1-LIMS", "title": "PERFORMED_ON", "to": "A35"}, {"from": "A37", "title": "ASSIGNED_TO_LINE", "to": "L8"}, {"from": "A37", "title": "HAS_ATTRIBUTE", "to": "AM037"}, {"from": "A37", "title": "HAS_INFO", "to": "AI037"}, {"from": "A37", "title": "HAS_METADATA", "to": "AO037"}, {"from": "A37", "title": "HAS_OEE", "to": "OEE037"}, {"from": "A37", "title": "PROVIDED_BY_OEM", "to": "MFR3"}, {"from": "WO-BPO1-1-1-LIMS", "title": "PERFORMED_ON", "to": "A37"}, {"from": "WO-BPO1-1-1-LIMS", "title": "RECORDED_IN", "to": "LIMS-2"}, {"from": "WO-BPO1-1-1-LIMS", "title": "RECORDED_IN", "to": "LIMS-3"}, {"from": "BPO1-1-2", "title": "EXECUTED_BY", "to": "WO-BPO1-1-2-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-2"}, {"from": "WO-BPO1-1-2-LIMS", "title": "PERFORMED_ON", "to": "A35"}, {"from": "WO-BPO1-1-2-LIMS", "title": "RECORDED_IN", "to": "LIMS-4"}, {"from": "BPO1-1-2", "title": "YIELDS", "to": "P10010"}, {"from": "A36", "title": "ASSIGNED_TO_LINE", "to": "L8"}, {"from": "A36", "title": "HAS_ATTRIBUTE", "to": "AM036"}, {"from": "A36", "title": "HAS_INFO", "to": "AI036"}, {"from": "A36", "title": "HAS_METADATA", "to": "AO036"}, {"from": "A36", "title": "HAS_OEE", "to": "OEE036"}, {"from": "A36", "title": "PROVIDED_BY_OEM", "to": "MFR9"}, {"from": "WO-BPO1-1-2-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "A38", "title": "ASSIGNED_TO_LINE", "to": "L8"}, {"from": "A38", "title": "HAS_ATTRIBUTE", "to": "AM038"}, {"from": "A38", "title": "HAS_INFO", "to": "AI038"}, {"from": "A38", "title": "HAS_METADATA", "to": "AO038"}, {"from": "A38", "title": "HAS_OEE", "to": "OEE038"}, {"from": "A38", "title": "PROVIDED_BY_OEM", "to": "MFR6"}, {"from": "WO-BPO1-1-2-LIMS", "title": "PERFORMED_ON", "to": "A38"}, {"from": "WO-BPO1-1-2-LIMS", "title": "RECORDED_IN", "to": "LIMS-5"}, {"from": "WO-BPO1-1-2-LIMS", "title": "RECORDED_IN", "to": "LIMS-6"}, {"from": "BPO1-1-3", "title": "EXECUTED_BY", "to": "WO-BPO1-1-3-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-3"}, {"from": "WO-BPO1-1-3-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-3-LIMS", "title": "RECORDED_IN", "to": "LIMS-7"}, {"from": "BPO1-1-3", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-3-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "WO-BPO1-1-3-LIMS", "title": "PERFORMED_ON", "to": "A37"}, {"from": "WO-BPO1-1-3-LIMS", "title": "RECORDED_IN", "to": "LIMS-8"}, {"from": "WO-BPO1-1-3-LIMS", "title": "RECORDED_IN", "to": "LIMS-9"}, {"from": "BPO1-1-4", "title": "EXECUTED_BY", "to": "WO-BPO1-1-4-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-4"}, {"from": "WO-BPO1-1-4-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-4-LIMS", "title": "RECORDED_IN", "to": "LIMS-10"}, {"from": "BPO1-1-4", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-4-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "WO-BPO1-1-4-LIMS", "title": "PERFORMED_ON", "to": "A37"}, {"from": "WO-BPO1-1-4-LIMS", "title": "RECORDED_IN", "to": "LIMS-11"}, {"from": "WO-BPO1-1-4-LIMS", "title": "RECORDED_IN", "to": "LIMS-12"}, {"from": "BPO1-1-5", "title": "EXECUTED_BY", "to": "WO-BPO1-1-5-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-5"}, {"from": "WO-BPO1-1-5-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-5-LIMS", "title": "RECORDED_IN", "to": "LIMS-13"}, {"from": "BPO1-1-5", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-5-LIMS", "title": "PERFORMED_ON", "to": "A35"}, {"from": "WO-BPO1-1-5-LIMS", "title": "PERFORMED_ON", "to": "A37"}, {"from": "WO-BPO1-1-5-LIMS", "title": "RECORDED_IN", "to": "LIMS-14"}, {"from": "WO-BPO1-1-5-LIMS", "title": "RECORDED_IN", "to": "LIMS-15"}, {"from": "BPO1-1-6", "title": "EXECUTED_BY", "to": "WO-BPO1-1-6-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-6"}, {"from": "WO-BPO1-1-6-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-6-LIMS", "title": "RECORDED_IN", "to": "LIMS-16"}, {"from": "BPO1-1-6", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-6-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "WO-BPO1-1-6-LIMS", "title": "PERFORMED_ON", "to": "A38"}, {"from": "WO-BPO1-1-6-LIMS", "title": "RECORDED_IN", "to": "LIMS-17"}, {"from": "WO-BPO1-1-6-LIMS", "title": "RECORDED_IN", "to": "LIMS-18"}, {"from": "BPO1-1-7", "title": "EXECUTED_BY", "to": "WO-BPO1-1-7-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-7"}, {"from": "WO-BPO1-1-7-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-7-LIMS", "title": "RECORDED_IN", "to": "LIMS-19"}, {"from": "BPO1-1-7", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-7-LIMS", "title": "PERFORMED_ON", "to": "A35"}, {"from": "WO-BPO1-1-7-LIMS", "title": "PERFORMED_ON", "to": "A38"}, {"from": "WO-BPO1-1-7-LIMS", "title": "RECORDED_IN", "to": "LIMS-20"}, {"from": "WO-BPO1-1-7-LIMS", "title": "RECORDED_IN", "to": "LIMS-21"}, {"from": "BPO1-1-8", "title": "EXECUTED_BY", "to": "WO-BPO1-1-8-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-8"}, {"from": "WO-BPO1-1-8-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-8-LIMS", "title": "RECORDED_IN", "to": "LIMS-22"}, {"from": "BPO1-1-8", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-8-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "WO-BPO1-1-8-LIMS", "title": "PERFORMED_ON", "to": "A38"}, {"from": "WO-BPO1-1-8-LIMS", "title": "RECORDED_IN", "to": "LIMS-23"}, {"from": "WO-BPO1-1-8-LIMS", "title": "RECORDED_IN", "to": "LIMS-24"}, {"from": "BPO1-1-9", "title": "EXECUTED_BY", "to": "WO-BPO1-1-9-LIMS"}, {"from": "PO1", "title": "MANUFACTURES", "to": "BPO1-1-9"}, {"from": "WO-BPO1-1-9-LIMS", "title": "PERFORMED_ON", "to": "A34"}, {"from": "WO-BPO1-1-9-LIMS", "title": "RECORDED_IN", "to": "LIMS-25"}, {"from": "BPO1-1-9", "title": "YIELDS", "to": "P10010"}, {"from": "WO-BPO1-1-9-LIMS", "title": "PERFORMED_ON", "to": "A36"}, {"from": "WO-BPO1-1-9-LIMS", "title": "PERFORMED_ON", "to": "A37"}, {"from": "WO-BPO1-1-9-LIMS", "title": "RECORDED_IN", "to": "LIMS-26"}, {"from": "WO-BPO1-1-9-LIMS", "title": "RECORDED_IN", "to": "LIMS-27"}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -455,6 +661,23 @@ function highlightFilter(filter) {
                   
 
 
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
                   
 
                   return network;

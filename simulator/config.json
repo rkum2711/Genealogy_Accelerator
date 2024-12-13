@@ -249,7 +249,7 @@
         "State": "New Jersey",
         "County": "Somerset",
         "City": "Branchburg",
-        "Plant Name": "Lilly Biotechnology Center"
+        "Plant Name": "Branchburg Biotechnology Center"
     },
     {
         "Country": "United States",
@@ -257,7 +257,7 @@
         "State": "Indiana",
         "County": "Vermillion",
         "City": "Clinton",
-        "Plant Name": "Clinton Laboratories"
+        "Plant Name": "Indiana Laboratories"
     },
     {
         "Country": "United States",
@@ -265,7 +265,7 @@
         "State": "Ohio",
         "County": "Hamilton",
         "City": "Evendale",
-        "Plant Name": "Eli Lilly and Company"
+        "Plant Name": "Ohio Laboratories"
     },
     {
         "Country": "United States",
@@ -281,19 +281,19 @@
         "State": "Rhode Island",
         "County": "Providence",
         "City": "Cumberland",
-        "Plant Name": "Lilly Del Caribe Inc."
+        "Plant Name": "Rhode Island Del Caribe Inc."
     },
     {
         "Country": "Ireland",
         "Region": "Europe",
         "City": "Kinsale",
-        "Plant Name": "Eli Lilly S.A."
+        "Plant Name": "Kinsale S.A."
     },
     {
         "Country": "Italy",
         "Region": "Europe",
         "City": "Sesto Fiorentino",
-        "Plant Name": "Lilly Italia S.p.A."
+        "Plant Name": "Sesto Italia S.p.A."
     },
     {
         "Country": "France",
@@ -305,7 +305,7 @@
         "Country": "Spain",
         "Region": "Europe",
         "City": "Alcobendas",
-        "Plant Name": "Lilly Spain S.A."
+        "Plant Name": "Alcobendas Spain S.A."
     }
 ],
   "country_codes" :{
