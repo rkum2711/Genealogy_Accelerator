@@ -395,8 +395,8 @@ def app():
             if st.button("RUN"):
                 try:
                     batches = re.findall(r'batch(?:es|s)?', ai_search, flags=re.IGNORECASE)
-                    pid = re.findall(r'PO\d+', ai_search, flags=re.IGNORECASE)[0]
-                    all = re.findall(r'all?', ai_search, flags=re.IGNORECASE)
+                    # pid = re.findall(r'PO\d+', ai_search, flags=re.IGNORECASE)[0]
+                    # all = re.findall(r'all?', ai_search, flags=re.IGNORECASE)
                     failed = re.findall(r'fail?', ai_search, flags=re.IGNORECASE)
                     asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
                     if batches:
@@ -408,7 +408,7 @@ def app():
                             MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
                             MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
                             WHERE lims.Status = "Failed" AND am.Temperature > 24
-                            RETURN DISTINCT b.id AS Batch_ID
+                            RETURN b
                             """
                         with driver.session() as session:
                             with st.spinner("Executing query..."):
