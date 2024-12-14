@@ -112,6 +112,8 @@ def generate_nodes_edges(data):
                     node_size = 35  # Increase size
                 if node_label == "asset".upper():
                     node_size = 35  # Increase size
+                if node_label == "Attributes".upper() and value._properties.get("Temperature") > 24:
+                    node_color = "red"
 
                 net.add_node(node_id, label=value.get('Name'), title=node_prop_html, color = node_color, size=node_size)
                 added_nodes.add(node_id)
