@@ -104,9 +104,9 @@ def generate_nodes_edges(data):
                 node_size = 25  # Default size
                 node_prop_html = "\n".join(f"{k} : {v}" for k, v in value._properties.items())
 
-                if node_label == "LIMS" and value._properties.get("Status") == "Failed":
+                if node_label == "lims".upper() and value._properties.get("Status") == "Failed":
                     node_color = "red"
-                if node_label == "po".upper():
+                if node_label == "ProcessOrder".upper():
                     node_size =  50 # Increase size
                 if node_label == "batch".upper():
                     node_size = 35  # Increase size
@@ -118,11 +118,11 @@ def generate_nodes_edges(data):
                 node_properties[node_id] = value._properties
 
                 # Track batch connections
-                if node_label == "BATCH":
+                if node_label == "batch".upper():
                     batch_connections[node_id] = []
-                elif node_label == "WO":
+                elif node_label == "wo".upper():
                     wo_connections[node_id] = []
-                elif node_label == "ASSET":
+                elif node_label == "asset".upper():
                     asset_connections[node_id] = []
 
         for key, value in record.items():
@@ -133,21 +133,21 @@ def generate_nodes_edges(data):
                     # Track batch to LIMS connections
                     start_label = list(value.start_node.labels)[0].upper() if value.start_node.labels else "UNKNOWN"
                     end_label = list(value.end_node.labels)[0].upper() if value.end_node.labels else "UNKNOWN"
-                    if start_label == "BATCH" and end_label == "LIMS":
+                    if start_label == "batch".upper() and end_label == "LIMS":
                         batch_connections[value.start_node["id"]].append(value.end_node["id"])
-                    elif start_label == "LIMS" and end_label == "BATCH":
+                    elif start_label == "LIMS" and end_label == "batch".upper():
                         batch_connections[value.end_node["id"]].append(value.start_node["id"])
 
                     # Track WO connections
-                    if start_label == "WO" and end_label == "ASSET":
+                    if start_label == "wo".upper() and end_label == "asset".upper():
                         wo_connections[value.start_node["id"]].append(value.end_node["id"])
-                    elif start_label == "ASSET" and end_label == "WO":
+                    elif start_label == "asset".upper() and end_label == "wo".upper():
                         wo_connections[value.end_node["id"]].append(value.start_node["id"])
 
                     # Track asset to OEE connections
-                    if start_label == "ASSET" and end_label == "MACHINE_DATA":
+                    if start_label == "asset".upper() and end_label == "Attributes".upper():
                         asset_connections[value.start_node["id"]].append(value.end_node["id"])
-                    elif start_label == "MACHINE_DATA" and end_label == "ASSET":
+                    elif start_label == "Attributes".upper() and end_label == "asset".upper():
                         asset_connections[value.end_node["id"]].append(value.start_node["id"])
 
     #Update batch nodes color if any connected LIMS node failed
@@ -278,67 +278,6 @@ def app():
             st.info(f"WO : {len(wo_ids)}")
         st.subheader(option)
         tab1, tab2, tab3 = st.tabs(["UI Tracking","Saved Question", "GEN AI"])
-        # with tab1:
-        #     st.header("Visualize and trace the operations performed on the batch throughout its lifecycle")
-        #     selected_batch = st.selectbox("Select batch ", batch_ids)
-        #     if st.button("Batch Visualize"):
-        #         with st.spinner("Executing query..."):
-        #             try:
-        #                 with st.spinner("Data Loading ...."):
-        #                     query = f"""
-        #                     MATCH (b:batch {{id: '{selected_batch}'}})<-[pb:pBatch]-(po:po)
-        #                     MATCH (po)<-[ppo:productPo]-(p:product)
-        #                     MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-        #                     MATCH (r)<-[mr:materialRecipe]-(m:material)
-        #                     MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-        #                     MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-        #                     MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-        #                     MATCH (f)-[fs:facilitySite]->(s:site)
-        #                     MATCH (s)-[sr:siteRegion]->(re:region)
-        #                     MATCH (b)<-[bwo:batchWO]->(wo:wo)
-        #                     MATCH (wo)<-[awo:assetWO]->(a:asset)
-        #                     MATCH (a)-[al:assetline]->(l:line)
-        #                     MATCH (l)-[lf:lineFacility]->(af:facility)
-        #                     MATCH (af)-[afs:facilitySite]->(as:site)
-        #                     MATCH (as)-[asr:siteRegion]->(ar:region)
-        #                     MATCH (b)-[blims:batchLims]->(lims:lims)
-        #                     RETURN *
-        #                     """
-        #                     with driver.session() as session:
-        #                         graphData = get_neo4j_data(query,session)
-        #                         with st.spinner("Converting into Graph ..."):
-        #                             graph, node_properties = generate_nodes_edges(graphData)
-        #                             save_graph_file(graph, html_file_path)
-        #                     driver.close()
-        #             except Exception as e:
-        #                 st.error(f"Error executing query: {e}")
-        # with tab2:
-        #     st.header("Visualize and trace the operations performed by the asset")
-        #     selected_asset = st.selectbox("Select asset ", awo_distinct_id)
-        #     if st.button("Asset Visualize"):
-        #         with st.spinner("Executing query..."):
-        #             try:
-        #                 with st.spinner("Data Loading ...."):
-        #                     query = f"""
-        #                     MATCH (b:batch)<-[pb:pBatch]-(po:po)
-        #                     MATCH (po)<-[ppo:productPo]-(p:product)
-        #                     MATCH (b)<-[bwo:batchWO]->(wo:wo)
-        #                     MATCH (wo)<-[awo:assetWO]->(a:asset)
-        #                     MATCH (a)-[al:assetline]->(l:line)
-        #                     MATCH (l)-[lf:lineFacility]->(af:facility)
-        #                     MATCH (af)-[afs:facilitySite]->(as:site)
-        #                     MATCH (as)-[asr:siteRegion]->(ar:region)
-        #                     WHERE a.id = '{selected_asset}'
-        #                     RETURN *
-        #                     """
-        #                     with driver.session() as session:
-        #                         graphData = get_neo4j_data(query,session)
-        #                         with st.spinner("Converting into Graph ..."):
-        #                             graph, node_properties = generate_nodes_edges(graphData)
-        #                             save_graph_file(graph, html_file_path)
-        #                     driver.close()
-        #             except Exception as e:
-        #                 st.error(f"Error executing query: {e}")
         with tab1:
             st.header("Visualize all batches and assets executed for a Process Order (PO)")
             selected_PO = st.selectbox("Select PO ", po_ids)
@@ -379,7 +318,7 @@ def app():
                         st.error(f"Error executing query: {e}")
         with tab2:
             st.header("Query the failed batches for a selected PO and its root cause?")
-            selected_PO1 = st.selectbox("Select Process order ", po_ids)
+            selected_PO = st.selectbox("Select Process order ", po_ids)
             try:
                 if st.button("Query Graph"):
                     query = f"""
@@ -404,7 +343,7 @@ def app():
                     MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
                     MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
                     MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
-                    WHERE po.id = "{selected_PO1}" AND lims.Status = "Failed"
+                    WHERE po.id = "{selected_PO}" AND lims.Status = "Failed"
                     RETURN *
                     """
                     with driver.session() as session:
@@ -416,36 +355,21 @@ def app():
                             save_graph_file(graph, html_file_path)
                 if st.button("TABLE"):
                     query = f"""
-                    MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                    MATCH (po)<-[ppo:productPo]-(p:product)
-                    MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                    MATCH (r)<-[mr:materialRecipe]-(m:material)
-                    MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-                    MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                    MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                    MATCH (f)-[fs:facilitySite]->(s:site)
-                    MATCH (s)-[sr:siteRegion]->(re:region)
-                    MATCH (b)<-[bwo:batchWO]->(wo:wo)
-                    MATCH (b)-[blims:batchLims]->(lims:lims)
-                    MATCH (wo)<-[awo:assetWO]->(a:asset)
-                    MATCH (a)-[al:assetline]->(l:line)
-                    MATCH (l)-[lf:lineFacility]->(af:facility)
-                    MATCH (af)-[afs:facilitySite]->(as:site)
-                    MATCH (as)-[asr:siteRegion]->(ar:region)
-                    MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                    MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                    MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                    MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                    MATCH (a)-[aoem:assetOem]->(oem:oem)
-                    WHERE po.id = "{selected_PO1}"
-                    AND lims.Status = "Failed"
-                    AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
-                    AND am.Temperature > 24
+                    MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+                    MATCH (b)-[EB:EXECUTED_BY]->(wo:WO)
+                    MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
+                    MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
+                    MATCH (a)-[AL:ASSIGNED_TO_LINE]->(l:Line)
+                    MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
+                    MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
+                    MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
+                    MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+                    WHERE lims.Status = "Failed" AND am.Temperature > 24
                     RETURN po.id AS PO_ID, 
                         b.id AS Batch_ID, 
                         a.id AS Asset_ID,
                         a.Name AS Asset_Name, 
-                        lims.Status AS Lims_Status, 
+                        lims.Status AS Lims_Status,
                         am.Temperature AS Machine_Temperature, 
                         l.id AS Line_ID, 
                         f.id AS Facility_ID, 
@@ -474,62 +398,15 @@ def app():
                     failed = re.findall(r'fail?', ai_search, flags=re.IGNORECASE)
                     asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
                     if batches:
-                        if all:
-                            query = f"""
-                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                            MATCH (po)<-[ppo:productPo]-(p:product)
-                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                            MATCH (r)<-[mr:materialRecipe]-(m:material)
-                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                            MATCH (f)-[fs:facilitySite]->(s:site)
-                            MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
-                            MATCH (b)-[blims:batchLims]->(lims:lims)
-                            MATCH (wo)<-[awo:assetWO]->(a:asset)
-                            MATCH (a)-[al:assetline]->(l:line)
-                            MATCH (l)-[lf:lineFacility]->(af:facility)
-                            MATCH (af)-[afs:facilitySite]->(as:site)
-                            MATCH (as)-[asr:siteRegion]->(ar:region)
-                            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                            MATCH (a)-[aoem:assetOem]->(oem:oem)
-                            WHERE po.id = "{pid}" 
-                            AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
-                            AND am.Temperature > 24
-                            RETURN DISTINCT b.id AS batch_id
-                            """
                         if failed:
                             query = f"""
-                            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                            MATCH (po)<-[ppo:productPo]-(p:product)
-                            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                            MATCH (r)<-[mr:materialRecipe]-(m:material)
-                            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-                            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-                            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-                            MATCH (f)-[fs:facilitySite]->(s:site)
-                            MATCH (s)-[sr:siteRegion]->(re:region)
-                            MATCH (b)<-[bwo:batchWO]->(wo:wo)
-                            MATCH (b)-[blims:batchLims]->(lims:lims)
-                            MATCH (wo)<-[awo:assetWO]->(a:asset)
-                            MATCH (a)-[al:assetline]->(l:line)
-                            MATCH (l)-[lf:lineFacility]->(af:facility)
-                            MATCH (af)-[afs:facilitySite]->(as:site)
-                            MATCH (as)-[asr:siteRegion]->(ar:region)
-                            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                            MATCH (a)-[aoem:assetOem]->(oem:oem)
-                            WHERE po.id = "{pid}" 
-                            AND lims.Status = "Failed"
-                            AND NOT a.AType IN ["Incubators", "HPLC", "Particle Size Analyzers", "Air Particle Counters", "Temperature and Humidity Controllers"]
-                            AND am.Temperature > 24
-                            RETURN DISTINCT b.id AS batch_id
+                            MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+                            MATCH (b)-[EB:EXECUTED_BY]->(wo:WO)
+                            MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
+                            MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
+                            MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+                            WHERE lims.Status = "Failed" AND am.Temperature > 24
+                            RETURN DISTINCT b.id AS Batch_ID
                             """
                         with driver.session() as session:
                             with st.spinner("Executing query..."):
@@ -547,13 +424,13 @@ def app():
                             bid = st.text("batch id not available in the database")
                         try:
                             query = f"""
-                            MATCH (b:batch)<-[bwo:batchWO]->(wo:wo)
-                            MATCH (wo)<-[awo:assetWO]->(a:asset)
-                            MATCH (a)<-[amachine:assetMachine]-(machine:machine_data)
-                            MATCH (a)<-[aoper:assetOper]-(od:operation_data)
-                            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                            MATCH (a)-[aoem:assetOem]->(oem:oem)
-                            WHERE b.id = "{bid}" 
+                            MATCH (b:Batch)-[EB:EXECUTED_BY]->(wo:WO)
+                            MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
+                            MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(machine:Attributes)
+                            MATCH (a)-[HM:HAS_METADATA]->(op:Operation)
+                            MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
+                            MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
+                            WHERE b.id = "{bid}"
                             RETURN *
                             """
                             with driver.session() as session:
@@ -570,40 +447,6 @@ def app():
                         st.error("Please Try Again")
                 except Exception as e:
                     st.error(f"Error executing query: {e}")
-        # with tab2:
-        #     st.header("Visualize all operations executed for a Product.")
-        #     selected_product = st.selectbox("Select Product", product_ids)
-        #     if st.button("Product Visualize"):
-        #         with st.spinner("Executing query..."):
-        #             try:
-        #                 with st.spinner("Data Loading ...."):
-        #                     query = f"""
-        #                     MATCH (b:batch)<-[pb:pBatch]-(po:po)
-        #                     MATCH (po)<-[ppo:productPo]-(p:product)
-        #                     MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-        #                     MATCH (r)<-[mr:materialRecipe]-(m:material)
-        #                     MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-        #                     MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-        #                     MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-        #                     MATCH (f)-[fs:facilitySite]->(s:site)
-        #                     MATCH (s)-[sr:siteRegion]->(re:region)
-        #                     MATCH (b)<-[bwo:batchWO]->(wo:wo)
-        #                     MATCH (wo)<-[awo:assetWO]->(a:asset)
-        #                     MATCH (a)-[al:assetline]->(l:line)
-        #                     MATCH (l)-[lf:lineFacility]->(af:facility)
-        #                     MATCH (af)-[afs:facilitySite]->(as:site)
-        #                     MATCH (as)-[asr:siteRegion]->(ar:region)
-        #                     WHERE p.id = "{selected_product}"
-        #                     RETURN *
-        #                     """
-        #                     with driver.session() as session:
-        #                         graphData = get_neo4j_data(query,session)
-        #                         with st.spinner("Converting into Graph ..."):
-        #                             graph, node_properties = generate_nodes_edges(graphData)
-        #                             save_graph_file(graph, html_file_path)
-        #                     driver.close()
-        #             except Exception as e:
-        #                 st.error(f"Error executing query: {e}")
     elif option == options_list[2]:
         with col1:
             st.success(f"Total Assets: {len(asset_ids)}")
