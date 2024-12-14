@@ -408,7 +408,7 @@ def app():
                             MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
                             MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
                             WHERE lims.Status = "Failed" AND am.Temperature > 24
-                            RETURN b
+                            RETURN DISTINCT b.id AS Batch_ID
                             """
                         with driver.session() as session:
                             with st.spinner("Executing query..."):
