@@ -337,7 +337,7 @@ def app():
                     MATCH (wo)-[RB:RECORDED_IN]->(lims:LIMS)
                     MATCH (wo)-[PER:PERFORMED_ON]->(a:Asset)
                     MATCH (a)-[AL:ASSIGNED_TO_LINE]->(l:Line)
-                    OPTIONAL MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
+                    MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
                     MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
                     MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
                     MATCH (a)-[HI:HAS_INFO]->(ai:AssetInfo)
@@ -459,78 +459,50 @@ def app():
         if query_type == asset_questions[0]:
             selected_asset = st.selectbox("Select Asset", asset_ids)
             query = f"""
-            MATCH (a:asset {{id: '{selected_asset}'}})-[al:assetline]->(l:line)
-            MATCH (l)-[lf:lineFacility]->(f:facility)
-            MATCH (f)-[fs:facilitySite]->(s:site)
-            MATCH (s)-[sr:siteRegion]->(r:region)
-            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-            MATCH (a)-[aoem:assetOem]->(oem:oem)
-            OPTIONAL MATCH (a)-[awo:assetWO]-(wo:wo)
-            OPTIONAL MATCH (a)<-[acom:assetCompliance]-(com:compliance)
-            OPTIONAL MATCH (a)<-[amain:assetMain]-(main:maintenance)
-            OPTIONAL MATCH (a)<-[acal:assetCal]-(cal:calibration)
+            MATCH (a:Asset {{id: '{selected_asset}'}}-[AL:ASSIGNED_TO_LINE]->(l:Line)
+            MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
+            MATCH (f)-[FS:LOCATED_AT_SITE]->(s:Site)
+            MATCH (s)-[SR:LOCATED_IN_REGION]->(r:Region)
+            MATCH (a)-[HI:HAS_INFO]->(ai:AssetInfo)
+            MATCH (a)-[HM:HAS_METADATA]->(ao:Operation)
+            MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+            MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
+            MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
+            OPTIONAL MATCH (a)-[PER:PERFORMED_ON]->(wo:WO)
+            OPTIONAL MATCH (a)-[ENSURES_COMPLIANCE]->(com:Compliance)
+            OPTIONAL MATCH (a)-[REQUIRES_MAINTENANCE]->(main:Maintenance)
+            OPTIONAL MATCH (a)-[REQUIRES_CALIBRATION]->(cal:Calibration)
             RETURN *
             """
         elif query_type == asset_questions[1]:
             query = f"""
-            MATCH (a:asset)-[al:assetline]->(l:line)
-            MATCH (l)-[lf:lineFacility]->(f:facility)
-            MATCH (f)-[fs:facilitySite]->(s:site)
-            MATCH (s)-[sr:siteRegion]->(r:region)
-            MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-            MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-            MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-            MATCH (a)<-[aoee:assetOee]-(oee:oee)
-            MATCH (a)-[aoem:assetOem]->(oem:oem)
-            MATCH (a)<-[acom:assetCompliance]-(com:compliance)
-            MATCH (a)<-[amain:assetMain]-(main:maintenance)
-            MATCH (a)<-[acal:assetCal]-(cal:calibration)
+            MATCH (a:Asset)-[AL:ASSIGNED_TO_LINE]->(l:Line)
+            MATCH (l)-[LF:LOCATED_IN_FACILITY]->(f:Facility)
+            MATCH (f)-[FS:LOCATED_AT_SITE]->(s:Site)
+            MATCH (s)-[SR:LOCATED_IN_REGION]->(r:Region)
+            MATCH (a)-[HI:HAS_INFO]->(ai:AssetInfo)
+            MATCH (a)-[HM:HAS_METADATA]->(ao:Operation)
+            MATCH (a)-[ATTR:HAS_ATTRIBUTE]->(am:Attributes)
+            MATCH (a)-[HO:HAS_OEE]->(oee:OEE)
+            MATCH (a)-[PBO:PROVIDED_BY_OEM]->(oem:OEM)
+            MATCH (a)-[ENSURES_COMPLIANCE]->(com:Compliance)
+            MATCH (a)-[REQUIRES_MAINTENANCE]->(main:Maintenance)
+            MATCH (a)-[REQUIRES_CALIBRATION]->(cal:Calibration)
             WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
             RETURN *
             """
-            if st.button("TABLE"):
-                query = f"""
-                MATCH (a:asset)-[al:assetline]->(l:line)
-                MATCH (l)-[lf:lineFacility]->(f:facility)
-                MATCH (f)-[fs:facilitySite]->(s:site)
-                MATCH (s)-[sr:siteRegion]->(r:region)
-                MATCH (a)<-[ainfo:assetInfo]-(ai:asset_info)
-                MATCH (a)<-[aoper:assetOper]-(ao:operation_data)
-                MATCH (a)<-[amachine:assetMachine]-(am:machine_data)
-                MATCH (a)<-[aoee:assetOee]-(oee:oee)
-                MATCH (a)-[aoem:assetOem]->(oem:oem)
-                MATCH (a)<-[acom:assetCompliance]-(com:compliance)
-                MATCH (a)<-[amain:assetMain]-(main:maintenance)
-                MATCH (a)<-[acal:assetCal]-(cal:calibration)
-                WHERE ai.HasInsurance = "YES" AND ai.AMCYears < 2
-                RETURN a.id,a.Name,f.Name,s.Name, ao.Downtime AS downtime
-                ORDER BY downtime DESC
-                LIMIT 10
-                """
-                with driver.session() as session:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                    with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData, columns=keys)
-                        st.table(df)
-                driver.close()
         elif query_type == asset_questions[2]:
             query = f"""
-            MATCH (a:asset)-[:assetWO]->(wo:wo)
-            RETURN a, count(wo) AS operationCount
-            ORDER BY operationCount DESC
-            LIMIT 10;
+            MATCH (a:Asset)<-[:PERFORMED_ON]-(wo:WO)
+            WITH a, count(wo) AS OperationCount
+            SET a.OperationCount = OperationCount
+            RETURN a;
             """
             if st.button("TABLE"):
                 query = f"""
-                MATCH (a:asset)-[:assetWO]->(wo:wo)
-                RETURN a.id, a.Name, count(wo) AS operationCount
-                ORDER BY operationCount DESC
+                MATCH (a:Asset)-[:PERFORMED_ON]->(wo:WO)
+                RETURN a.id AS AssetID, a.Name AS AssetName, count(wo) AS OperationCount
+                ORDER BY OperationCount DESC
                 LIMIT 10;
                 """
                 with driver.session() as session:
@@ -571,124 +543,53 @@ def app():
         if query_type == batch_questions[0]:
             selected_batch = st.selectbox("Select Batch", batch_ids)
             query = f"""
-            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-            MATCH (po)<-[ppo:productPo]-(p:product)
-            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-            MATCH (r)<-[mr:materialRecipe]-(m:material)
-            MATCH (m)<-[supm:supplierMaterial]-(sup:supplier)
-            MATCH (m)<-[pmmm:pmMaterial]-(pm:plant_material)
-            MATCH (pm)<-[fpm:facilityPm]-(f:facility)
-            MATCH (f)-[fs:facilitySite]->(s:site)
-            MATCH (s)-[sr:siteRegion]->(re:region)
-            MATCH (b)-[blims:batchLims]->(lims:lims)
-            WHERE b.id = "{selected_batch}"
+            MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+            MATCH (b)-[YI:YIELDS]->(p:Product)
+            MATCH (p)-[FW:FORMULATED_WITH]->(r:Recipe)
+            MATCH (r)-[UM:USES_MATERIAL]->(m:Materials)
+            MATCH (m)-[SB:SUPPLIED_BY]->(sup:Supplier)
+            MATCH (m)-[SI:STORED_IN]->(pm:PlantMaterial)
+            MATCH (pm)-[AA:AVAILABLE_AT]->(f:Facility)
+            MATCH (f)-[LS:LOCATED_AT_SITE]->(s:Site)
+            MATCH (s)-[LR:LOCATED_IN_REGION]->(re:Region)
             RETURN *
             """
         elif query_type == batch_questions[1]:
             limit = st.number_input("Set a Limit", value=10, placeholder="Type a number...")
             query = f"""
-            MATCH (m:material)-[rm:materialRecipe]->(r:recipe)
-            MATCH (r)-[pr:recipeProduct]->(p:product)
-            MATCH (p)-[ppo:productPo]->(po:po)
-            MATCH (po)-[bpo:pBatch]->(b:batch)
-            MATCH (m)<-[sm:supplierMaterial]-(sup:supplier)
-            WITH m, sm, sup, count(b) as totalbatch
-            ORDER BY totalbatch DESC
-            limit {int(limit)}
-            RETURN m,sm,sup
+            MATCH (m:Materials)<-[UM:USES_MATERIAL]-(r:Recipe)
+            MATCH (r)<-[FW:FORMULATED_WITH]-(p:Product)
+            MATCH (p)<-[YI:YIELDS]-(b:Batch)
+            MATCH (b)<-[MU:MANUFACTURES]-(po:ProcessOrder)
+            MATCH (m)-[SB:SUPPLIED_BY]->(sup:Supplier)
+            WITH m, SB, sup, count(b) AS TotalBatch
+            ORDER BY TotalBatch DESC
+            LIMIT {limit}
+            RETURN m AS Material, SB AS SupplierRelationship, sup AS Supplier;
             """
-            if st.button("TABLE"):
-                query = f"""
-                MATCH (m:material)-[rm:materialRecipe]->(r:recipe)
-                MATCH (r)-[pr:recipeProduct]->(p:product)
-                MATCH (p)-[ppo:productPo]->(po:po)
-                MATCH (po)-[bpo:pBatch]->(b:batch)
-                MATCH (m) <-[sm:supplierMaterial]-(sup:supplier)
-                WITH m, sup, COUNT(DISTINCT b) as totalBatchCount, COUNT(DISTINCT p) as totalProductCount
-                ORDER BY totalBatchCount DESC
-                limit 10
-                RETURN m.id, sup.id, sup.Name, sup.Address, totalBatchCount, totalProductCount
-                """
-                with driver.session() as session:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                    with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData, columns=keys)
-                        st.table(df)
-                driver.close()
         elif query_type == batch_questions[2]:
             query = f"""
-            MATCH (b:batch)<-[pob:pBatch]-(po:po)
+            MATCH (b)<-[MU:MANUFACTURES]-(po:ProcessOrder)
             RETURN *
             """
-            if st.button("TABLE"):
-                query = f"""
-                MATCH (b:batch)<-[pob:pBatch]-(po:po)
-                RETURN po.id, po.Qty, po.Status, count(b) AS batchcount
-                """
-                with driver.session() as session:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                    with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData, columns=keys)
-                        st.table(df)
-                driver.close()
         elif query_type == batch_questions[3]:
             query = f"""
-            MATCH (b:batch)<-[pb:pBatch]-(po:po)
-            MATCH (po)<-[ppo:productPo]-(p:product)
-            MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-            MATCH (r)<-[mr:materialRecipe]-(m:material)
-            MATCH (b)-[blims:batchLims]->(lims:lims)
-            MATCH (lims)-[limswo:limsWO]-(wo:wo)
+            MATCH (b:Batch)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+            MATCH (b)-[YI:YIELDS]->(p:Product)
+            MATCH (p)-[FW:FORMULATED_WITH]->(r:Recipe)
+            MATCH (r)-[UM:USES_MATERIAL]->(m:Materials)
+            MATCH (b)-[EB:EXECUTED_BY]->(wo:WO)
+            MATCH (wo)-[RI:RECORDED_IN]->(lims:LIMS)
             WHERE lims.Status = 'Failed'
-            RETURN *
+            Return *
             """
-            if st.button("TABLE"):
-                query = f"""
-                MATCH (b:batch)<-[pb:pBatch]-(po:po)
-                MATCH (po)<-[ppo:productPo]-(p:product)
-                MATCH (p)<-[rp:recipeProduct]-(r:recipe)
-                MATCH (r)<-[mr:materialRecipe]-(m:material)
-                MATCH (b)-[blims:batchLims]->(lims:lims)
-                MATCH (lims)-[limswo:limsWO]-(wo:wo)
-                WHERE lims.Status = 'Failed'
-                RETURN b.id, po.id, p.id, p.Name, wo.id, lims.Test, lims.Result, lims.Status
-                """
-                with driver.session() as session:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                    with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData, columns=keys)
-                        st.table(df)
-                driver.close()
         elif query_type == batch_questions[4]:
             query = f"""
-            MATCH (b:batch)-[bf:batchWarehouse]->(f:facility)
+            MATCH (b:Batch)-[WI:`WAREHOUSED_IN`]->(f:Facility)
+            MATCH (b)<-[MA:MANUFACTURES]-(po:ProcessOrder)
+            MATCH (b)-[YI:YIELDS]->(p:Product)
             RETURN *
             """
-            if st.button("TABLE"):
-                query = f"""
-                MATCH (b:batch)-[bf:batchWarehouse]->(f:facility)
-                WITH f, COUNT(b) AS TotalBatches
-                ORDER BY TotalBatches DESC
-                RETURN f.id, f.SiteID, f.RegionID, f.FType, TotalBatches
-                """
-                with driver.session() as session:
-                    with st.spinner("Executing query..."):
-                        with st.spinner("Data Loading ...."):
-                            graphData = get_neo4j_data(query,session)
-                            keys = graphData.keys()
-                    with st.spinner("Converting into RESULT ..."):
-                        df = pd.DataFrame(graphData, columns=keys)
-                        st.table(df)
-                driver.close()
         try:
             if st.button("Visualize"):
                 with driver.session() as session:
@@ -701,68 +602,5 @@ def app():
                 driver.close()
         except Exception as e:
             st.error(f"Error executing query: {e}")
-    # elif option == options_list[3]:
-    #     st.image(chatgpt_icon, width=50)
-    #     ai_search = st.text_input("AI CHATBOT", "")
-    #     if st.button("RUN"):
-    #         try:
-    #             oee = re.findall(r'OEE?', ai_search, flags=re.IGNORECASE)
-    #             high = re.findall(r'high?', ai_search, flags=re.IGNORECASE)
-    #             low = re.findall(r'low?', ai_search, flags=re.IGNORECASE)
-    #             asset = re.findall(r'asset(?:es|s)?', ai_search, flags=re.IGNORECASE)
-    #             if oee:
-    #                 if high:
-    #                     query = f"""
-    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-    #                     RETURN a.id, oee.OEE
-    #                     ORDER BY oee.OEE DESC
-    #                     LIMIT 10
-    #                     """
-    #                 elif low:
-    #                     query = f"""
-    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-    #                     RETURN a.id, oee.OEE
-    #                     ORDER BY oee.OEE ASC
-    #                     LIMIT 10
-    #                     """
-    #                 else:
-    #                     query = f"""
-    #                     MATCH (a:asset)<-[aoee:assetOee]-(oee:oee)
-    #                     RETURN a.id, a.Name, oee.OEE
-    #                     ORDER BY oee.OEE DESC
-    #                     LIMIT 10
-    #                     """
-    #                 with driver.session() as session:
-    #                     with st.spinner("Executing query..."):
-    #                         graphData = get_neo4j_data(query,session)
-    #                         keys = graphData.keys()
-    #                     with st.spinner("Converting into RESULT ..."):
-    #                         df = pd.DataFrame(graphData, columns=keys)
-    #                         st.table(df)
-    #                 driver.close()
-    #             elif asset:
-    #                 asset_id = re.findall(r'A\d+', ai_search)[0]
-    #                 try:
-    #                     query = f"""
-    #                     MATCH (a:asset {{id: '{asset_id}'}})<-[amachine:assetMachine]-(machine:machine_data)
-    #                     MATCH (a)<-[aoper:assetOper]-(od:operation_data)
-    #                     MATCH (a)<-[aoee:assetOee]-(oee:oee)
-    #                     MATCH (a)-[aoem:assetOem]->(oem:oem)
-    #                     RETURN *
-    #                     """
-    #                     with driver.session() as session:
-    #                         with st.spinner("Executing query..."):
-    #                             with st.spinner("Data Loading ...."):
-    #                                 graphData = get_neo4j_data(query,session)
-    #                             with st.spinner("Converting into Graph ..."):
-    #                                 graph, node_properties = generate_nodes_edges(graphData)
-    #                                 save_graph_file(graph, html_file_path)
-    #                     driver.close()
-    #                 except Exception as e:
-    #                     st.error(f"Error executing query: {e}")
-    #             else:
-    #                 st.error("Please Try Again")
-    #         except Exception as e:
-    #             st.error(f"Error executing query: {e}")
 if __name__ == "__main__":
     app()
